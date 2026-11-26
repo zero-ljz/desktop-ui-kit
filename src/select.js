@@ -59,6 +59,10 @@ function createSelect({ options = [], value = options[0]?.value, id, labelledBy,
     list.style.removeProperty('max-height');
     const rect = trigger.getBoundingClientRect();
     const bounds = container.closest('.content')?.getBoundingClientRect();
+    const availableWidth = container.closest('.setting-control')
+      ? rect.right - Math.max(0, bounds?.left ?? 0)
+      : Math.min(window.innerWidth, bounds?.right ?? window.innerWidth) - rect.left;
+    list.style.setProperty('--ds-select-available-width', availableWidth + 'px');
     const above = rect.top - Math.max(0, bounds?.top ?? 0);
     const below = Math.min(window.innerHeight, bounds?.bottom ?? window.innerHeight) - rect.bottom;
     const upward = below < Math.min(list.scrollHeight, 250) + 8 && above > below;
@@ -81,6 +85,7 @@ function createSelect({ options = [], value = options[0]?.value, id, labelledBy,
   function close() {
     revision++;
     if (activeSelect === container) activeSelect = null;
+    window.removeEventListener('resize', positionList);
     document.removeEventListener('pointerdown', onOutside, true);
     container.classList.remove('open', 'open-upward');
     trigger.setAttribute('aria-expanded', 'false');
@@ -90,8 +95,18 @@ function createSelect({ options = [], value = options[0]?.value, id, labelledBy,
     if (!container.contains(event.target)) close();
   }
 
+  function focusInitialOption(key) {
+    let index = Math.max(0, selectedIndex());
+    if (key === 'Home') index = 0;
+    if (key === 'End') index = options.length - 1;
+    focusOption(index);
+  }
+
   async function open(key) {
-    if (activeSelect === container) return;
+    if (activeSelect === container) {
+      if (container.classList.contains('open')) focusInitialOption(key);
+      return;
+    }
     activeSelect?.close();
     activeSelect = container;
     const request = ++revision;
@@ -108,10 +123,8 @@ function createSelect({ options = [], value = options[0]?.value, id, labelledBy,
     positionList();
     container.classList.add('open');
     trigger.setAttribute('aria-expanded', 'true');
-    let index = Math.max(0, selectedIndex());
-    if (key === 'Home') index = 0;
-    if (key === 'End') index = options.length - 1;
-    focusOption(index);
+    window.addEventListener('resize', positionList);
+    focusInitialOption(key);
   }
 
   trigger.addEventListener('click', () => {

@@ -410,8 +410,14 @@
   border-color: var(--ds-border-hover);
 }
 
+:where(.ds-settings) .select-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 :where(.ds-settings) .select-arrow {
   display: flex;
+  flex: none;
   transition: transform var(--ds-transition-fast);
   color: var(--ds-text-tertiary);
 }
@@ -424,7 +430,7 @@
   left: 0;
   width: max-content;
   min-width: 100%;
-  max-width: min(420px, calc(100vw - 32px));
+  max-width: min(420px, calc(100vw - 32px), var(--ds-select-available-width, 100vw));
   background-color: var(--ds-bg-elevated);
   border: 1px solid var(--ds-border);
   border-radius: var(--ds-radius-md);
@@ -467,6 +473,12 @@
   font: inherit;
   text-align: left;
   white-space: nowrap;
+}
+:where(.ds-settings) .select-trigger + .select-dropdown .select-option {
+  display: block;
+  width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 :where(.ds-settings) .setting-control .select-dropdown {
   left: auto;
