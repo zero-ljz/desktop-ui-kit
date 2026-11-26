@@ -108,6 +108,15 @@
   grid-row: 2;
 }
 
+:where(.ds-settings) :where(.app-container) > .action-bar-floating {
+  grid-column: 2;
+  grid-row: 1;
+  place-self: end;
+  margin: 0 40px 36px;
+  width: min(520px, calc(100% - 80px));
+  z-index: 20;
+}
+
 :where(.ds-settings) .action-bar {
   max-width: 100%;
   background-color: var(--ds-bg-action-bar);
@@ -150,6 +159,13 @@
 :where(.ds-settings) .sidebar-item:focus-visible {
   outline: 2px solid var(--ds-accent);
   outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  :where(.ds-settings) :where(.app-container) > .action-bar-floating {
+    margin: 0 28px 28px;
+    width: calc(100% - 56px);
+  }
 }
 
 @media (max-width: 680px) {

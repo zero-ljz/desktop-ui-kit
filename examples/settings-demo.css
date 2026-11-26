@@ -30,7 +30,7 @@ body {
   color: var(--ds-text-secondary);
 }
 .nav-heading { margin: 0 14px 8px; }
-#preferences { max-width: 52rem; margin: auto; padding: clamp(16px, 4vw, 48px); }
+#preferences { max-width: 52rem; margin: auto; padding: clamp(16px, 4vw, 48px); padding-bottom: 156px; }
 h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25; }
 .preview {
   position: relative;
@@ -60,7 +60,9 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
 .setting-control:has(.field-error) { flex-direction: column; align-items: flex-start; }
 .setting-control textarea { resize: vertical; }
 .topic { padding-inline-start: 76px; }
-.action-bar { margin: 0 12px 12px; }
+@media (max-width: 680px) {
+  #preferences { padding-bottom: 188px; }
+}
 @media (max-width: 620px) {
   .ds-settings { --ds-sidebar-width: 56px; }
   .sidebar { padding: 16px 0; }
@@ -71,5 +73,4 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
   }
   .sidebar-label { font-size: 11px; }
   .topic { padding-inline-start: 32px; }
-  .action-bar { margin: 0 6px 6px; }
 }
