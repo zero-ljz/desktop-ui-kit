@@ -34,6 +34,20 @@
 
 当侧栏内容区宽度为 56px 或更窄时，带图标的当前导航项会将图标居中，并在视觉上隐藏文字。将 `.sidebar-icon` 和 `.sidebar-label` 依次放在导航项中，辅助技术仍可读取名称。应用可自行决定收起侧栏的窗口宽度。
 
+要支持手动收起和窄窗覆盖式展开，在 `.sidebar` 中放置 `.sidebar-header`、可独立滚动的 `.sidebar-primary`，以及可选的底部区域 `.sidebar-secondary`。标题区使用原生 `<button type="button" class="sidebar-toggle">`，分类标题用 `.sidebar-group-label`。在导航项上使用原生链接或按钮，页面切换由应用处理。
+
+```js
+import { bindSidebar } from 'desktop-settings-css/sidebar';
+import * as tooltips from 'desktop-settings-css/tooltip';
+
+const navigation = bindSidebar(document.querySelector('.sidebar'), {
+  narrowQuery: '(width < 900px)',
+  tooltips
+});
+```
+
+宽窗展开时内容区随侧栏移动。窄窗展开时侧栏覆盖内容区，点击导航项、点击外部、按 Esc 或将焦点移出侧栏都可收起。Esc 会将焦点送回展开按钮。宽度分别由 `--ds-sidebar-width`（默认 200px）和 `--ds-sidebar-compact-width`（默认 48px）控制，宽度过渡默认 250ms，并跟随系统的减少动态效果偏好。可用 `expandLabel` 和 `collapseLabel` 设置按钮名称。传入 `tooltips` 可显示图标提示；离线示例通过 `DesktopSettings.bindSidebar` 调用同一接口。程序切页时可调用 `navigation.closeOverlay()`，卸载侧栏时调用 `navigation.destroy()`。
+
 给每个页面的内容面板加上 `class="ds-page"`。导航时隐藏旧面板、显示新面板（例如切换 `hidden` 属性），新页面就会在 250ms 内从下方 10px 淡入。系统启用“减少动态效果”时直接显示内容。
 
 要让保存提示悬浮在内容区右下角，给同级页脚加上 `class="action-bar action-bar-floating"`。浮条最宽 520px，内容区空间不足时自动缩窄。窗口宽度降到 900px 及以下时，浮条靠右留出 28px。使用悬浮布局时，给滚动内容底部留出浮条的空间，方便操作最后一项设置。

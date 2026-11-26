@@ -26,18 +26,10 @@ const menuBar = DesktopSettings.createMenuBar({
 });
 byId('gallery-menu').replaceWith(menuBar);
 
-const narrowSidebar = matchMedia('(max-width: 620px)');
-function updateNavTooltips() {
-  for (const link of links) {
-    if (narrowSidebar.matches) {
-      DesktopSettings.setTooltip(link, link.querySelector('.sidebar-label').textContent, { placement: 'right' });
-    } else {
-      DesktopSettings.clearTooltip(link);
-    }
-  }
-}
-narrowSidebar.addEventListener('change', updateNavTooltips);
-updateNavTooltips();
+const sidebar = DesktopSettings.bindSidebar(document.querySelector('.sidebar'), {
+  narrowQuery: '(max-width: 620px)',
+  tooltips: DesktopSettings
+});
 
 const demoButtons = document.querySelectorAll('.button-samples button:enabled');
 const buttonResult = byId('button-result');
@@ -203,6 +195,7 @@ byId('show-info').addEventListener('click', showInfo);
 showInfo();
 
 function showPanel(focusHeading = false) {
+  sidebar.closeOverlay();
   sizePicker.close();
   colorPicker.close();
   formatsPicker.close();

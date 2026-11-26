@@ -11,6 +11,7 @@
   <script src="../dist/pivot.browser.js" defer></script>
   <script src="../dist/dialog.browser.js" defer></script>
   <script src="../dist/tooltip.browser.js" defer></script>
+  <script src="../dist/sidebar.browser.js" defer></script>
   <script src="../dist/menu.browser.js" defer></script>
   <script src="../dist/info-bar.browser.js" defer></script>
   <script src="./gallery.js" defer></script>
@@ -22,26 +23,33 @@
   </header>
   <div class="app-container">
     <nav class="sidebar" aria-label="控件分类">
-      <div class="brand"><span class="gallery-mark" aria-hidden="true"></span><span class="brand-name">控件图库</span></div>
-      <p class="nav-heading">控件分类</p>
-      <a class="sidebar-item" href="#buttons" aria-current="page">
-        <span class="sidebar-icon icon-button" aria-hidden="true"></span><span class="sidebar-label">按钮与操作</span>
-      </a>
-      <a class="sidebar-item" href="#inputs">
-        <span class="sidebar-icon icon-text" aria-hidden="true">T</span><span class="sidebar-label">文本与数值</span>
-      </a>
-      <a class="sidebar-item" href="#selection">
-        <span class="sidebar-icon icon-check" aria-hidden="true"></span><span class="sidebar-label">选择控件</span>
-      </a>
-      <a class="sidebar-item" href="#pivot">
-        <span class="sidebar-icon icon-pivot" aria-hidden="true"></span><span class="sidebar-label">标签页</span>
-      </a>
-      <a class="sidebar-item" href="#lists">
-        <span class="sidebar-icon icon-list" aria-hidden="true"></span><span class="sidebar-label">列表与折叠</span>
-      </a>
-      <a class="sidebar-item" href="#feedback">
-        <span class="sidebar-icon icon-message" aria-hidden="true"></span><span class="sidebar-label">菜单与反馈</span>
-      </a>
+      <div class="sidebar-header">
+        <button type="button" class="sidebar-toggle" aria-label="展开导航">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="sidebar-title"><span class="gallery-mark" aria-hidden="true"></span>控件图库</div>
+      </div>
+      <div class="sidebar-primary">
+        <div class="sidebar-group-label">控件分类</div>
+        <a class="sidebar-item" href="#buttons" aria-current="page">
+          <span class="sidebar-icon icon-button" aria-hidden="true"></span><span class="sidebar-label">按钮与操作</span>
+        </a>
+        <a class="sidebar-item" href="#inputs">
+          <span class="sidebar-icon icon-text" aria-hidden="true">T</span><span class="sidebar-label">文本与数值</span>
+        </a>
+        <a class="sidebar-item" href="#selection">
+          <span class="sidebar-icon icon-check" aria-hidden="true"></span><span class="sidebar-label">选择控件</span>
+        </a>
+        <a class="sidebar-item" href="#pivot">
+          <span class="sidebar-icon icon-pivot" aria-hidden="true"></span><span class="sidebar-label">标签页</span>
+        </a>
+        <a class="sidebar-item" href="#lists">
+          <span class="sidebar-icon icon-list" aria-hidden="true"></span><span class="sidebar-label">列表与折叠</span>
+        </a>
+        <a class="sidebar-item" href="#feedback">
+          <span class="sidebar-icon icon-message" aria-hidden="true"></span><span class="sidebar-label">菜单与反馈</span>
+        </a>
+      </div>
     </nav>
 
     <main class="content">

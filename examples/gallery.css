@@ -20,10 +20,11 @@ body {
   color: var(--ds-text-secondary);
 }
 .library-name { margin-inline: 12px; }
+.app-container { --ds-sidebar-compact-width: 56px; }
 .sidebar {
   background: var(--ds-bg-secondary);
   border-inline-end: 1px solid var(--ds-border);
-  padding: 24px 8px;
+  padding: 16px 0;
 }
 .sidebar-item { text-decoration: none; }
 .sidebar-icon { justify-content: center; position: relative; }
@@ -78,16 +79,12 @@ body {
   border: 3px solid transparent;
   border-left-color: currentColor;
 }
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 4px 12px 32px;
-  font: 650 1.4rem/1.4 var(--ds-font-display);
-}
+.sidebar-header { margin-bottom: 20px; }
+.sidebar-title { gap: 8px; }
 .gallery-mark {
-  width: 28px;
-  height: 28px;
+  flex: none;
+  width: 20px;
+  height: 20px;
   color: var(--ds-accent);
   border-radius: 3px;
   background: conic-gradient(transparent 25%, currentColor 0 75%, transparent 0) 0 0 / 100% 100%,
@@ -96,12 +93,11 @@ body {
     linear-gradient(black 44%, transparent 44% 56%, black 56%);
   mask-composite: intersect;
 }
-.nav-heading, .preview figcaption {
+.preview figcaption {
   font-size: .78rem;
   font-weight: 600;
   color: var(--ds-text-secondary);
 }
-.nav-heading { margin: 0 14px 8px; }
 #gallery { max-width: 52rem; margin: auto; padding: clamp(16px, 4vw, 48px); padding-bottom: 156px; }
 h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25; }
 .preview {
@@ -145,17 +141,6 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
   #gallery { padding-bottom: 188px; }
 }
 @media (max-width: 620px) {
-  .ds-settings { --ds-sidebar-width: 56px; }
-  .sidebar { padding: 16px 0; }
-  .brand { margin: 2px auto 22px; }
-  .brand-name, .nav-heading { display: none; }
-  .sidebar-item { justify-content: center; height: 44px; padding: 2px; }
-  .sidebar-label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    clip-path: inset(50%);
-  }
   .setting-info { padding-inline-end: 0; }
   .child-option { padding-inline-start: 36px; }
 }

@@ -2,7 +2,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: min(var(--ds-sidebar-width), 40%) minmax(0, 1fr);
+  grid-template-columns: min(var(--ds-sidebar-track-width, var(--ds-sidebar-width)), 40%) minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr) auto;
   height: 100%;
 }
