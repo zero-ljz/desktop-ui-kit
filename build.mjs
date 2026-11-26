@@ -15,6 +15,7 @@ const css = [
     theme(':where(.ds-settings:not([data-theme="light"]))', 'dark') + '\n}',
   theme(':where(.ds-settings[data-theme="dark"])', 'dark'),
   await read('./src/base.css'),
+  await read('./src/layout.css'),
   await read('./src/components.css')
 ].join('\n\n');
 

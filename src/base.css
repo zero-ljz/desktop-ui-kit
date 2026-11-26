@@ -6,7 +6,9 @@
   --ds-radius-md: 8px;
   --ds-radius-lg: 12px;
   --ds-transition-fast: 150ms ease;
+  --ds-transition-button: 100ms ease;
   --ds-transition-normal: 250ms ease;
+  --ds-sidebar-width: 200px;
   font-family: var(--ds-font-sans);
   line-height: 1.5;
   color: var(--ds-text-primary);

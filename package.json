@@ -5,5 +5,9 @@
   "private": true,
   "style": "./dist/settings.css",
   "exports": { "./settings.css": "./dist/settings.css" },
-  "scripts": { "build": "node build.mjs" }
+  "files": ["dist/settings.css", "examples/settings.html"],
+  "scripts": {
+    "build": "node build.mjs",
+    "prepack": "node build.mjs"
+  }
 }

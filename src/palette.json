@@ -1,5 +1,6 @@
 {
   "bg-primary": {"light": "#f3f3f3", "dark": "#171717"},
+  "bg-action-bar": {"light": "rgba(255, 255, 255, 0.88)", "dark": "rgba(36, 36, 36, 0.85)"},
   "bg-secondary": {"light": "#e5e5e5", "dark": "#242424"},
   "bg-surface": {"light": "rgba(255, 255, 255, 0.64)", "dark": "rgba(255, 255, 255, 0.05)"},
   "bg-surface-hover": {"light": "rgba(255, 255, 255, 0.76)", "dark": "rgba(255, 255, 255, 0.075)"},

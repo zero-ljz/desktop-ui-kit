@@ -123,10 +123,10 @@
   color: var(--ds-text-secondary);
   transition: transform var(--ds-transition-fast);
 }
-:where(.ds-settings) .settings-expander[open] .settings-expander-chevron {
+:where(.ds-settings) .settings-expander[open] > summary .settings-expander-chevron {
   transform: rotate(90deg);
 }
-:where(.ds-settings) .settings-expander[open] .settings-expander-header {
+:where(.ds-settings) .settings-expander[open] > .settings-expander-header {
   border-radius: calc(var(--ds-radius-md) - 1px) calc(var(--ds-radius-md) - 1px) 0 0;
 }
 :where(.ds-settings) .settings-expander-content {
@@ -181,6 +181,21 @@
 :where(.ds-settings) .winui-checkbox:focus-visible {
   outline: 2px solid var(--ds-accent);
   outline-offset: 2px;
+}
+:where(.ds-settings) .winui-checkbox:indeterminate {
+  background-color: var(--ds-accent);
+  border-color: var(--ds-accent);
+}
+:where(.ds-settings) .winui-checkbox:indeterminate::after {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 8px;
+  width: 10px;
+  height: 2px;
+  background-color: var(--ds-accent-text);
+  border: 0;
+  transform: none;
 }
 :where(.ds-settings) .winui-checkbox-info {
   min-width: 0;
@@ -258,10 +273,10 @@
   border-bottom-color: var(--ds-btn-border-bottom);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
   transition:
-    background-color 100ms ease,
-    border-color 100ms ease,
-    box-shadow 100ms ease,
-    color 100ms ease;
+    background-color var(--ds-transition-button),
+    border-color var(--ds-transition-button),
+    box-shadow var(--ds-transition-button),
+    color var(--ds-transition-button);
   background: var(--ds-btn-bg);
   color: var(--ds-text-primary);
   outline: none;
@@ -345,6 +360,11 @@
   background-size: 100% 2px;
 }
 
+:where(.ds-settings) .input-text[aria-invalid="true"] {
+  background-image: linear-gradient(var(--ds-danger), var(--ds-danger));
+  background-size: 100% 2px;
+}
+
 /* Slider */
 :where(.ds-settings) .slider-container {
   display: flex;
@@ -408,7 +428,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all var(--ds-transition-fast);
 }
 
 :where(.ds-settings) .radio-input:hover {
@@ -482,11 +502,20 @@
 @media (prefers-reduced-motion: reduce) {
   :where(.ds-settings) {
     --ds-transition-fast: 0s;
+    --ds-transition-button: 0s;
     --ds-transition-normal: 0s;
   }
 }
 
+:where(.ds-settings) [hidden]:not([hidden="until-found" i]) {
+  display: none;
+}
+
 @media (forced-colors: active) {
+  :where(.ds-settings) :is(.input-text, .select-box, .number-input):focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
   :where(.ds-settings) :is(.toggle-switch, .winui-checkbox, .radio-input, .slider) {
     appearance: auto;
   }
