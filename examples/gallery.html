@@ -22,7 +22,7 @@
     <span class="library-name">Desktop Settings CSS</span>
   </header>
   <div class="app-container">
-    <nav class="sidebar" aria-label="控件分类">
+    <nav class="sidebar" aria-label="图库导航">
       <div class="sidebar-header">
         <button type="button" class="sidebar-toggle" aria-label="展开导航">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -48,6 +48,12 @@
         </a>
         <a class="sidebar-item" href="#feedback">
           <span class="sidebar-icon icon-message" aria-hidden="true"></span><span class="sidebar-label">菜单与反馈</span>
+        </a>
+      </div>
+      <div class="sidebar-secondary">
+        <a class="sidebar-item" href="#about">
+          <span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg></span>
+          <span class="sidebar-label">关于</span>
         </a>
       </div>
     </nav>
@@ -424,9 +430,21 @@
             </div>
           </section>
         </section>
+        <section class="ds-page" id="about" aria-labelledby="about-title" hidden>
+          <h1 id="about-title" tabindex="-1">关于</h1>
+          <div class="section-card">
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">Desktop Settings CSS</span>
+                <div class="setting-desc">用于跨平台桌面应用设置界面的轻量 CSS 库，交互组件可按需引入。</div>
+              </div>
+              <a class="btn" href="https://github.com/zero-ljz/desktop-settings-css">项目仓库</a>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
-    <footer class="action-bar action-bar-floating">
+    <footer class="action-bar action-bar-floating" id="category-navigation">
       <div class="action-bar-status"><span class="action-bar-message" id="page-status"></span></div>
       <div class="action-bar-actions">
         <button class="btn" type="button" id="previous" disabled>上一类</button>

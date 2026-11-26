@@ -2,6 +2,7 @@
 
 const byId = id => document.getElementById(id);
 const links = [...document.querySelectorAll('.sidebar-item')];
+const categories = links.filter(link => link.closest('.sidebar-primary'));
 const themeOptions = [...byId('theme-options').querySelectorAll('input')];
 function applyTheme(option) {
   option.checked = true;
@@ -12,7 +13,7 @@ applyTheme(themeOptions.find(option => option.checked));
 const menuBar = DesktopSettings.createMenuBar({
   label: '图库菜单',
   menus: [
-    { label: '分类', items: () => links.map(link => ({
+    { label: '分类', items: () => categories.map(link => ({
       label: link.querySelector('.sidebar-label').textContent,
       checked: link.hasAttribute('aria-current'),
       onSelect: () => link.click()
@@ -202,22 +203,25 @@ function showPanel(focusHeading = false) {
   menuBar.close();
   previewMenu.close();
   const current = links.find(link => link.hash === location.hash) || links[0];
-  const index = links.indexOf(current);
+  const index = categories.indexOf(current);
   for (const link of links) {
     byId(link.hash.slice(1)).hidden = link !== current;
     if (link === current) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');
   }
-  byId('previous').disabled = index === 0;
-  byId('next').disabled = index === links.length - 1;
-  byId('page-status').textContent = `第 ${index + 1} 类，共 ${links.length} 类`;
+  byId('category-navigation').hidden = index < 0;
+  if (index >= 0) {
+    byId('previous').disabled = index === 0;
+    byId('next').disabled = index === categories.length - 1;
+    byId('page-status').textContent = `第 ${index + 1} 类，共 ${categories.length} 类`;
+  }
   document.querySelector('.content').scrollTop = 0;
   const heading = byId(current.hash.slice(1)).querySelector('h1');
   if (focusHeading) heading.focus({ preventScroll: true });
 }
 function moveCategory(offset) {
-  const index = links.findIndex(link => link.hasAttribute('aria-current'));
-  links[index + offset]?.click();
+  const index = categories.findIndex(link => link.hasAttribute('aria-current'));
+  categories[index + offset]?.click();
 }
 byId('previous').addEventListener('click', () => moveCategory(-1));
 byId('next').addEventListener('click', () => moveCategory(1));

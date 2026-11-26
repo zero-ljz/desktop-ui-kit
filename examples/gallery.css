@@ -20,12 +20,12 @@ body {
   color: var(--ds-text-secondary);
 }
 .library-name { margin-inline: 12px; }
-.app-container { --ds-sidebar-compact-width: 56px; }
 .sidebar {
   background: var(--ds-bg-secondary);
-  border-inline-end: 1px solid var(--ds-border);
-  padding: 16px 0;
+  box-shadow: inset -1px 0 var(--ds-border);
+  padding-bottom: 16px;
 }
+.sidebar-compact .sidebar-primary { scrollbar-width: none; }
 .sidebar-item { text-decoration: none; }
 .sidebar-icon { justify-content: center; position: relative; }
 .sidebar-icon::before, .sidebar-icon::after { box-sizing: border-box; }
@@ -79,7 +79,6 @@ body {
   border: 3px solid transparent;
   border-left-color: currentColor;
 }
-.sidebar-header { margin-bottom: 20px; }
 .sidebar-title { gap: 8px; }
 .gallery-mark {
   flex: none;
@@ -134,7 +133,7 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
   padding: 14px 20px;
 }
 .list-search .input-text { width: 100%; min-width: 0; }
-.manage-row a { text-decoration: none; }
+.manage-row a, #about .btn { text-decoration: none; }
 .settings-expander-content code { overflow-wrap: anywhere; }
 #info-preview:has([hidden]) { display: none; }
 @media (max-width: 680px) {
