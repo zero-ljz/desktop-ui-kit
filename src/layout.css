@@ -14,6 +14,16 @@
   overflow-y: auto;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  :where(.ds-settings) .ds-page {
+    animation: ds-page-enter 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes ds-page-enter {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
 :where(.ds-settings) .sidebar {
   container: ds-sidebar / inline-size;
   grid-column: 1;
