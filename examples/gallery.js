@@ -63,15 +63,6 @@ byId('sample-text').addEventListener('input', ({ target }) => {
   target.setCustomValidity(target.value.trim() ? '' : byId('text-error').textContent);
   showFieldError(target, 'text-hint', 'text-error');
 });
-const quantity = byId('quantity');
-function updateQuantity() {
-  showFieldError(quantity, 'quantity-hint', 'quantity-error');
-  byId('decrease').disabled = quantity.valueAsNumber <= Number(quantity.min);
-  byId('increase').disabled = quantity.valueAsNumber >= Number(quantity.max);
-}
-quantity.addEventListener('input', updateQuantity);
-byId('decrease').addEventListener('click', () => { quantity.stepDown(); updateQuantity(); });
-byId('increase').addEventListener('click', () => { quantity.stepUp(); updateQuantity(); });
 const level = byId('level');
 function updateLevel() {
   byId('level-value').value = level.value + '%';
@@ -79,6 +70,29 @@ function updateLevel() {
 }
 level.addEventListener('input', updateLevel);
 updateLevel();
+
+DesktopSettings.bindPasswordInput(byId('proxy-password'), byId('toggle-password'));
+DesktopSettings.bindShortcutInput(byId('shortcut'), byId('record-shortcut'), byId('clear-shortcut'));
+byId('extension-tags').append(DesktopSettings.createTagInput({
+  id: 'extension', values: ['.log', '.tmp'], placeholder: '例如 .bak'
+}));
+const date = byId('effective-date');
+const today = new Date();
+date.min = [today.getFullYear(), String(today.getMonth() + 1).padStart(2, '0'), String(today.getDate()).padStart(2, '0')].join('-');
+date.value = date.min;
+date.addEventListener('input', () => showFieldError(date, 'date-hint', 'date-error'));
+byId('reminder-time').addEventListener('input', ({ target }) => showFieldError(target, 'time-hint', 'time-error'));
+
+function reportPickerError() {
+  DesktopSettings.showAlert('无法打开选择器，可以在文本框中直接输入路径。', '选择路径');
+}
+DesktopSettings.bindPathPicker(byId('config-file'), byId('browse-file'), { onError: reportPickerError });
+DesktopSettings.bindPathPicker(byId('download-folder'), byId('browse-folder'), {
+  kind: 'directory', onError: reportPickerError
+});
+const hex = byId('color-hex');
+DesktopSettings.bindColorInput(hex, byId('color-swatch'));
+hex.addEventListener('input', () => showFieldError(hex, 'hex-hint', 'hex-error'));
 
 const sizePicker = DesktopSettings.createSelect({
   id: 'size-trigger', labelledBy: 'size-label', value: 'medium',

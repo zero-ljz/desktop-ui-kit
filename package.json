@@ -6,6 +6,8 @@
   "style": "./dist/settings.css",
   "exports": {
     "./settings.css": "./dist/settings.css",
+    "./inputs": "./dist/inputs.mjs",
+    "./inputs.browser.js": "./dist/inputs.browser.js",
     "./select": "./dist/select.mjs",
     "./select.browser.js": "./dist/select.browser.js",
     "./dialog": "./dist/dialog.mjs",

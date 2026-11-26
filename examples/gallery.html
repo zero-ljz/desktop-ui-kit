@@ -6,6 +6,7 @@
   <title>控件图库 · Desktop Settings CSS</title>
   <link rel="stylesheet" href="../dist/settings.css">
   <link rel="stylesheet" href="./gallery.css">
+  <script src="../dist/inputs.browser.js" defer></script>
   <script src="../dist/select.browser.js" defer></script>
   <script src="../dist/dialog.browser.js" defer></script>
   <script src="../dist/tooltip.browser.js" defer></script>
@@ -92,25 +93,36 @@
                 <label class="setting-info setting-label" for="sample-notes">多行文本框</label>
                 <div class="setting-control"><textarea class="input-text" id="sample-notes" rows="3" placeholder="输入多行文本"></textarea></div>
               </div>
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="proxy-password">代理密码</label>
+                <div class="setting-control">
+                  <input class="input-text" id="proxy-password" type="password" autocomplete="off" placeholder="输入示例密码">
+                  <button class="btn" type="button" id="toggle-password" aria-controls="proxy-password">显示密码</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="shortcut">显示主窗口快捷键</label>
+                  <div class="setting-desc" id="shortcut-hint">点击录入后按下组合键，Esc 取消。</div>
+                </div>
+                <div class="setting-control">
+                  <input class="input-text" size="14" id="shortcut" value="Ctrl+Shift+K" placeholder="尚未设置" readonly aria-describedby="shortcut-hint">
+                  <button class="btn" type="button" id="record-shortcut">录入</button>
+                  <button class="btn" type="button" id="clear-shortcut">清除</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="extension">忽略的扩展名</label>
+                  <div class="setting-desc">按回车添加标签，点击已有标签可移除。</div>
+                </div>
+                <div class="setting-control" id="extension-tags"></div>
+              </div>
             </div>
           </section>
           <section class="section-wrapper" aria-labelledby="number-title">
             <h2 class="section-title" id="number-title">数值输入</h2>
             <div class="section-card">
-              <div class="setting-row">
-                <div class="setting-info">
-                  <label class="setting-label" for="quantity">数字步进器</label>
-                  <div class="setting-desc" id="quantity-hint">整数，范围 1 至 10。</div>
-                </div>
-                <div class="setting-control">
-                  <div class="number-input-group">
-                    <button class="number-btn" type="button" id="decrease" aria-label="减少数值">−</button>
-                    <input class="number-input" type="number" id="quantity" min="1" max="10" step="1" value="5" required aria-describedby="quantity-hint">
-                    <button class="number-btn" type="button" id="increase" aria-label="增加数值">+</button>
-                  </div>
-                  <span class="field-error" id="quantity-error" hidden>请输入 1 至 10 的整数。</span>
-                </div>
-              </div>
               <div class="setting-row">
                 <label class="setting-info setting-label" for="level">滑块</label>
                 <div class="slider-container">
@@ -120,10 +132,67 @@
               </div>
             </div>
           </section>
+          <section class="section-wrapper" aria-labelledby="schedule-title">
+            <h2 class="section-title" id="schedule-title">日期与时间</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="effective-date">生效日期</label>
+                  <div class="setting-desc" id="date-hint">可选今天或之后的日期。</div>
+                </div>
+                <div class="setting-control">
+                  <input class="input-text" type="date" id="effective-date" aria-describedby="date-hint">
+                  <span class="field-error" id="date-error" hidden>请选择今天或之后的日期。</span>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="reminder-time">提醒时间</label>
+                  <div class="setting-desc" id="time-hint">可选时间为 09:00 至 18:00。</div>
+                </div>
+                <div class="setting-control">
+                  <input class="input-text" type="time" id="reminder-time" value="09:00" min="09:00" max="18:00" aria-describedby="time-hint">
+                  <span class="field-error" id="time-error" hidden>请选择范围内的时间。</span>
+                </div>
+              </div>
+            </div>
+          </section>
         </section>
 
         <section id="selection" aria-labelledby="selection-title" hidden>
           <h1 id="selection-title" tabindex="-1">选择控件</h1>
+          <section class="section-wrapper" aria-labelledby="picker-title">
+            <h2 class="section-title" id="picker-title">文件、目录与颜色</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="config-file">配置文件</label>
+                <div class="setting-control">
+                  <input class="input-text" id="config-file" placeholder="选择文件或输入路径">
+                  <button class="btn" type="button" id="browse-file" aria-label="浏览配置文件">浏览…</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="download-folder">下载目录</label>
+                <div class="setting-control">
+                  <input class="input-text" id="download-folder" placeholder="选择目录或输入路径">
+                  <button class="btn" type="button" id="browse-folder" aria-label="浏览下载目录">浏览…</button>
+                </div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="color-hex">颜色选择器</label>
+                  <div class="setting-desc" id="hex-hint">点击色块选色，或输入六位十六进制色值。</div>
+                </div>
+                <div class="setting-control">
+                  <div class="setting-control">
+                    <input class="color-swatch" type="color" id="color-swatch" value="#2563eb" aria-label="选择颜色">
+                    <input class="input-text" id="color-hex" value="#2563eb" size="9" pattern="#[0-9a-fA-F]{6}" required spellcheck="false" aria-describedby="hex-hint">
+                  </div>
+                  <span class="field-error" id="hex-error" hidden>请输入 # 加六位十六进制数字。</span>
+                </div>
+              </div>
+            </div>
+          </section>
           <section class="section-wrapper" aria-labelledby="single-title">
             <h2 class="section-title" id="single-title">单项选择</h2>
             <div class="section-card">

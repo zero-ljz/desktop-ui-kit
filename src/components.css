@@ -273,8 +273,17 @@
   transform: translateX(20px);
 }
 
+/* Standard single-line control size */
+:where(.ds-settings) :is(.btn, .select-trigger, .color-swatch),
+:where(.ds-settings) input.input-text {
+  min-height: 2.25rem;
+}
+
 /* Button */
 :where(.ds-settings) .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 5px 16px;
   border-radius: 4px; /* WinUI 3 radius */
   font-size: 0.9rem;
@@ -356,17 +365,23 @@
     border-color var(--ds-transition-fast),
     background-size var(--ds-transition-fast);
 }
+:where(.ds-settings) input.input-text {
+  padding-block: 5px;
+}
+:where(.ds-settings) input.input-text:is([type="date"], [type="time"]) {
+  padding-block: 4px;
+}
 :where(.ds-settings) .input-text:hover, :where(.ds-settings) .select-box:hover {
   background-color: var(--ds-bg-surface-hover);
   border-color: var(--ds-border-hover);
   border-bottom-color: transparent;
 }
-:where(.ds-settings) .input-text::placeholder {
+:where(.ds-settings) :is(.input-text, .tag-entry)::placeholder {
   color: var(--ds-text-tertiary);
   font-size: 0.82rem;
   opacity: 1;
 }
-:where(.ds-settings) .input-text:focus, :where(.ds-settings) .select-box:focus {
+:where(.ds-settings) :is(.input-text:focus, .select-box:focus, .tag-field:focus-within) {
   outline: none;
   border-color: var(--ds-border);
   border-bottom-color: transparent;
@@ -388,6 +403,70 @@
   align-items: flex-start;
 }
 
+/* Shortcut recorder, color picker and tag editor */
+:where(.ds-settings) .input-text[data-recording="true"] {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+:where(.ds-settings) .color-swatch {
+  width: 40px;
+  padding: 2px;
+  background: var(--ds-bg-surface);
+  border: 1px solid var(--ds-border-hover);
+  border-radius: var(--ds-radius-sm);
+  cursor: pointer;
+}
+:where(.ds-settings) .color-swatch:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+:where(.ds-settings) .tag-input {
+  width: 22rem;
+  max-width: 100%;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+:where(.ds-settings) .tag-field {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 2.75rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  padding: 2px 6px;
+  cursor: text;
+}
+:where(.ds-settings) .tag-list {
+  display: contents;
+  list-style: none;
+}
+:where(.ds-settings) .tag-list li { display: flex; flex: none; }
+:where(.ds-settings) .tag-entry {
+  flex: 1 0 5.5rem;
+  min-width: 0;
+  padding: 0 2px;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+:where(.ds-settings) .tag-remove {
+  min-height: 0;
+  white-space: nowrap;
+  padding: 2px 8px;
+  background: var(--ds-accent-surface);
+  border-color: var(--ds-accent-border);
+}
+:where(.ds-settings) .tag-input > [role="status"] {
+  grid-column: 1 / -1;
+  min-height: 1lh;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 /* Custom Select (WinUI 3 ComboBox) */
 :where(.ds-settings) .custom-select {
   position: relative;
@@ -403,7 +482,7 @@
   background-color: var(--ds-bg-surface);
   border: 1px solid var(--ds-border);
   color: var(--ds-text-primary);
-  padding: 6px 12px;
+  padding: 5px 12px;
   border-radius: var(--ds-radius-sm);
   cursor: pointer;
   transition:
@@ -630,56 +709,7 @@
   background-color: var(--ds-selection-dot);
 }
 
-/* Number Input */
-:where(.ds-settings) .number-input-group {
-  display: flex;
-  align-items: center;
-  border: 1px solid var(--ds-border);
-  border-radius: var(--ds-radius-sm);
-  background-color: var(--ds-bg-surface);
-  transition:
-    background-color var(--ds-transition-fast),
-    border-color var(--ds-transition-fast);
-}
-:where(.ds-settings) .number-input-group:hover {
-  background-color: var(--ds-bg-surface-hover);
-  border-color: var(--ds-border-hover);
-}
-:where(.ds-settings) .number-input-group:focus-within {
-  background-color: var(--ds-bg-surface-hover);
-  border-color: var(--ds-accent);
-}
-:where(.ds-settings) .number-input-group:has(.number-input[aria-invalid="true"]) {
-  border-color: var(--ds-danger);
-}
-:where(.ds-settings) .number-btn {
-  background: transparent;
-  border: none;
-  color: var(--ds-text-secondary);
-  padding: 4px 8px;
-  cursor: pointer;
-}
-:where(.ds-settings) .number-btn:hover {
-  color: var(--ds-text-primary);
-  background-color: var(--ds-bg-hover);
-}
-:where(.ds-settings) .number-input {
-  width: 48px;
-  text-align: center;
-  border: none;
-  background: transparent;
-  color: var(--ds-text-primary);
-  font-family: var(--ds-font-mono);
-  outline: none;
-  -moz-appearance: textfield;
-}
-:where(.ds-settings) .number-input::-webkit-outer-spin-button,
-:where(.ds-settings) .number-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-:where(.ds-settings) :is(.toggle-switch, .slider, .radio-input, .number-btn):focus-visible {
+:where(.ds-settings) :is(.toggle-switch, .slider, .radio-input):focus-visible {
   outline: 2px solid var(--ds-accent);
   outline-offset: 2px;
 }
@@ -705,7 +735,8 @@
     forced-color-adjust: none;
     background-color: CanvasText;
   }
-  :where(.ds-settings) :is(.input-text, .select-box, .number-input):focus-visible {
+  :where(.ds-settings) :is(.input-text, .select-box):focus-visible,
+  :where(.ds-settings) .tag-field:focus-within {
     outline: 2px solid Highlight;
     outline-offset: 2px;
   }

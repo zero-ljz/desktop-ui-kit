@@ -36,6 +36,22 @@
 
 要让保存提示悬浮在内容区右下角，给同级页脚加上 `class="action-bar action-bar-floating"`。浮条最宽 520px，内容区空间不足时自动缩窄。窗口宽度降到 900px 及以下时，浮条靠右留出 28px。使用悬浮布局时，给滚动内容底部留出浮条的空间，方便操作最后一项设置。
 
+## 桌面输入控件
+
+图库的「文本与数值」提供密码、快捷键、标签、日期和时间输入，「选择控件」提供文件、目录和颜色选择器。日期和时间直接使用带 `.input-text` 的原生 `date`、`time` 输入框，通过 `min` 和 `max` 限定范围。
+
+其他输入控件从 `desktop-settings-css/inputs` 导入。离线 HTML 加载 `dist/inputs.browser.js` 后，可通过 `DesktopSettings` 调用同名方法。
+
+| 方法 | 用法 |
+| --- | --- |
+| `bindPathPicker(input, button, options)` | `kind` 可选 `file` 或 `directory`。浏览器预览显示所选名称，也可手动输入路径。桌面宿主可传入 `choose({ kind, value })` 返回完整路径，支持 Promise。返回 `null` 或取消选择时保留原值。打开失败可通过 `onError(error)` 处理。 |
+| `bindShortcutInput(input, record, clear)` | 点击输入框或录入按钮开始，也可聚焦输入框后按 Enter。Esc 或移开焦点取消，清除按钮移除当前组合。宿主读取文本框中的值，自行注册快捷键。 |
+| `bindPasswordInput(input, button)` | 将 `type="password"` 输入框与「显示密码」按钮绑定。切换显隐时保留输入值。 |
+| `bindColorInput(hex, swatch)` | 将文本框与 `type="color"` 色块双向绑定。文本框接受 `#RRGGBB`，可用 `required pattern="#[0-9a-fA-F]{6}"` 启用原生校验。 |
+| `createTagInput({ id, values, placeholder, onChange })` | 标签与输入光标在框内排成一行，可横向滚动查看已有标签。添加后自动滚动到输入位置。标签忽略首尾空白和大小写去重，通过 `getValues()` 或 `onChange(values)` 取得当前数组。用 `<label for="…">` 关联编辑框的 `id`。 |
+
+以上绑定方法均返回带 `destroy()` 的对象。文件选择和快捷键录入在值变更时触发输入框的 `input` 和 `change` 事件。在支持目录选择 API 的浏览器中可以选择空目录，使用 `webkitdirectory` 回退时通过所选文件的相对路径取得目录名。
+
 ## 自绘下拉框
 
 在 `.ds-settings` 内准备可见标签和挂载点，例如 `<label for="font-trigger">字体</label><div id="font-control"></div>`。使用构建工具时，导入组件并传入选项和当前值。

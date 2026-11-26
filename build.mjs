@@ -29,6 +29,7 @@ await writeFile(new URL('./dist/settings.css', import.meta.url), css);
 console.log(`Built dist/settings.css (${Buffer.byteLength(css)} bytes)`);
 
 for (const [name, exports] of [
+  ['inputs', 'bindPathPicker, bindShortcutInput, bindPasswordInput, bindColorInput, createTagInput'],
   ['select', 'createSelect, bindEditableSelect'],
   ['dialog', 'showModal, showAlert, showConfirm, showPrompt'],
   ['tooltip', 'setTooltip, clearTooltip'],
