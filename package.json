@@ -1,11 +1,12 @@
 {
-  "name": "desktop-settings-css",
+  "name": "desktop-ui-kit",
   "version": "0.1.0",
-  "description": "Scoped, framework-independent styles for desktop settings forms.",
+  "description": "Framework-independent UI components for small desktop apps built with web technologies.",
   "private": true,
-  "style": "./dist/settings.css",
+  "style": "./dist/ui.css",
   "exports": {
-    "./settings.css": "./dist/settings.css",
+    "./ui.css": "./dist/ui.css",
+    "./settings.css": "./dist/ui.css",
     "./inputs": "./dist/inputs.mjs",
     "./inputs.browser.js": "./dist/inputs.browser.js",
     "./select": "./dist/select.mjs",
@@ -23,7 +24,7 @@
     "./info-bar": "./dist/info-bar.mjs",
     "./info-bar.browser.js": "./dist/info-bar.browser.js"
   },
-  "files": ["dist/settings.css", "dist/*.mjs", "dist/*.browser.js", "examples/"],
+  "files": ["dist/ui.css", "dist/settings.css", "dist/*.mjs", "dist/*.browser.js", "examples/"],
   "scripts": {
     "build": "node build.mjs",
     "prepack": "node build.mjs"

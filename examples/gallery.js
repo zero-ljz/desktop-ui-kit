@@ -10,7 +10,7 @@ function applyTheme(option) {
 }
 byId('theme-options').addEventListener('change', event => applyTheme(event.target));
 applyTheme(themeOptions.find(option => option.checked));
-const menuBar = DesktopSettings.createMenuBar({
+const menuBar = DesktopUIKit.createMenuBar({
   label: '图库菜单',
   menus: [
     { label: '分类', items: () => categories.map(link => ({
@@ -27,9 +27,9 @@ const menuBar = DesktopSettings.createMenuBar({
 });
 byId('gallery-menu').replaceWith(menuBar);
 
-const sidebar = DesktopSettings.bindSidebar(document.querySelector('.sidebar'), {
+const sidebar = DesktopUIKit.bindSidebar(document.querySelector('.sidebar'), {
   narrowQuery: '(max-width: 620px)',
-  tooltips: DesktopSettings
+  tooltips: DesktopUIKit
 });
 
 const demoButtons = document.querySelectorAll('.button-samples button:enabled');
@@ -70,12 +70,12 @@ function updateLevel() {
 level.addEventListener('input', updateLevel);
 updateLevel();
 const timeout = byId('timeout');
-DesktopSettings.bindNumberStepper(timeout);
+DesktopUIKit.bindNumberStepper(timeout);
 timeout.addEventListener('input', () => showFieldError(timeout, 'timeout-hint', 'timeout-error'));
 
-DesktopSettings.bindPasswordInput(byId('proxy-password'), byId('toggle-password'));
-DesktopSettings.bindShortcutInput(byId('shortcut'), byId('record-shortcut'), byId('clear-shortcut'));
-byId('extension-tags').append(DesktopSettings.createTagInput({
+DesktopUIKit.bindPasswordInput(byId('proxy-password'), byId('toggle-password'));
+DesktopUIKit.bindShortcutInput(byId('shortcut'), byId('record-shortcut'), byId('clear-shortcut'));
+byId('extension-tags').append(DesktopUIKit.createTagInput({
   id: 'extension', values: ['.log', '.tmp'], placeholder: '例如 .bak'
 }));
 const date = byId('effective-date');
@@ -86,17 +86,17 @@ date.addEventListener('input', () => showFieldError(date, 'date-hint', 'date-err
 byId('reminder-time').addEventListener('input', ({ target }) => showFieldError(target, 'time-hint', 'time-error'));
 
 function reportPickerError() {
-  DesktopSettings.showAlert('无法打开选择器，可以在文本框中直接输入路径。', '选择路径');
+  DesktopUIKit.showAlert('无法打开选择器，可以在文本框中直接输入路径。', '选择路径');
 }
-DesktopSettings.bindPathPicker(byId('config-file'), byId('browse-file'), { onError: reportPickerError });
-DesktopSettings.bindPathPicker(byId('download-folder'), byId('browse-folder'), {
+DesktopUIKit.bindPathPicker(byId('config-file'), byId('browse-file'), { onError: reportPickerError });
+DesktopUIKit.bindPathPicker(byId('download-folder'), byId('browse-folder'), {
   kind: 'directory', onError: reportPickerError
 });
 const hex = byId('color-hex');
-DesktopSettings.bindColorInput(hex, byId('color-swatch'));
+DesktopUIKit.bindColorInput(hex, byId('color-swatch'));
 hex.addEventListener('input', () => showFieldError(hex, 'hex-hint', 'hex-error'));
 
-const sizePicker = DesktopSettings.createSelect({
+const sizePicker = DesktopUIKit.createSelect({
   id: 'size-trigger', labelledBy: 'size-label', value: 'medium',
   options: [
     { value: 'small', label: '小号' },
@@ -105,10 +105,10 @@ const sizePicker = DesktopSettings.createSelect({
   ]
 });
 byId('size-picker').append(sizePicker);
-const colorPicker = DesktopSettings.bindEditableSelect(byId('color-input'), {
+const colorPicker = DesktopUIKit.bindEditableSelect(byId('color-input'), {
   label: '颜色预设', options: ['天蓝', '深蓝', '草绿', '石墨灰']
 });
-const formatsPicker = DesktopSettings.createMultiSelect({
+const formatsPicker = DesktopUIKit.createMultiSelect({
   id: 'formats-trigger', labelledBy: 'formats-label', placeholder: '选择文件格式',
   options: ['PDF', 'Word (.docx)', 'Markdown (.md)', '纯文本 (.txt)', 'PNG', 'JPEG'].map(label => ({ value: label, label })),
   values: ['PDF', 'Markdown (.md)']
@@ -136,7 +136,7 @@ byId('checkbox-group').addEventListener('change', event => {
 byId('enable-options').addEventListener('change', updateCheckboxes);
 updateCheckboxes();
 
-DesktopSettings.bindPivot(byId('settings-pivot'));
+DesktopUIKit.bindPivot(byId('settings-pivot'));
 
 const search = byId('list-search');
 const rows = [...byId('component-list').children];
@@ -157,25 +157,25 @@ byId('clear-search').addEventListener('click', () => {
 
 const dialogResult = byId('dialog-result');
 byId('preview-alert').addEventListener('click', async () => {
-  await DesktopSettings.showAlert('点击确定或按 Esc 关闭。', '提示框');
+  await DesktopUIKit.showAlert('点击确定或按 Esc 关闭。', '提示框');
   dialogResult.textContent = '已关闭提示框。';
 });
 byId('preview-confirm').addEventListener('click', async () => {
-  const accepted = await DesktopSettings.showConfirm('确认此次示例操作？', '确认框');
+  const accepted = await DesktopUIKit.showConfirm('确认此次示例操作？', '确认框');
   dialogResult.textContent = accepted ? '已确认。' : '已取消。';
 });
 byId('preview-prompt').addEventListener('click', async () => {
-  const text = await DesktopSettings.showPrompt('请输入示例文本。', '示例', '输入框');
+  const text = await DesktopUIKit.showPrompt('请输入示例文本。', '示例', '输入框');
   dialogResult.textContent = text === null ? '已取消。' : `返回文本：“${text}”`;
 });
-const previewMenu = DesktopSettings.bindContextMenu(byId('menu-sample'), {
+const previewMenu = DesktopUIKit.bindContextMenu(byId('menu-sample'), {
   label: '预览操作', trigger: byId('open-menu'),
   items: [
     { label: '打开提示框', onSelect: () => byId('preview-alert').click() },
     { label: '打开确认框', onSelect: () => byId('preview-confirm').click() }
   ]
 });
-DesktopSettings.setTooltip(byId('open-menu'), '使用 Shift+F10 也可展开菜单');
+DesktopUIKit.setTooltip(byId('open-menu'), '使用 Shift+F10 也可展开菜单');
 
 const downloadProgress = byId('download-progress');
 const downloadStatus = byId('download-status');
@@ -195,7 +195,7 @@ startDownload.addEventListener('click', async () => {
     downloadStatus.textContent = `已下载 ${downloaded} / ${total} MB（${Math.round(downloaded / total * 100)}%）`;
     if (downloaded < total) await delay(180);
   }
-  downloadResult.replaceChildren(DesktopSettings.createInfoBar({ severity: 'success', message: '更新包下载完成。' }));
+  downloadResult.replaceChildren(DesktopUIKit.createInfoBar({ severity: 'success', message: '更新包下载完成。' }));
   downloadResult.hidden = false;
   startDownload.textContent = '重新演示';
   startDownload.disabled = false;
@@ -209,7 +209,7 @@ const infoMessages = {
 };
 function showInfo() {
   const select = byId('severity');
-  byId('info-preview').replaceChildren(DesktopSettings.createInfoBar({
+  byId('info-preview').replaceChildren(DesktopUIKit.createInfoBar({
     severity: select.value, title: select.selectedOptions[0].textContent,
     message: infoMessages[select.value], closable: true,
     onClose: () => byId('show-info').focus()

@@ -1,21 +1,23 @@
-# Desktop Settings CSS
+# Desktop UI Kit
 
-面向桌面 WebView 设置页的 CSS 库。侧栏、操作栏、分组卡片、设置行、管理列表和表单控件都可单独使用 CSS。自绘下拉框、消息框、工具提示、菜单和内联提示条可按需引入原生 JavaScript 模块。
+Desktop UI Kit 是一套为小型桌面应用设计的 UI 组件库，适用于使用 WebView 构建界面的应用，无需依赖前端框架。侧栏、操作栏、分组卡片、设置行、管理列表和表单控件都可单独使用 CSS。自绘下拉框、消息框、工具提示、菜单和内联提示条可按需引入原生 JavaScript 模块。
 
 ## 构建和预览
 
-在仓库根目录运行 `npm run build`，然后用浏览器打开 `examples/gallery.html`。构建脚本只用 Node.js 内置模块。它把 `src/palette.json` 中的浅色和深色值、排版规则和组件样式合成一个可离线分发的文件 `dist/settings.css`。
+在仓库根目录运行 `npm run build`，然后用浏览器打开 `examples/gallery.html`。构建脚本只用 Node.js 内置模块。它把 `src/palette.json` 中的浅色和深色值、排版规则和组件样式合成一个可离线分发的文件 `dist/ui.css`。
 
 示例是一个可离线打开的交互式控件图库，分为「按钮与操作」「文本与数值」「选择控件」「标签页」「列表与折叠」「菜单与反馈」。使用侧栏或底部的「上一类」「下一类」浏览示例，顶部的「主题」菜单可切换浅色、深色或跟随系统。分类地址可直接打开，切换分类时会保留本次试用的控件状态。
 
 ## 在应用中使用
 
-运行 `npm pack` 会自动构建并生成包含 CSS 和示例的本地安装包。通过该包接入的项目可以导入 `desktop-settings-css/settings.css`。
+运行 `npm pack` 会自动构建并生成包含样式、交互模块和示例的本地安装包。通过该包接入的项目可以导入 `desktop-ui-kit/ui.css`。
 
-将产物放入应用的静态资源目录，用 `<link>` 引入。在设置窗口的根元素上加 `ds-settings`。组件默认跟随系统配色，在同一个根元素上设置 `data-theme="light"` 或 `data-theme="dark"` 可固定主题。
+从旧版迁移时，将包名 `desktop-settings-css` 替换为 `desktop-ui-kit` 即可。原有的 `settings.css` 入口、`ds-settings` 根类名和离线脚本全局变量 `DesktopSettings` 均可继续使用。
+
+将产物放入应用的静态资源目录，用 `<link>` 引入。在应用界面的根元素上加 `ds-settings`。组件默认跟随系统配色，在同一个根元素上设置 `data-theme="light"` 或 `data-theme="dark"` 可固定主题。
 
 ```html
-<link rel="stylesheet" href="./styles/settings.css">
+<link rel="stylesheet" href="./styles/ui.css">
 <main class="ds-settings">
   <div class="section-card">
     <label class="setting-row">
@@ -37,8 +39,8 @@
 要支持手动收起和窄窗覆盖式展开，在 `.sidebar` 中放置 `.sidebar-header`、可独立滚动的 `.sidebar-primary`，以及可选的底部区域 `.sidebar-secondary`。标题区使用原生 `<button type="button" class="sidebar-toggle">`，分类标题用 `.sidebar-group-label`。在导航项上使用原生链接或按钮，页面切换由应用处理。
 
 ```js
-import { bindSidebar } from 'desktop-settings-css/sidebar';
-import * as tooltips from 'desktop-settings-css/tooltip';
+import { bindSidebar } from 'desktop-ui-kit/sidebar';
+import * as tooltips from 'desktop-ui-kit/tooltip';
 
 const navigation = bindSidebar(document.querySelector('.sidebar'), {
   narrowQuery: '(width < 900px)',
@@ -46,7 +48,7 @@ const navigation = bindSidebar(document.querySelector('.sidebar'), {
 });
 ```
 
-宽窗展开时内容区随侧栏移动。窄窗展开时侧栏覆盖内容区，点击导航项、点击外部、按 Esc 或将焦点移出侧栏都可收起。Esc 会将焦点送回展开按钮。宽度分别由 `--ds-sidebar-width`（默认 200px）和 `--ds-sidebar-compact-width`（默认 48px）控制，宽度过渡默认 250ms，并跟随系统的减少动态效果偏好。可用 `expandLabel` 和 `collapseLabel` 设置按钮名称。传入 `tooltips` 可显示图标提示；离线示例通过 `DesktopSettings.bindSidebar` 调用同一接口。程序切页时可调用 `navigation.closeOverlay()`，卸载侧栏时调用 `navigation.destroy()`。
+宽窗展开时内容区随侧栏移动。窄窗展开时侧栏覆盖内容区，点击导航项、点击外部、按 Esc 或将焦点移出侧栏都可收起。Esc 会将焦点送回展开按钮。宽度分别由 `--ds-sidebar-width`（默认 200px）和 `--ds-sidebar-compact-width`（默认 48px）控制，宽度过渡默认 250ms，并跟随系统的减少动态效果偏好。可用 `expandLabel` 和 `collapseLabel` 设置按钮名称。传入 `tooltips` 可显示图标提示；离线示例通过 `DesktopUIKit.bindSidebar` 调用同一接口。程序切页时可调用 `navigation.closeOverlay()`，卸载侧栏时调用 `navigation.destroy()`。
 
 给每个页面的内容面板加上 `class="ds-page"`。导航时隐藏旧面板、显示新面板（例如切换 `hidden` 属性），新页面就会在 250ms 内从下方 10px 淡入。系统启用“减少动态效果”时直接显示内容。
 
@@ -68,7 +70,7 @@ const navigation = bindSidebar(document.querySelector('.sidebar'), {
 </span>
 ```
 
-从 `desktop-settings-css/inputs` 导入并调用 `bindNumberStepper(document.querySelector('#timeout'))` 后，宽度随内容调整。两个箭头前始终为清除键预留 32 px，输入框聚焦且有内容时显示清除键。点击清除键可继续在原处输入，按住箭头可连续步进。离线页面使用 `DesktopSettings.bindNumberStepper(...)`。直接通过脚本设置 `input.value` 后可调用返回对象的 `refresh()` 更新宽度和按钮状态。`destroy()` 恢复原生数字框。
+从 `desktop-ui-kit/inputs` 导入并调用 `bindNumberStepper(document.querySelector('#timeout'))` 后，宽度随内容调整。两个箭头前始终为清除键预留 32 px，输入框聚焦且有内容时显示清除键。点击清除键可继续在原处输入，按住箭头可连续步进。离线页面使用 `DesktopUIKit.bindNumberStepper(...)`。直接通过脚本设置 `input.value` 后可调用返回对象的 `refresh()` 更新宽度和按钮状态。`destroy()` 恢复原生数字框。
 
 在 `.segmented-control` 中用同名的原生单选框组成一组，每项用 `<label>` 包住输入框和文字。Tab 进入控件，方向键切换选项。宿主可监听 `change`，或通过表单读取选中的 `value`。
 
@@ -80,7 +82,7 @@ const navigation = bindSidebar(document.querySelector('.sidebar'), {
 </div>
 ```
 
-需要脚本绑定的输入控件从 `desktop-settings-css/inputs` 导入。离线 HTML 加载 `dist/inputs.browser.js` 后，可通过 `DesktopSettings` 调用同名方法。
+需要脚本绑定的输入控件从 `desktop-ui-kit/inputs` 导入。离线 HTML 加载 `dist/inputs.browser.js` 后，可通过 `DesktopUIKit` 调用同名方法。
 
 | 方法 | 用法 |
 | --- | --- |
@@ -97,8 +99,8 @@ const navigation = bindSidebar(document.querySelector('.sidebar'), {
 在 `.ds-settings` 内准备可见标签和挂载点，例如 `<label for="font-trigger">字体</label><div id="font-control"></div>`。使用构建工具时，导入组件并传入选项和当前值。
 
 ```js
-import 'desktop-settings-css/settings.css';
-import { createSelect } from 'desktop-settings-css/select';
+import 'desktop-ui-kit/ui.css';
+import { createSelect } from 'desktop-ui-kit/select';
 
 const font = createSelect({
   id: 'font-trigger',
@@ -114,14 +116,14 @@ document.querySelector('#font-control').append(font);
 
 `getValue()` 读取选中值，`getSelectedOption()` 返回对应选项。`setValue(value)` 和 `setOptions(options, value)` 用于回显或刷新选项，只有用户确认选择时才触发 `onChange`。可通过异步 `onOpen` 在展开前刷新数据，通过 `close()` 在切页时收起菜单。
 
-直接打开本地 HTML 时，可先加载 `dist/settings.css` 和普通脚本 `dist/select.browser.js`，再调用 `DesktopSettings.createSelect(...)`。两种 JS 入口由同一份 `src/select.js` 生成。
+直接打开本地 HTML 时，可先加载 `dist/ui.css` 和普通脚本 `dist/select.browser.js`，再调用 `DesktopUIKit.createSelect(...)`。两种 JS 入口由同一份 `src/select.js` 生成。
 
 ### 可编辑下拉框
 
 在「选择控件」的可编辑下拉框中，点击箭头可查看全部颜色预设，输入“蓝”可筛出“天蓝”和“深蓝”。也可以直接填写自定义颜色名称。
 
 ```js
-import { bindEditableSelect } from 'desktop-settings-css/select';
+import { bindEditableSelect } from 'desktop-ui-kit/select';
 
 const input = document.querySelector('#color-input');
 const picker = bindEditableSelect(input, {
@@ -132,14 +134,14 @@ const picker = bindEditableSelect(input, {
 
 将组件绑定到已有标签的单行文本框，`name`、`required`、`maxlength` 和表单提交均由原生输入框处理。`options` 是字符串数组。输入时按包含关系筛选，英文忽略大小写。上下方向键浏览候选，Enter 选中高亮项，Esc 或 Tab 收起并保留已输入的文字。选择不同的预设立即触发 `input`。离开文本框时，值有变化会触发 `change`。
 
-`picker.setOptions([...])` 刷新候选并保留输入值，`picker.close()` 收起列表，`picker.destroy()` 解除绑定。离线 HTML 使用已有的 `dist/select.browser.js`，通过 `DesktopSettings.bindEditableSelect` 调用。
+`picker.setOptions([...])` 刷新候选并保留输入值，`picker.close()` 收起列表，`picker.destroy()` 解除绑定。离线 HTML 使用已有的 `dist/select.browser.js`，通过 `DesktopUIKit.bindEditableSelect` 调用。
 
 ### WinUI 3 风格的可搜索多选框
 
 在图库「选择控件」的「多项选择」中可以试用。展开后按名称搜索，英文忽略大小写。点击选项即可勾选或取消，面板会保持展开。也可用上下方向键移动高亮，按 Enter 切换选中状态，按 Esc 收起。再次展开时会显示全部选项并保留勾选。
 
 ```js
-import { createMultiSelect } from 'desktop-settings-css/select';
+import { createMultiSelect } from 'desktop-ui-kit/select';
 
 const formats = createMultiSelect({
   placeholder: '选择文件格式',
@@ -154,7 +156,7 @@ const formats = createMultiSelect({
 document.querySelector('#formats-picker').append(formats);
 ```
 
-每个选项使用唯一的 `value`。`getValues()` 按选项顺序返回选中值数组，`setValues(values)` 设置选中项，`setOptions(options)` 刷新选项并保留仍存在的选中值。也可用 `setOptions(options, values)` 同时更新两者。只有用户勾选或取消时才触发 `onChange`。通过 `id` 和 `labelledBy` 关联页面标签，通过 `close()` 收起面板。离线 HTML 加载 `dist/select.browser.js` 后可调用 `DesktopSettings.createMultiSelect`。
+每个选项使用唯一的 `value`。`getValues()` 按选项顺序返回选中值数组，`setValues(values)` 设置选中项，`setOptions(options)` 刷新选项并保留仍存在的选中值。也可用 `setOptions(options, values)` 同时更新两者。只有用户勾选或取消时才触发 `onChange`。通过 `id` 和 `labelledBy` 关联页面标签，通过 `close()` 收起面板。离线 HTML 加载 `dist/select.browser.js` 后可调用 `DesktopUIKit.createMultiSelect`。
 
 ## Pivot 标签页
 
@@ -176,12 +178,12 @@ document.querySelector('#formats-picker').append(formats);
 ```
 
 ```js
-import { bindPivot } from 'desktop-settings-css/pivot';
+import { bindPivot } from 'desktop-ui-kit/pivot';
 const pivot = bindPivot(document.querySelector('#preferences'));
 pivot.setValue('alerts');
 ```
 
-在 `.ds-settings` 内放置组件。每个标签和面板各有唯一 ID，`aria-controls` 指向对应面板。纯文字面板可加 `tabindex="0"` 以便键盘聚焦。`getValue()` 返回当前面板 ID，`onChange(id)` 响应用户切换，`destroy()` 解除绑定。离线 HTML 加载 `dist/pivot.browser.js` 后可调用 `DesktopSettings.bindPivot(...)`。
+在 `.ds-settings` 内放置组件。每个标签和面板各有唯一 ID，`aria-controls` 指向对应面板。纯文字面板可加 `tabindex="0"` 以便键盘聚焦。`getValue()` 返回当前面板 ID，`onChange(id)` 响应用户切换，`destroy()` 解除绑定。离线 HTML 加载 `dist/pivot.browser.js` 后可调用 `DesktopUIKit.bindPivot(...)`。
 
 ## WinUI 3 风格菜单
 
@@ -190,7 +192,7 @@ pivot.setValue('alerts');
 菜单栏和上下文菜单共用菜单项格式。传入 `items` 数组，或传入每次展开时返回数组的函数。用 `disabled` 控制命令可用性，用布尔值 `checked` 显示勾选状态，点击时由 `onSelect` 更新应用数据。
 
 ```js
-import { createMenuBar, bindContextMenu } from 'desktop-settings-css/menu';
+import { createMenuBar, bindContextMenu } from 'desktop-ui-kit/menu';
 
 const items = [
   { label: '按钮与操作', onSelect: () => { location.hash = 'buttons'; } },
@@ -204,7 +206,7 @@ const context = bindContextMenu(document.querySelector('#menu-sample'), {
 });
 ```
 
-把菜单栏和触发元素放在 `.ds-settings` 内以继承主题。`trigger` 可选，传入按钮即可用单击打开同一菜单。省略时，目标元素本身可通过键盘打开菜单。用 `bar.close()` 或 `context.close()` 主动收起，用 `context.destroy()` 解除绑定。离线 HTML 加载 `dist/menu.browser.js` 后可通过 `DesktopSettings` 调用这两个组件。
+把菜单栏和触发元素放在 `.ds-settings` 内以继承主题。`trigger` 可选，传入按钮即可用单击打开同一菜单。省略时，目标元素本身可通过键盘打开菜单。用 `bar.close()` 或 `context.close()` 主动收起，用 `context.destroy()` 解除绑定。离线 HTML 加载 `dist/menu.browser.js` 后可通过 `DesktopUIKit` 调用这两个组件。
 
 ## 进度条
 
@@ -219,10 +221,10 @@ const context = bindContextMenu(document.querySelector('#menu-sample'), {
 
 ## 消息框
 
-加载 `desktop-settings-css/settings.css` 后，按需从 `desktop-settings-css/dialog` 导入消息框。组件使用原生 `<dialog>`，从当前焦点所在的 `.ds-settings` 继承主题。多个设置根节点共存时，可通过 `showModal({ root, type, title, message, okLabel, cancelLabel })` 指定挂载点和按钮文字。
+加载 `desktop-ui-kit/ui.css` 后，按需从 `desktop-ui-kit/dialog` 导入消息框。组件使用原生 `<dialog>`，从当前焦点所在的 `.ds-settings` 继承主题。多个组件根节点共存时，可通过 `showModal({ root, type, title, message, okLabel, cancelLabel })` 指定挂载点和按钮文字。
 
 ```js
-import { showAlert, showConfirm, showPrompt } from 'desktop-settings-css/dialog';
+import { showAlert, showConfirm, showPrompt } from 'desktop-ui-kit/dialog';
 
 await showAlert('更改已保存。');
 const confirmed = await showConfirm('恢复默认设置？');
@@ -231,18 +233,18 @@ const name = await showPrompt('输入书架名称。', '我的书架', '重命�
 
 `showAlert` 关闭后返回 `true`。`showConfirm` 返回确认结果。`showPrompt` 确认后返回输入字符串（包括空字符串），取消或按 Esc 时返回 `null`。这些结果均通过 Promise 返回，调用方用 `await` 取得结果后执行业务操作。
 
-离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopSettings.showConfirm(...)` 等同名接口调用。在图库的「菜单与反馈」中可试用三种消息框并查看返回结果。
+离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopUIKit.showConfirm(...)` 等同名接口调用。在图库的「菜单与反馈」中可试用三种消息框并查看返回结果。
 
 ## 工具提示
 
-从 `desktop-settings-css/tooltip` 导入 `setTooltip` 和 `clearTooltip`。例如 `setTooltip(button, '展开导航', { placement: 'right' })`。文字也可以是回调函数。键盘聚焦和鼠标悬停都能显示提示，按 Esc 可收起。用 `clearTooltip(button)` 解除绑定。离线 HTML 加载 `dist/tooltip.browser.js` 后可调用 `DesktopSettings.setTooltip`。缩窄示例窗口后，在侧栏导航项上试用。
+从 `desktop-ui-kit/tooltip` 导入 `setTooltip` 和 `clearTooltip`。例如 `setTooltip(button, '展开导航', { placement: 'right' })`。文字也可以是回调函数。键盘聚焦和鼠标悬停都能显示提示，按 Esc 可收起。用 `clearTooltip(button)` 解除绑定。离线 HTML 加载 `dist/tooltip.browser.js` 后可调用 `DesktopUIKit.setTooltip`。缩窄示例窗口后，在侧栏导航项上试用。
 
 ## WinUI 3 风格的内联提示条（InfoBar）
 
 在图库的「菜单与反馈」中切换提示类型，可比较信息、成功、警告和错误四种提示条。关闭提示条后，点击「显示提示」可再次预览。
 
 ```js
-import { createInfoBar } from 'desktop-settings-css/info-bar';
+import { createInfoBar } from 'desktop-ui-kit/info-bar';
 
 const bar = createInfoBar({
   severity: 'info',
@@ -254,7 +256,7 @@ const bar = createInfoBar({
 document.querySelector('#lists').append(bar);
 ```
 
-`severity` 可取 `info`（默认）、`success`、`warning` 或 `error`。标题、操作按钮和关闭按钮均可省略。用 `bar.setMessage(text)` 更新正文，用 `bar.hidden` 控制显隐。设置 `closable: true` 后，点击关闭按钮会隐藏提示条，并调用可选的 `onClose`，宿主可在这里恢复焦点。离线 HTML 加载 `dist/info-bar.browser.js` 后，通过 `DesktopSettings.createInfoBar(...)` 创建组件并挂载到 `.ds-settings` 内。
+`severity` 可取 `info`（默认）、`success`、`warning` 或 `error`。标题、操作按钮和关闭按钮均可省略。用 `bar.setMessage(text)` 更新正文，用 `bar.hidden` 控制显隐。设置 `closable: true` 后，点击关闭按钮会隐藏提示条，并调用可选的 `onClose`，宿主可在这里恢复焦点。离线 HTML 加载 `dist/info-bar.browser.js` 后，通过 `DesktopUIKit.createInfoBar(...)` 创建组件并挂载到 `.ds-settings` 内。
 
 ## 表单错误与管理列表
 
