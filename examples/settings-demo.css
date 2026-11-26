@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  background: var(--ds-bg-primary);
+}
+.app-container { height: 100vh; height: 100dvh; }
+.sidebar {
+  background: var(--ds-bg-secondary);
+  border-inline-end: 1px solid var(--ds-border);
+  padding: 24px 8px;
+}
+.sidebar-item { text-decoration: none; }
+.sidebar-icon { justify-content: center; font-family: ui-serif, Georgia, serif; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 12px 32px;
+  font: 700 1.4rem/1.4 ui-serif, Georgia, serif;
+  letter-spacing: .06em;
+}
+.book-mark {
+  width: 25px;
+  height: 29px;
+  border-radius: 2px 6px 4px 2px;
+  background: linear-gradient(90deg, transparent 20%, var(--ds-bg-secondary) 20% 24%, transparent 24%), var(--ds-accent);
+}
+.nav-heading, .preview figcaption {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+}
+.nav-heading { margin: 0 14px 8px; }
+#preferences { max-width: 52rem; margin: auto; padding: clamp(16px, 4vw, 48px); }
+h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25; }
+.preview {
+  position: relative;
+  margin: 0 0 26px;
+  padding: 20px clamp(20px, 4vw, 36px) 24px;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-bg-elevated);
+}
+.preview::after {
+  content: '';
+  position: absolute;
+  inset: 0 26px auto auto;
+  width: 12px;
+  height: 25px;
+  background: var(--ds-accent);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+}
+.preview figcaption { margin-bottom: 12px; }
+#sample { line-height: 1.65; overflow-wrap: anywhere; }
+#sample[data-font="serif"] { font-family: ui-serif, Georgia, "Songti SC", SimSun, serif; }
+#sample[data-font="mono"] { font-family: var(--ds-font-mono); }
+#sample h2 { font-size: 1.3em; margin: 0 0 .4em; }
+#sample p { margin: 0; }
+#sample.spaced p + p { margin-top: .65em; }
+.field-error { color: var(--ds-danger); font-size: .82rem; }
+.setting-control:has(.field-error) { flex-direction: column; align-items: flex-start; }
+.setting-control textarea { resize: vertical; }
+.topic { padding-inline-start: 76px; }
+.action-bar { margin: 0 12px 12px; }
+@media (max-width: 620px) {
+  .ds-settings { --ds-sidebar-width: 56px; }
+  .sidebar { padding: 16px 0; }
+  .brand { margin: 2px auto 22px; font-size: 0; gap: 0; }
+  .nav-heading { display: none; }
+  .sidebar-item {
+    flex-direction: column; justify-content: center; height: 52px; gap: 2px; padding: 2px;
+  }
+  .sidebar-label { font-size: 11px; }
+  .topic { padding-inline-start: 32px; }
+  .action-bar { margin: 0 6px 6px; }
+}

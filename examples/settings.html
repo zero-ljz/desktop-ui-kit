@@ -3,49 +3,223 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>偏好设置</title>
+  <title>纸间 · 偏好设置</title>
   <link rel="stylesheet" href="../dist/settings.css">
-  <style>
-    body { margin: 0; background: var(--ds-bg-primary); }
-    main { max-width: 46rem; margin: 0 auto; padding: clamp(16px, 4vw, 48px); }
-    h1 { font-size: 1.65rem; margin: 0 0 1.5rem; }
-  </style>
+  <link rel="stylesheet" href="./settings-demo.css">
+  <script src="./settings-demo.js" defer></script>
 </head>
 <body class="ds-settings">
-  <main>
-    <h1>偏好设置</h1>
-    <section class="section-wrapper" aria-labelledby="display">
-      <h2 class="section-title" id="display">外观</h2>
-      <div class="section-card">
-        <div class="setting-row">
-          <div class="setting-info">
-            <label class="setting-label" for="compact">紧凑布局</label>
-            <div class="setting-desc" id="compact-hint">缩小列表项目间距，在同一窗口显示更多内容。</div>
+  <div class="app-container">
+    <nav class="sidebar" aria-label="偏好设置">
+      <div class="brand"><span class="book-mark" aria-hidden="true"></span>纸间</div>
+      <p class="nav-heading">偏好设置</p>
+      <a class="sidebar-item" href="#appearance" aria-current="page">
+        <span class="sidebar-icon" aria-hidden="true">Aa</span><span class="sidebar-label">阅读外观</span>
+      </a>
+      <a class="sidebar-item" href="#library">
+        <span class="sidebar-icon" aria-hidden="true">▤</span><span class="sidebar-label">资料库</span>
+      </a>
+      <a class="sidebar-item" href="#alerts">
+        <span class="sidebar-icon" aria-hidden="true">◷</span><span class="sidebar-label">提醒</span>
+      </a>
+    </nav>
+
+    <main class="content">
+      <form id="preferences" novalidate>
+      <section id="appearance" aria-labelledby="appearance-title">
+        <h1 id="appearance-title" tabindex="-1">阅读外观</h1>
+        <figure class="preview">
+          <figcaption>排版预览</figcaption>
+          <div id="sample" data-font="serif">
+            <h2>山间手记</h2>
+            <p>清早推开窗，山脊上还停着一层薄雾。</p>
+            <p>翻过昨晚读到的那一页，树影已经移到了书脊。</p>
           </div>
-          <div class="setting-control">
-            <input class="toggle-switch" type="checkbox" role="switch" id="compact" aria-describedby="compact-hint">
+        </figure>
+        <section class="section-wrapper" aria-labelledby="type-title">
+          <h2 class="section-title" id="type-title">主题与排版</h2>
+          <div class="section-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label" id="theme-label">界面主题</span>
+            </div>
+            <div class="setting-control">
+              <div class="radio-group" role="radiogroup" aria-labelledby="theme-label">
+                <label class="radio-label"><input class="radio-input" type="radio" name="theme" value="system" checked>跟随系统</label>
+                <label class="radio-label"><input class="radio-input" type="radio" name="theme" value="light">浅色</label>
+                <label class="radio-label"><input class="radio-input" type="radio" name="theme" value="dark">深色</label>
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="setting-row">
-          <label class="setting-info setting-label" for="start-page">启动时打开</label>
-          <div class="setting-control">
-            <select class="select-box" id="start-page"><option>最近使用</option><option>收藏夹</option></select>
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="font">正文字体</label>
+            </div>
+            <div class="setting-control">
+              <select class="select-box" name="font" id="font">
+                <option value="serif">衬线字体</option><option value="sans">系统字体</option><option value="mono">等宽字体</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <details class="settings-expander">
-          <summary class="settings-expander-header">
-            <span class="settings-expander-title">侧栏选项</span>
-            <span class="settings-expander-chevron" aria-hidden="true">›</span>
-          </summary>
-          <div class="settings-expander-content">
-            <label class="winui-checkbox-option">
-              <input type="checkbox" class="winui-checkbox" checked>
-              <span class="winui-checkbox-title">显示收藏夹</span>
-            </label>
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="size">正文字号</label>
+            </div>
+            <div class="setting-control">
+              <div class="slider-container">
+                <input class="slider" type="range" name="size" id="size" min="14" max="28" value="18">
+                <output class="slider-value" for="size" id="size-value">18 px</output>
+              </div>
+            </div>
           </div>
-        </details>
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="spacing">段落留白</label>
+            </div>
+            <div class="setting-control">
+              <input class="toggle-switch" type="checkbox" role="switch" name="spacing" id="spacing" checked>
+            </div>
+          </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="library" aria-labelledby="library-title">
+        <h1 id="library-title" tabindex="-1">资料库</h1>
+        <section class="section-wrapper" aria-labelledby="profile-title">
+          <h2 class="section-title" id="profile-title">书架资料</h2>
+          <div class="section-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="shelf">书架名称</label>
+              <div class="setting-desc" id="shelf-hint">填写 1 至 24 个字符。</div>
+            </div>
+            <div class="setting-control">
+              <input class="input-text" type="text" id="shelf" name="shelf" required maxlength="24" value="我的书架" aria-describedby="shelf-hint shelf-error">
+              <span class="field-error" id="shelf-error" hidden>请输入书架名称。</span>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="notes">书架备注</label>
+            </div>
+            <div class="setting-control">
+              <textarea class="input-text" name="notes" id="notes" rows="3" placeholder="例如：今年想读的书"></textarea>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="recent">最近阅读条目</label>
+              <div class="setting-desc" id="recent-hint">首页保留 1 至 30 条阅读记录。</div>
+            </div>
+            <div class="setting-control">
+              <div class="number-input-group">
+                <button class="number-btn" type="button" id="decrease" aria-label="减少条目数">−</button>
+                <input class="number-input" type="number" name="recent" id="recent" value="8" min="1" max="30" step="1" required aria-describedby="recent-hint recent-error">
+                <button class="number-btn" type="button" id="increase" aria-label="增加条目数">+</button>
+              </div>
+              <span class="field-error" id="recent-error" hidden>请输入 1 至 30 的整数。</span>
+            </div>
+          </div>
+          </div>
+        </section>
+        <section class="section-wrapper" aria-labelledby="defaults-title">
+          <h2 class="section-title" id="defaults-title">默认设置</h2>
+          <div class="section-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-label">恢复所有偏好</span>
+              <div class="setting-desc">恢复三个页面的默认值。保存前可撤销。</div>
+            </div>
+            <div class="setting-control">
+              <button class="btn btn-danger" type="button" id="defaults">恢复默认设置</button>
+            </div>
+          </div>
+          </div>
+        </section>
+      </section>
+
+      <section id="alerts" aria-labelledby="alerts-title">
+        <h1 id="alerts-title" tabindex="-1">提醒</h1>
+        <section class="section-wrapper" aria-labelledby="notifications-title">
+          <h2 class="section-title" id="notifications-title">阅读提醒</h2>
+          <div class="section-card">
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="enabled">启用提醒</label>
+              <div class="setting-desc" id="enabled-hint">关闭后保留已选提醒类型和音量。</div>
+            </div>
+            <div class="setting-control">
+              <input class="toggle-switch" type="checkbox" role="switch" name="enabled" id="enabled" checked aria-describedby="enabled-hint">
+            </div>
+          </div>
+            <details class="settings-expander" open>
+              <summary class="settings-expander-header">
+                <span class="settings-expander-info">
+                  <span class="settings-expander-title">提醒类型</span>
+                  <span class="settings-expander-description" id="selected-count">已选择 2 项，共 3 项</span>
+                </span>
+                <span class="settings-expander-actions"><span class="settings-expander-chevron" aria-hidden="true">›</span></span>
+              </summary>
+              <div class="settings-expander-content">
+                <label class="winui-checkbox-option">
+                  <input class="winui-checkbox" type="checkbox" id="select-all">
+                  <span class="winui-checkbox-info"><span class="winui-checkbox-title">全选提醒</span></span>
+                </label>
+                <label class="winui-checkbox-option topic">
+                  <input class="winui-checkbox" type="checkbox" name="goal" checked>
+                  <span class="winui-checkbox-info">
+                    <span class="winui-checkbox-title">每日阅读目标</span>
+                    <span class="winui-checkbox-description">当天尚未完成目标时提醒。</span>
+                  </span>
+                </label>
+                <label class="winui-checkbox-option topic">
+                  <input class="winui-checkbox" type="checkbox" name="returning" checked>
+                  <span class="winui-checkbox-info">
+                    <span class="winui-checkbox-title">借阅到期</span>
+                    <span class="winui-checkbox-description">在归还日期前一天提醒。</span>
+                  </span>
+                </label>
+                <label class="winui-checkbox-option topic">
+                  <input class="winui-checkbox" type="checkbox" name="digest">
+                  <span class="winui-checkbox-info">
+                    <span class="winui-checkbox-title">每周阅读摘要</span>
+                    <span class="winui-checkbox-description">每周汇总阅读进度。</span>
+                  </span>
+                </label>
+              </div>
+            </details>
+            <details class="settings-expander settings-expander-compact">
+              <summary class="settings-expander-header">
+                <span class="settings-expander-title">提示音</span>
+                <span class="settings-expander-chevron" aria-hidden="true">›</span>
+              </summary>
+              <div class="settings-expander-content">
+          <div class="setting-row">
+            <div class="setting-info">
+              <label class="setting-label" for="volume">提醒音量</label>
+            </div>
+            <div class="setting-control">
+              <div class="slider-container" id="volume-control">
+                <input class="slider" type="range" name="volume" id="volume" min="0" max="100" step="5" value="50">
+                <output class="slider-value" for="volume" id="volume-value">50%</output>
+              </div>
+            </div>
+          </div>
+              </div>
+            </details>
+          </div>
+        </section>
+      </section>
+      </form>
+    </main>
+    <footer class="action-bar">
+      <div class="action-bar-status"><span class="action-bar-message" id="status" role="status">演示设置仅在本次打开期间保存</span></div>
+      <div class="action-bar-actions">
+        <button class="btn" type="button" id="revert" disabled>撤销更改</button>
+        <button class="btn btn-primary" type="submit" form="preferences" id="save" disabled>保存更改</button>
       </div>
-    </section>
-  </main>
+    </footer>
+  </div>
 </body>
 </html>
