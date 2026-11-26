@@ -6,6 +6,10 @@ const panels = [...form.querySelectorAll(':scope > section')];
 const links = [...document.querySelectorAll('.sidebar-item')];
 const topics = [...form.querySelectorAll('.topic input')];
 const byId = id => document.getElementById(id);
+const fontPicker = byId('font-picker');
+const fontTrigger = byId('font-trigger');
+const fontList = byId('font-options');
+const fontOptions = [...fontList.querySelectorAll('[role="option"]')];
 
 // Track disabled values too, so turning reminders back on restores the draft.
 function readDraft() {
@@ -29,6 +33,7 @@ function restore(draft) {
 }
 
 function showPanel(id, focusHeading = false) {
+  closeFontList();
   const selected = panels.find(panel => panel.id === id) || panels[0];
   for (const panel of panels) panel.hidden = panel !== selected;
   for (const link of links) {
@@ -44,12 +49,72 @@ function setError(id, invalid) {
   byId(id + '-error').hidden = !invalid;
 }
 
+function closeFontList() {
+  fontPicker.classList.remove('open', 'open-upward');
+  fontTrigger.setAttribute('aria-expanded', 'false');
+}
+
+function openFontList() {
+  const trigger = fontTrigger.getBoundingClientRect();
+  const boundary = fontPicker.closest('.content').getBoundingClientRect();
+  const above = trigger.top - boundary.top;
+  const below = boundary.bottom - trigger.bottom;
+  const upward = below < Math.min(fontList.scrollHeight, 250) + 8 && above > below;
+  fontList.style.maxHeight = Math.max(0, Math.min(250, (upward ? above : below) - 8)) + 'px';
+  fontPicker.classList.toggle('open-upward', upward);
+  fontPicker.classList.add('open');
+  fontTrigger.setAttribute('aria-expanded', 'true');
+  fontOptions.find(option => option.dataset.value === byId('font').value).focus({ preventScroll: true });
+}
+
+fontTrigger.addEventListener('click', () => {
+  if (fontPicker.classList.contains('open')) closeFontList();
+  else openFontList();
+});
+fontPicker.addEventListener('keydown', event => {
+  const index = fontOptions.indexOf(event.target);
+  if (event.key === 'Escape' && fontPicker.classList.contains('open')) {
+    event.preventDefault();
+    closeFontList();
+    fontTrigger.focus();
+  } else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+    event.preventDefault();
+    if (index === -1) openFontList();
+    if (event.key === 'Home') fontOptions[0].focus();
+    else if (event.key === 'End') fontOptions[fontOptions.length - 1].focus();
+    else if (index !== -1) {
+      const step = event.key === 'ArrowDown' ? 1 : -1;
+      fontOptions[(index + step + fontOptions.length) % fontOptions.length].focus();
+    }
+  }
+});
+fontList.addEventListener('click', event => {
+  const option = event.target.closest('[role="option"]');
+  if (!option) return;
+  byId('font').value = option.dataset.value;
+  closeFontList();
+  fontTrigger.focus();
+  render();
+});
+fontPicker.addEventListener('focusout', event => {
+  if (!fontPicker.contains(event.relatedTarget)) closeFontList();
+});
+document.addEventListener('pointerdown', event => {
+  if (!fontPicker.contains(event.target)) closeFontList();
+});
+
 function render(feedback) {
   const draft = readDraft();
   const dirty = Object.keys(draft).some(name => draft[name] !== saved[name]);
   document.body.dataset.theme = draft.theme;
   const sample = byId('sample');
   sample.dataset.font = draft.font;
+  for (const option of fontOptions) {
+    const selected = option.dataset.value === draft.font;
+    option.classList.toggle('selected', selected);
+    option.setAttribute('aria-selected', String(selected));
+    if (selected) fontTrigger.querySelector('.select-label').textContent = option.textContent;
+  }
   sample.style.fontSize = draft.size + 'px';
   sample.classList.toggle('spaced', draft.spacing);
   byId('size-value').value = draft.size + ' px';

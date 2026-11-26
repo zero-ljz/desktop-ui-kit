@@ -53,12 +53,24 @@
           </div>
           <div class="setting-row">
             <div class="setting-info">
-              <label class="setting-label" for="font">正文字体</label>
+              <label class="setting-label" id="font-label" for="font-trigger">正文字体</label>
             </div>
             <div class="setting-control">
-              <select class="select-box" name="font" id="font">
-                <option value="serif">衬线字体</option><option value="sans">系统字体</option><option value="mono">等宽字体</option>
-              </select>
+              <div class="custom-select" id="font-picker">
+                <input type="hidden" name="font" id="font" value="serif">
+                <button type="button" class="select-trigger" id="font-trigger" role="combobox"
+                        aria-labelledby="font-label" aria-haspopup="listbox" aria-controls="font-options" aria-expanded="false">
+                  <span class="select-label">衬线字体</span>
+                  <span class="select-arrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </span>
+                </button>
+                <div class="select-dropdown" id="font-options" role="listbox" aria-labelledby="font-label">
+                  <button type="button" class="select-option selected" role="option" tabindex="-1" aria-selected="true" data-value="serif">衬线字体</button>
+                  <button type="button" class="select-option" role="option" tabindex="-1" aria-selected="false" data-value="sans">系统字体</button>
+                  <button type="button" class="select-option" role="option" tabindex="-1" aria-selected="false" data-value="mono">等宽字体</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="setting-row">
