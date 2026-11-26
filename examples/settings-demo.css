@@ -56,9 +56,14 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
 #sample h2 { font-size: 1.3em; margin: 0 0 .4em; }
 #sample p { margin: 0; }
 #sample.spaced p + p { margin-top: .65em; }
-.field-error { color: var(--ds-danger); font-size: .82rem; }
-.setting-control:has(.field-error) { flex-direction: column; align-items: flex-start; }
 .setting-control textarea { resize: vertical; }
+.bookmark-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 14px 20px;
+}
+.bookmark-search .input-text { width: 100%; min-width: 0; }
 .topic { padding-inline-start: 76px; }
 @media (max-width: 680px) {
   #preferences { padding-bottom: 188px; }

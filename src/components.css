@@ -378,6 +378,15 @@
   background-image: linear-gradient(var(--ds-danger), var(--ds-danger));
   background-size: 100% 2px;
 }
+:where(.ds-settings) .field-error {
+  color: var(--ds-danger);
+  font-size: .82rem;
+  line-height: 1.35;
+}
+:where(.ds-settings) .setting-control:has(> .field-error) {
+  flex-direction: column;
+  align-items: flex-start;
+}
 
 /* Custom Select (WinUI 3 ComboBox) */
 :where(.ds-settings) .custom-select {
@@ -610,6 +619,9 @@
 :where(.ds-settings) .number-input-group:focus-within {
   background-color: var(--ds-bg-surface-hover);
   border-color: var(--ds-accent);
+}
+:where(.ds-settings) .number-input-group:has(.number-input[aria-invalid="true"]) {
+  border-color: var(--ds-danger);
 }
 :where(.ds-settings) .number-btn {
   background: transparent;

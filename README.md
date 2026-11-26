@@ -1,6 +1,6 @@
 # Desktop Settings CSS
 
-面向桌面 WebView 设置页的 CSS 库。提供侧栏、操作栏、分组卡片、设置行和表单控件。基础样式可以单独使用，自绘下拉框和消息框各有独立的原生 JavaScript 入口。
+面向桌面 WebView 设置页的 CSS 库。侧栏、操作栏、分组卡片、设置行、管理列表和表单控件都可单独使用 CSS。自绘下拉框、消息框和工具提示各有独立的原生 JavaScript 入口。
 
 ## 构建和预览
 
@@ -75,3 +75,13 @@ const name = await showPrompt('输入书架名称。', '我的书架', '重命�
 `showAlert` 关闭后返回 `true`。`showConfirm` 返回确认结果。`showPrompt` 确认后返回输入字符串（包括空字符串），取消或按 Esc 时返回 `null`。这些结果均通过 Promise 返回，调用方用 `await` 取得结果后执行业务操作。
 
 离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopSettings.showConfirm(...)` 等同名接口调用。在示例的「资料库 → 消息框」可试用三种对话框。
+
+## 工具提示
+
+从 `desktop-settings-css/tooltip` 导入 `setTooltip` 和 `clearTooltip`。例如 `setTooltip(button, '展开导航', { placement: 'right' })`。文字也可以是回调函数。键盘聚焦和鼠标悬停都能显示提示，按 Esc 可收起。用 `clearTooltip(button)` 解除绑定。离线 HTML 加载 `dist/tooltip.browser.js` 后可调用 `DesktopSettings.setTooltip`。缩窄示例窗口后，在侧栏导航项上试用。
+
+## 表单错误与管理列表
+
+字段校验失败时设置 `aria-invalid="true"`，显示带有 `field-error` 类的文字，并把它的 ID 加入输入控件的 `aria-describedby`。校验通过后隐藏错误文字，并从描述中移除它的 ID，保留日常填写提示。
+
+列表使用 `.manage-list`，每个 `.manage-row` 中的 `.manage-main` 可以包含 `.manage-title` 和 `.manage-subtitle`，行末可以放操作按钮。用 `.manage-empty` 显示无数据或无匹配时的说明。搜索、筛选及批量操作由页面组合已有控件并安排布局。示例的「资料库 → 阅读书签」展示了搜索、空状态和查看摘录。

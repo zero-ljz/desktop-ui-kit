@@ -17,7 +17,9 @@ const css = [
   await read('./src/base.css'),
   await read('./src/layout.css'),
   await read('./src/components.css'),
-  await read('./src/dialog.css')
+  await read('./src/dialog.css'),
+  await read('./src/list.css'),
+  await read('./src/tooltip.css')
 ].join('\n\n');
 
 await mkdir(new URL('./dist/', import.meta.url), { recursive: true });
@@ -26,7 +28,8 @@ console.log(`Built dist/settings.css (${Buffer.byteLength(css)} bytes)`);
 
 for (const [name, exports] of [
   ['select', 'createSelect'],
-  ['dialog', 'showModal, showAlert, showConfirm, showPrompt']
+  ['dialog', 'showModal, showAlert, showConfirm, showPrompt'],
+  ['tooltip', 'setTooltip, clearTooltip']
 ]) {
   const source = await read(`./src/${name}.js`);
   await writeFile(new URL(`./dist/${name}.mjs`, import.meta.url), `${source}\nexport { ${exports} };\n`);

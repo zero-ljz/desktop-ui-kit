@@ -23,6 +23,43 @@ const fontPicker = DesktopSettings.createSelect({
 });
 byId('font-picker').replaceWith(fontPicker);
 
+const narrowSidebar = matchMedia('(max-width: 620px)');
+function updateNavTooltips() {
+  for (const link of links) {
+    if (narrowSidebar.matches) {
+      DesktopSettings.setTooltip(link, link.querySelector('.sidebar-label').textContent, { placement: 'right' });
+    } else {
+      DesktopSettings.clearTooltip(link);
+    }
+  }
+}
+narrowSidebar.addEventListener('change', updateNavTooltips);
+updateNavTooltips();
+
+const bookmarkSearch = byId('bookmark-search');
+const bookmarkRows = [...byId('bookmarks').children];
+function filterBookmarks() {
+  const query = bookmarkSearch.value.trim().toLocaleLowerCase();
+  for (const row of bookmarkRows) {
+    row.hidden = !row.querySelector('.manage-main').textContent.toLocaleLowerCase().includes(query);
+  }
+  byId('bookmarks-empty').hidden = bookmarkRows.some(row => !row.hidden);
+  byId('clear-search').disabled = !bookmarkSearch.value;
+}
+bookmarkSearch.addEventListener('input', filterBookmarks);
+bookmarkSearch.addEventListener('keydown', event => {
+  if (event.key === 'Enter' && !event.isComposing) event.preventDefault();
+});
+byId('clear-search').addEventListener('click', () => {
+  bookmarkSearch.value = '';
+  filterBookmarks();
+  bookmarkSearch.focus();
+});
+for (const row of bookmarkRows) {
+  const button = row.querySelector('[data-excerpt]');
+  button.addEventListener('click', () => DesktopSettings.showAlert(button.dataset.excerpt, row.querySelector('.manage-title').textContent));
+}
+
 // Track disabled values too, so turning reminders back on restores the draft.
 function readDraft() {
   const draft = {};
@@ -59,6 +96,7 @@ function showPanel(id, focusHeading = false) {
 
 function setError(id, invalid) {
   byId(id).setAttribute('aria-invalid', String(invalid));
+  byId(id).setAttribute('aria-describedby', invalid ? `${id}-hint ${id}-error` : `${id}-hint`);
   byId(id + '-error').hidden = !invalid;
 }
 

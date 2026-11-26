@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./settings-demo.css">
   <script src="../dist/select.browser.js" defer></script>
   <script src="../dist/dialog.browser.js" defer></script>
+  <script src="../dist/tooltip.browser.js" defer></script>
   <script src="./settings-demo.js" defer></script>
 </head>
 <body class="ds-settings">
@@ -96,7 +97,7 @@
               <div class="setting-desc" id="shelf-hint">填写 1 至 24 个字符。</div>
             </div>
             <div class="setting-control">
-              <input class="input-text" type="text" id="shelf" name="shelf" required maxlength="24" value="我的书架" aria-describedby="shelf-hint shelf-error">
+              <input class="input-text" type="text" id="shelf" name="shelf" required maxlength="24" value="我的书架" aria-describedby="shelf-hint">
               <span class="field-error" id="shelf-error" hidden>请输入书架名称。</span>
             </div>
           </div>
@@ -116,12 +117,32 @@
             <div class="setting-control">
               <div class="number-input-group">
                 <button class="number-btn" type="button" id="decrease" aria-label="减少条目数">−</button>
-                <input class="number-input" type="number" name="recent" id="recent" value="8" min="1" max="30" step="1" required aria-describedby="recent-hint recent-error">
+                <input class="number-input" type="number" name="recent" id="recent" value="8" min="1" max="30" step="1" required aria-describedby="recent-hint">
                 <button class="number-btn" type="button" id="increase" aria-label="增加条目数">+</button>
               </div>
               <span class="field-error" id="recent-error" hidden>请输入 1 至 30 的整数。</span>
             </div>
           </div>
+          </div>
+        </section>
+        <section class="section-wrapper" aria-labelledby="bookmark-title">
+          <h2 class="section-title" id="bookmark-title">阅读书签</h2>
+          <div class="section-card">
+            <div class="bookmark-search" role="search" aria-label="书签">
+              <input type="search" class="input-text" id="bookmark-search" aria-label="搜索书签" placeholder="搜索书名或章节">
+              <button type="button" class="btn" id="clear-search" disabled>清空搜索</button>
+            </div>
+            <ul class="manage-list" id="bookmarks" aria-labelledby="bookmark-title">
+              <li class="manage-row">
+                <div class="manage-main"><div class="manage-title">山中日记</div><div class="manage-subtitle">第三章 · 林间小路</div></div>
+                <button type="button" class="btn" aria-label="查看山中日记摘录" data-excerpt="雨停后，石阶上留下了松针的影子。">查看摘录</button>
+              </li>
+              <li class="manage-row">
+                <div class="manage-main"><div class="manage-title">海边来信</div><div class="manage-subtitle">第一章 · 潮声</div></div>
+                <button type="button" class="btn" aria-label="查看海边来信摘录" data-excerpt="窗边那封信，带着一点海盐的气味。">查看摘录</button>
+              </li>
+            </ul>
+            <div class="manage-empty" id="bookmarks-empty" role="status" hidden>没有匹配的书签。</div>
           </div>
         </section>
         <section class="section-wrapper" aria-labelledby="dialog-title">

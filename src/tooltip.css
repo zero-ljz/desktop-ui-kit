@@ -1,0 +1,41 @@
+/* WinUI-style tooltip */
+:where(.ds-settings) .ds-tooltip {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  width: max-content;
+  z-index: 1200;
+  max-width: min(280px, calc(100vw - 16px));
+  padding: 6px 9px;
+  border: 1px solid var(--ds-border-hover);
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-text-primary);
+  background-color: var(--ds-bg-elevated);
+  box-shadow: var(--ds-shadow-md);
+  font-size: 0.8rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(2px);
+  transition:
+    opacity 90ms ease-out,
+    transform 90ms ease-out,
+    visibility 0s linear 90ms;
+}
+:where(.ds-settings) .ds-tooltip[data-placement='right'] { transform: translateX(-2px); }
+:where(.ds-settings) .ds-tooltip[data-placement='left'] { transform: translateX(2px); }
+:where(.ds-settings) .ds-tooltip[data-placement='bottom'] { transform: translateY(-2px); }
+:where(.ds-settings) .ds-tooltip.is-measuring {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  transition: none;
+}
+:where(.ds-settings) .ds-tooltip.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(0, 0);
+  transition-delay: 0s;
+}
