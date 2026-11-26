@@ -269,7 +269,7 @@
   background-color: var(--ds-text-primary);
 }
 :where(.ds-settings) .toggle-switch:checked::before {
-  background-color: var(--ds-accent-text);
+  background-color: var(--ds-selection-dot);
   transform: translateX(20px);
 }
 
@@ -589,7 +589,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: var(--ds-accent-text);
+  background-color: var(--ds-selection-dot);
 }
 
 /* Number Input */

@@ -13,6 +13,7 @@
   "accent": {"light": "#2563eb", "dark": "#3b82f6"},
   "accent-hover": {"light": "#1d4ed8", "dark": "#60a5fa"},
   "accent-text": {"light": "#ffffff", "dark": "#101010"},
+  "selection-dot": {"light": "var(--ds-accent-text)", "dark": "#ffffff"},
   "accent-surface": {"light": "rgba(37, 99, 235, 0.11)", "dark": "rgba(59, 130, 246, 0.14)"},
   "accent-border": {"light": "rgba(37, 99, 235, 0.24)", "dark": "rgba(59, 130, 246, 0.28)"},
   "border": {"light": "rgba(0, 0, 0, 0.08)", "dark": "rgba(255, 255, 255, 0.08)"},
