@@ -9,9 +9,12 @@
   <script src="../dist/select.browser.js" defer></script>
   <script src="../dist/dialog.browser.js" defer></script>
   <script src="../dist/tooltip.browser.js" defer></script>
+  <script src="../dist/menu.browser.js" defer></script>
+  <script src="../dist/info-bar.browser.js" defer></script>
   <script src="./settings-demo.js" defer></script>
 </head>
 <body class="ds-settings">
+  <header class="window-menu"><div id="settings-menu"></div></header>
   <div class="app-container">
     <nav class="sidebar" aria-label="偏好设置">
       <div class="brand"><span class="book-mark" aria-hidden="true"></span>纸间</div>
@@ -31,8 +34,10 @@
       <form id="preferences" novalidate>
       <section id="appearance" aria-labelledby="appearance-title">
         <h1 id="appearance-title" tabindex="-1">阅读外观</h1>
-        <figure class="preview">
-          <figcaption>排版预览</figcaption>
+        <figure class="preview" id="type-preview">
+          <figcaption>排版预览
+            <button class="preview-menu-button" type="button" id="preview-menu" aria-label="更多排版选项">•••</button>
+          </figcaption>
           <div id="sample" data-font="serif">
             <h2>山间手记</h2>
             <p>清早推开窗，山脊上还停着一层薄雾。</p>
@@ -88,13 +93,14 @@
 
       <section id="library" aria-labelledby="library-title">
         <h1 id="library-title" tabindex="-1">资料库</h1>
+        <div id="library-validation" hidden></div>
         <section class="section-wrapper" aria-labelledby="profile-title">
           <h2 class="section-title" id="profile-title">书架资料</h2>
           <div class="section-card">
           <div class="setting-row">
             <div class="setting-info">
               <label class="setting-label" for="shelf">书架名称</label>
-              <div class="setting-desc" id="shelf-hint">填写 1 至 24 个字符。</div>
+              <div class="setting-desc" id="shelf-hint">可选预设，也可自定义 1 至 24 个字符的名称。</div>
             </div>
             <div class="setting-control">
               <input class="input-text" type="text" id="shelf" name="shelf" required maxlength="24" value="我的书架" aria-describedby="shelf-hint">

@@ -1,0 +1,77 @@
+:where(.ds-settings) .ds-info-bar {
+  --ds-info-bar-color: var(--ds-accent);
+  --ds-info-bar-surface: var(--ds-accent-surface);
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--ds-border-hover);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-info-bar-surface);
+  color: var(--ds-text-primary);
+  font-size: .9rem;
+}
+
+:where(.ds-settings) .ds-info-bar:not([hidden]) { display: flex; }
+:where(.ds-settings) .ds-info-bar[data-severity="success"] {
+  --ds-info-bar-color: var(--ds-success);
+  --ds-info-bar-surface: var(--ds-success-surface);
+}
+:where(.ds-settings) .ds-info-bar[data-severity="warning"] {
+  --ds-info-bar-color: var(--ds-warning);
+  --ds-info-bar-surface: var(--ds-warning-surface);
+}
+:where(.ds-settings) .ds-info-bar[data-severity="error"] {
+  --ds-info-bar-color: var(--ds-danger);
+  --ds-info-bar-surface: var(--ds-danger-surface);
+}
+
+:where(.ds-settings) .ds-info-bar-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 17px;
+  height: 17px;
+  margin-block-start: 7px;
+  border-radius: 50%;
+  background: var(--ds-info-bar-color);
+  color: var(--ds-bg-elevated);
+  font: 700 13px/1 var(--ds-font-sans);
+}
+:where(.ds-settings) .ds-info-bar-body {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 32px;
+  gap: 8px 16px;
+}
+:where(.ds-settings) .ds-info-bar-text {
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+:where(.ds-settings) .ds-info-bar-text strong { font-weight: 600; }
+:where(.ds-settings) .ds-info-bar-body > .btn { max-width: 100%; overflow-wrap: anywhere; }
+:where(.ds-settings) .ds-info-bar-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-text-primary);
+  font: 400 20px/1 var(--ds-font-sans);
+  cursor: pointer;
+}
+:where(.ds-settings) .ds-info-bar-close:hover { background: var(--ds-bg-hover); }
+:where(.ds-settings) .ds-info-bar-close:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: -2px;
+}
+
+@media (forced-colors: active) {
+  :where(.ds-settings) .ds-info-bar-icon { border: 1px solid CanvasText; }
+  :where(.ds-settings) .ds-info-bar-close:focus-visible { outline-color: Highlight; }
+}

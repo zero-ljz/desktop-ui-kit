@@ -23,6 +23,56 @@ const fontPicker = DesktopSettings.createSelect({
 });
 byId('font-picker').replaceWith(fontPicker);
 
+const shelfPicker = DesktopSettings.bindEditableSelect(byId('shelf'), {
+  label: '书架名称预设',
+  options: ['我的书架', '正在读', '想读清单', '已读收藏']
+});
+
+const validationBar = DesktopSettings.createInfoBar({
+  severity: 'error',
+  title: '无法保存',
+  action: { label: '查看第一项', onClick: () => getInvalidFields()[0]?.focus() }
+});
+validationBar.hidden = true;
+byId('library-validation').replaceWith(validationBar);
+
+const menuBar = DesktopSettings.createMenuBar({
+  label: '偏好设置菜单',
+  menus: [
+    { label: '视图', items: links.map(link => ({
+      label: link.querySelector('.sidebar-label').textContent,
+      onSelect: () => link.click()
+    })) },
+    { label: '编辑', items: () => [
+      menuCommand('save'), menuCommand('revert'), { type: 'separator' }, menuCommand('defaults')
+    ] }
+  ]
+});
+byId('settings-menu').replaceWith(menuBar);
+
+function menuCommand(id) {
+  const button = byId(id);
+  return { label: button.textContent, disabled: button.disabled, onSelect: () => button.click() };
+}
+
+const size = byId('size');
+function changeSize(larger) {
+  if (larger) size.stepUp();
+  else size.stepDown();
+  render();
+}
+const previewMenu = DesktopSettings.bindContextMenu(byId('type-preview'), {
+  label: '排版选项',
+  trigger: byId('preview-menu'),
+  items: () => [
+    { label: '增大字号', disabled: size.valueAsNumber >= Number(size.max), onSelect: () => changeSize(true) },
+    { label: '减小字号', disabled: size.valueAsNumber <= Number(size.min), onSelect: () => changeSize(false) },
+    { type: 'separator' },
+    { label: '段落留白', checked: byId('spacing').checked, onSelect: () => byId('spacing').click() }
+  ]
+});
+DesktopSettings.setTooltip(byId('preview-menu'), '更多排版选项');
+
 const narrowSidebar = matchMedia('(max-width: 620px)');
 function updateNavTooltips() {
   for (const link of links) {
@@ -73,6 +123,7 @@ const defaults = readDraft();
 let saved = defaults;
 
 function restore(draft) {
+  shelfPicker.close();
   for (const field of fields) {
     const value = draft[field.name];
     if (field.type === 'checkbox') field.checked = value;
@@ -84,6 +135,9 @@ function restore(draft) {
 
 function showPanel(id, focusHeading = false) {
   fontPicker.close();
+  shelfPicker.close();
+  menuBar.close();
+  previewMenu.close();
   const selected = panels.find(panel => panel.id === id) || panels[0];
   for (const panel of panels) panel.hidden = panel !== selected;
   for (const link of links) {
@@ -98,6 +152,12 @@ function setError(id, invalid) {
   byId(id).setAttribute('aria-invalid', String(invalid));
   byId(id).setAttribute('aria-describedby', invalid ? `${id}-hint ${id}-error` : `${id}-hint`);
   byId(id + '-error').hidden = !invalid;
+}
+
+function getInvalidFields() {
+  const shelf = byId('shelf');
+  shelf.setCustomValidity(shelf.value.trim() ? '' : '请输入书架名称。');
+  return fields.filter(field => field.willValidate && !field.validity.valid);
 }
 
 function render(feedback) {
@@ -126,15 +186,21 @@ function render(feedback) {
   byId('volume-control').classList.toggle('disabled', !draft.enabled);
 
   const recent = byId('recent');
-  byId('shelf').setCustomValidity(draft.shelf.trim() ? '' : '请输入书架名称。');
+  const invalidFields = getInvalidFields();
   setError('shelf', !byId('shelf').validity.valid);
   setError('recent', !recent.validity.valid);
+  if (!validationBar.hidden) {
+    if (invalidFields.length) validationBar.setMessage(`仍有 ${invalidFields.length} 项需要修正。`);
+    else validationBar.hidden = true;
+  }
   byId('decrease').disabled = recent.valueAsNumber <= Number(recent.min);
   byId('increase').disabled = recent.valueAsNumber >= Number(recent.max);
   byId('revert').disabled = !dirty;
   byId('save').disabled = !dirty;
   byId('defaults').disabled = Object.keys(draft).every(name => draft[name] === defaults[name]);
-  byId('status').textContent = feedback || (dirty ? '有未保存的更改' : '演示设置仅在本次打开期间保存');
+  const status = byId('status');
+  const message = feedback || (dirty ? '有未保存的更改' : '演示设置仅在本次打开期间保存');
+  if (status.textContent !== message) status.textContent = message;
 }
 
 form.addEventListener('input', () => render());
@@ -173,15 +239,16 @@ byId('revert').addEventListener('click', () => {
 });
 form.addEventListener('submit', event => {
   event.preventDefault();
-  const invalid = fields.find(field => !field.validity.valid);
+  const [invalid] = getInvalidFields();
   if (invalid) {
     const panel = invalid.closest('form > section');
     // Replace the current fragment without a deferred hashchange stealing input focus.
     if (location.hash !== '#' + panel.id) history.replaceState(null, '', '#' + panel.id);
     showPanel(panel.id);
+    validationBar.hidden = false;
+    render();
     invalid.focus();
     invalid.reportValidity();
-    render('请修正资料库中标出的设置。');
     return;
   }
   saved = readDraft();

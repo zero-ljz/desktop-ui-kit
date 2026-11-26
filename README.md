@@ -1,6 +1,6 @@
 # Desktop Settings CSS
 
-面向桌面 WebView 设置页的 CSS 库。侧栏、操作栏、分组卡片、设置行、管理列表和表单控件都可单独使用 CSS。自绘下拉框、消息框和工具提示各有独立的原生 JavaScript 入口。
+面向桌面 WebView 设置页的 CSS 库。侧栏、操作栏、分组卡片、设置行、管理列表和表单控件都可单独使用 CSS。自绘下拉框、消息框、工具提示、菜单和内联提示条可按需引入原生 JavaScript 模块。
 
 ## 构建和预览
 
@@ -60,6 +60,49 @@ document.querySelector('#font-control').append(font);
 
 直接打开本地 HTML 时，可先加载 `dist/settings.css` 和普通脚本 `dist/select.browser.js`，再调用 `DesktopSettings.createSelect(...)`。两种 JS 入口由同一份 `src/select.js` 生成。
 
+### 可编辑下拉框
+
+在「资料库 → 书架名称」点击箭头可查看全部预设，输入“读”会筛出“正在读”“想读清单”和“已读收藏”。也可以直接填写自己的名称，保存和撤销都使用输入框中的实际文字。
+
+```js
+import { bindEditableSelect } from 'desktop-settings-css/select';
+
+const input = document.querySelector('#shelf');
+const picker = bindEditableSelect(input, {
+  label: '书架名称预设',
+  options: ['我的书架', '正在读', '想读清单', '已读收藏']
+});
+```
+
+将组件绑定到已有标签的单行文本框，`name`、`required`、`maxlength` 和表单提交均由原生输入框处理。`options` 是字符串数组。输入时按包含关系筛选，英文忽略大小写。上下方向键浏览候选，Enter 选中高亮项，Esc 或 Tab 收起并保留已输入的文字。选择不同的预设立即触发 `input`。离开文本框时，值有变化会触发 `change`。
+
+`picker.setOptions([...])` 刷新候选并保留输入值，`picker.close()` 收起列表，`picker.destroy()` 解除绑定。离线 HTML 使用已有的 `dist/select.browser.js`，通过 `DesktopSettings.bindEditableSelect` 调用。
+
+## WinUI 3 风格菜单
+
+示例顶部的「视图」可切换设置页，「编辑」可保存、撤销或恢复默认值。在「阅读外观」右键单击排版预览，或点击预览标题旁的「•••」，可以调整字号和段落留白。键盘用户可在该按钮上按 Shift+F10 或菜单键打开上下文菜单。方向键移动焦点，Enter 或空格执行命令，Esc 关闭菜单并返回触发位置。
+
+菜单栏和上下文菜单共用菜单项格式。传入 `items` 数组，或传入每次展开时返回数组的函数。用 `disabled` 控制命令可用性，用布尔值 `checked` 显示勾选状态，点击时由 `onSelect` 更新应用数据。
+
+```js
+import { createMenuBar, bindContextMenu } from 'desktop-settings-css/menu';
+
+const save = document.querySelector('#save');
+const items = () => [
+  { label: '保存更改', disabled: save.disabled, onSelect: () => save.click() },
+  { type: 'separator' },
+  { label: '阅读外观', onSelect: () => { location.hash = 'appearance'; } }
+];
+const bar = createMenuBar({ menus: [{ label: '设置', items }] });
+document.querySelector('#settings-menu').replaceWith(bar);
+
+const context = bindContextMenu(document.querySelector('#type-preview'), {
+  label: '预览操作', trigger: document.querySelector('#preview-menu'), items
+});
+```
+
+把菜单栏和触发元素放在 `.ds-settings` 内以继承主题。`trigger` 可选，传入按钮即可用单击打开同一菜单。省略时，目标元素本身可通过键盘打开菜单。用 `bar.close()` 或 `context.close()` 主动收起，用 `context.destroy()` 解除绑定。离线 HTML 加载 `dist/menu.browser.js` 后可通过 `DesktopSettings` 调用这两个组件。
+
 ## 消息框
 
 加载 `desktop-settings-css/settings.css` 后，按需从 `desktop-settings-css/dialog` 导入消息框。组件使用原生 `<dialog>`，从当前焦点所在的 `.ds-settings` 继承主题。多个设置根节点共存时，可通过 `showModal({ root, type, title, message, okLabel, cancelLabel })` 指定挂载点和按钮文字。
@@ -79,6 +122,25 @@ const name = await showPrompt('输入书架名称。', '我的书架', '重命�
 ## 工具提示
 
 从 `desktop-settings-css/tooltip` 导入 `setTooltip` 和 `clearTooltip`。例如 `setTooltip(button, '展开导航', { placement: 'right' })`。文字也可以是回调函数。键盘聚焦和鼠标悬停都能显示提示，按 Esc 可收起。用 `clearTooltip(button)` 解除绑定。离线 HTML 加载 `dist/tooltip.browser.js` 后可调用 `DesktopSettings.setTooltip`。缩窄示例窗口后，在侧栏导航项上试用。
+
+## WinUI 3 风格的内联提示条（InfoBar）
+
+在示例的「资料库」中，清空书架名称，把最近阅读条目数改成 31 后保存。「书架资料」上方的错误提示条会显示剩余两项，点击「查看第一项」可跳到相应输入框。修改有效后计数随之更新，全部修正后自动收起。
+
+```js
+import { createInfoBar } from 'desktop-settings-css/info-bar';
+
+const bar = createInfoBar({
+  severity: 'info',
+  title: '阅读书签',
+  message: '可以按书名或章节查找书签。',
+  action: { label: '搜索书签', onClick: () => document.querySelector('#bookmark-search').focus() },
+  closable: true
+});
+document.querySelector('#library').append(bar);
+```
+
+`severity` 可取 `info`（默认）、`success`、`warning` 或 `error`。标题、操作按钮和关闭按钮均可省略。用 `bar.setMessage(text)` 更新正文，用 `bar.hidden` 控制显隐。设置 `closable: true` 后，点击关闭按钮会隐藏提示条，并调用可选的 `onClose`，宿主可在这里恢复焦点。离线 HTML 加载 `dist/info-bar.browser.js` 后，通过 `DesktopSettings.createInfoBar(...)` 创建组件并挂载到 `.ds-settings` 内。
 
 ## 表单错误与管理列表
 

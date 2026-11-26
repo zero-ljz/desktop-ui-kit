@@ -1,0 +1,101 @@
+:where(.ds-settings) .ds-menu-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+}
+
+:where(.ds-settings) :is(.ds-menu-heading, .ds-menu-item) {
+  appearance: none;
+  border: 0;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-text-primary);
+  font: inherit;
+  font-size: .875rem;
+  line-height: 1.4;
+  text-align: start;
+}
+
+:where(.ds-settings) .ds-menu-heading {
+  padding: 5px 12px;
+  min-height: 32px;
+}
+
+:where(.ds-settings) :is(.ds-menu-heading:hover, .ds-menu-heading[aria-expanded="true"], .ds-menu-item:focus) {
+  background-color: var(--ds-bg-hover);
+}
+
+:where(.ds-settings) :is(.ds-menu-heading, .ds-menu-item):focus-visible {
+  outline: 2px solid var(--ds-text-primary);
+  outline-offset: -2px;
+}
+
+:where(.ds-settings) .ds-menu-flyout {
+  position: fixed;
+  inset: auto;
+  z-index: 1000;
+  margin: 0;
+  padding: 4px;
+  width: max-content;
+  min-width: min(168px, calc(100vw - 16px));
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--ds-border-hover);
+  border-radius: var(--ds-radius-md);
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text-primary);
+  box-shadow: var(--ds-shadow-lg);
+  font-family: var(--ds-font-sans);
+}
+
+@supports (backdrop-filter: blur(20px)) {
+  :where(.ds-settings) .ds-menu-flyout {
+    background: var(--ds-bg-action-bar);
+    backdrop-filter: blur(20px) saturate(150%);
+  }
+}
+
+:where(.ds-settings) .ds-menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  padding: 5px 12px;
+  overflow-wrap: anywhere;
+}
+
+:where(.ds-settings) .ds-menu-with-checks .ds-menu-item {
+  position: relative;
+  padding-inline-start: 34px;
+}
+
+:where(.ds-settings) .ds-menu-item[aria-checked="true"]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 12px;
+  width: 6px;
+  height: 11px;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+:where(.ds-settings) .ds-menu-item[aria-disabled="true"] {
+  color: var(--ds-text-tertiary);
+}
+
+:where(.ds-settings) .ds-menu-flyout [role="separator"] {
+  margin: 4px 8px;
+  border-block-start: 1px solid var(--ds-border-hover);
+}
+
+@media (forced-colors: active) {
+  :where(.ds-settings) .ds-menu-item[aria-disabled="true"] { color: GrayText; }
+  :where(.ds-settings) :is(.ds-menu-heading[aria-expanded="true"], .ds-menu-item:focus) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}

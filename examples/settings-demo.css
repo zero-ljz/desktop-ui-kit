@@ -1,8 +1,16 @@
 body {
   margin: 0;
   background: var(--ds-bg-primary);
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
 }
-.app-container { height: 100vh; height: 100dvh; }
+.window-menu {
+  padding: 4px 12px;
+  background: var(--ds-bg-primary);
+  border-bottom: 1px solid var(--ds-border);
+}
 .sidebar {
   background: var(--ds-bg-secondary);
   border-inline-end: 1px solid var(--ds-border);
@@ -49,7 +57,19 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
   background: var(--ds-accent);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
 }
-.preview figcaption { margin-bottom: 12px; }
+.preview figcaption { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.preview-menu-button {
+  border: 0;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  min-width: 32px;
+  min-height: 28px;
+  color: var(--ds-text-secondary);
+  font: inherit;
+  letter-spacing: 1px;
+}
+.preview-menu-button:is(:hover, [aria-expanded="true"]) { background: var(--ds-bg-hover); }
+.preview-menu-button:focus-visible { outline: 2px solid var(--ds-accent); }
 #sample { line-height: 1.65; overflow-wrap: anywhere; }
 #sample[data-font="serif"] { font-family: ui-serif, Georgia, "Songti SC", SimSun, serif; }
 #sample[data-font="mono"] { font-family: var(--ds-font-mono); }
@@ -57,6 +77,7 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
 #sample p { margin: 0; }
 #sample.spaced p + p { margin-top: .65em; }
 .setting-control textarea { resize: vertical; }
+#library > .ds-info-bar { margin-bottom: 20px; }
 .bookmark-search {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
