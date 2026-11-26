@@ -115,6 +115,12 @@ byId('size-picker').append(sizePicker);
 const colorPicker = DesktopSettings.bindEditableSelect(byId('color-input'), {
   label: '颜色预设', options: ['天蓝', '深蓝', '草绿', '石墨灰']
 });
+const formatsPicker = DesktopSettings.createMultiSelect({
+  id: 'formats-trigger', labelledBy: 'formats-label', placeholder: '选择文件格式',
+  options: ['PDF', 'Word (.docx)', 'Markdown (.md)', '纯文本 (.txt)', 'PNG', 'JPEG'].map(label => ({ value: label, label })),
+  values: ['PDF', 'Markdown (.md)']
+});
+byId('formats-picker').append(formatsPicker);
 
 const options = [...document.querySelectorAll('.child-option input')];
 const selectAll = byId('select-all');
@@ -199,6 +205,7 @@ showInfo();
 function showPanel(focusHeading = false) {
   sizePicker.close();
   colorPicker.close();
+  formatsPicker.close();
   menuBar.close();
   previewMenu.close();
   const current = links.find(link => link.hash === location.hash) || links[0];

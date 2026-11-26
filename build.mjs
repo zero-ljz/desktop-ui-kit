@@ -31,7 +31,7 @@ console.log(`Built dist/settings.css (${Buffer.byteLength(css)} bytes)`);
 
 for (const [name, exports] of [
   ['inputs', 'bindNumberStepper, bindPathPicker, bindShortcutInput, bindPasswordInput, bindColorInput, createTagInput'],
-  ['select', 'createSelect, bindEditableSelect'],
+  ['select', 'createSelect, bindEditableSelect, createMultiSelect'],
   ['pivot', 'bindPivot'],
   ['dialog', 'showModal, showAlert, showConfirm, showPrompt'],
   ['tooltip', 'setTooltip, clearTooltip'],

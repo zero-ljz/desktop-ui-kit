@@ -150,7 +150,7 @@
   padding: 16px 20px 16px 54px;
   cursor: pointer;
 }
-:where(.ds-settings) .winui-checkbox {
+:where(.ds-settings) :is(.winui-checkbox, .multi-select-check) {
   appearance: none;
   flex: 0 0 auto;
   width: 20px;
@@ -174,11 +174,13 @@
 :where(.ds-settings) .winui-checkbox:disabled {
   cursor: not-allowed;
 }
-:where(.ds-settings) .winui-checkbox:checked {
+:where(.ds-settings) .winui-checkbox:checked,
+:where(.ds-settings) [aria-selected="true"] > .multi-select-check {
   border-color: var(--ds-accent);
   background-color: var(--ds-accent);
 }
-:where(.ds-settings) .winui-checkbox:checked::after {
+:where(.ds-settings) .winui-checkbox:checked::after,
+:where(.ds-settings) [aria-selected="true"] > .multi-select-check::after {
   content: '';
   position: absolute;
   left: 6px;
@@ -522,7 +524,7 @@
 :where(.ds-settings) .editable-select > input:is(:disabled, [readonly]) + .editable-select-toggle {
   visibility: hidden;
 }
-:where(.ds-settings) .editable-select .active-option {
+:where(.ds-settings) :is(.editable-select, .multi-select) .active-option {
   background-color: var(--ds-bg-active);
   outline: 2px solid var(--ds-accent);
   outline-offset: -2px;
@@ -592,7 +594,7 @@
   text-align: left;
   white-space: nowrap;
 }
-:where(.ds-settings) :is(.select-trigger, .editable-select-toggle) + .select-dropdown .select-option {
+:where(.ds-settings) :is(.select-trigger, .editable-select-toggle) + .select-dropdown > .select-option {
   display: block;
   width: 100%;
   white-space: normal;
@@ -625,6 +627,36 @@
 :where(.ds-settings) :is(.select-trigger, .select-option):focus-visible {
   outline: 2px solid var(--ds-accent);
   outline-offset: 2px;
+}
+
+:where(.ds-settings) .multi-select { width: 15rem; }
+:where(.ds-settings) .multi-select .select-dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  overflow: hidden;
+}
+:where(.ds-settings) .multi-select .input-text {
+  flex: none;
+  width: 100%;
+  user-select: text;
+}
+:where(.ds-settings) .multi-select-list {
+  position: relative;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+:where(.ds-settings) .multi-select-option {
+  gap: 10px;
+  padding: 6px 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:where(.ds-settings) .multi-select-empty {
+  padding: 6px 8px;
+  color: var(--ds-text-secondary);
+  font-size: .85rem;
 }
 
 /* WinUI NumberBox, inline spin buttons */
@@ -904,6 +936,12 @@
 }
 
 @media (forced-colors: active) {
+  :where(.ds-settings) [aria-selected="true"] > .multi-select-check {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+  }
+  :where(.ds-settings) [aria-selected="true"] > .multi-select-check::after { border-color: HighlightText; }
   :where(.ds-settings) .select-option.selected::before {
     forced-color-adjust: none;
     background-color: Highlight;

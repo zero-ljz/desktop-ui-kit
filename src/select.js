@@ -36,21 +36,37 @@ function markSelectedOption(item, selected) {
   item.setAttribute('aria-selected', String(selected));
 }
 
-function createSelect({ options = [], value = options[0]?.value, id, labelledBy, onChange, onOpen } = {}) {
-  const container = document.createElement('div');
-  container.className = 'custom-select';
+function highlightSelectOption(input, list, index) {
+  list.querySelector('.active-option')?.classList.remove('active-option');
+  const item = list.children[index];
+  if (item) {
+    item.classList.add('active-option');
+    input.setAttribute('aria-activedescendant', item.id);
+    scrollToSelectOption(list, item);
+  } else {
+    input.removeAttribute('aria-activedescendant');
+  }
+}
+
+function createSelectTrigger(id) {
   const trigger = document.createElement('button');
   trigger.type = 'button';
   trigger.className = 'select-trigger';
   trigger.id = id || `ds-select-${++nextSelectId}`;
-  trigger.setAttribute('role', 'combobox');
-  trigger.setAttribute('aria-haspopup', 'listbox');
   trigger.setAttribute('aria-expanded', 'false');
-  if (labelledBy) trigger.setAttribute('aria-labelledby', labelledBy);
-
   const label = document.createElement('span');
   label.className = 'select-label';
   trigger.append(label, createSelectArrow());
+  return { trigger, label };
+}
+
+function createSelect({ options = [], value = options[0]?.value, id, labelledBy, onChange, onOpen } = {}) {
+  const container = document.createElement('div');
+  container.className = 'custom-select';
+  const { trigger, label } = createSelectTrigger(id);
+  trigger.setAttribute('role', 'combobox');
+  trigger.setAttribute('aria-haspopup', 'listbox');
+  if (labelledBy) trigger.setAttribute('aria-labelledby', labelledBy);
 
   const list = document.createElement('div');
   list.className = 'select-dropdown';
@@ -205,6 +221,181 @@ function createSelect({ options = [], value = options[0]?.value, id, labelledBy,
   return container;
 }
 
+function createMultiSelect({ options = [], values = [], id, labelledBy, placeholder = '请选择', onChange } = {}) {
+  const container = document.createElement('div');
+  container.className = 'custom-select multi-select';
+  const { trigger, label } = createSelectTrigger(id);
+  label.id = trigger.id + '-summary';
+  if (labelledBy) trigger.setAttribute('aria-labelledby', labelledBy + ' ' + label.id);
+
+  const panel = document.createElement('div');
+  panel.className = 'select-dropdown';
+  panel.id = trigger.id + '-panel';
+  trigger.setAttribute('aria-controls', panel.id);
+  const search = document.createElement('input');
+  search.className = 'input-text';
+  search.type = 'search';
+  search.placeholder = '搜索选项';
+  search.autocomplete = 'off';
+  search.setAttribute('aria-label', search.placeholder);
+  search.setAttribute('role', 'combobox');
+  search.setAttribute('aria-autocomplete', 'list');
+  search.setAttribute('aria-expanded', 'false');
+
+  const list = document.createElement('div');
+  list.className = 'multi-select-list';
+  list.id = trigger.id + '-listbox';
+  list.setAttribute('role', 'listbox');
+  list.setAttribute('aria-multiselectable', 'true');
+  list.setAttribute('aria-labelledby', labelledBy || trigger.id);
+  search.setAttribute('aria-controls', list.id);
+  const empty = document.createElement('div');
+  empty.className = 'multi-select-empty';
+  empty.setAttribute('role', 'status');
+  panel.append(search, list, empty);
+  container.append(trigger, panel);
+
+  let selected = new Set(values);
+  let matches = [];
+  let activeIndex = -1;
+
+  function selectedOptions() {
+    return options.filter(option => selected.has(option.value));
+  }
+  function syncSelection() {
+    const labels = selectedOptions().map(option => option.label);
+    label.textContent = labels.length > 2 ? `已选 ${labels.length} 项` : labels.join('、') || placeholder;
+    trigger.title = labels.join('、');
+    matches.forEach((option, index) => {
+      list.children[index].setAttribute('aria-selected', String(selected.has(option.value)));
+    });
+  }
+  function highlight(index) {
+    activeIndex = index;
+    highlightSelectOption(search, list, index);
+  }
+  function position() {
+    positionSelectList(container, trigger, panel);
+  }
+  function filterOptions() {
+    const query = search.value.trim().toLocaleLowerCase();
+    matches = options.filter(option => option.label.toLocaleLowerCase().includes(query));
+    highlight(-1);
+    list.replaceChildren(...matches.map((option, index) => {
+      const item = document.createElement('div');
+      item.className = 'select-option multi-select-option';
+      item.id = list.id + '-' + index;
+      item.setAttribute('role', 'option');
+      const check = document.createElement('span');
+      check.className = 'multi-select-check';
+      check.setAttribute('aria-hidden', 'true');
+      item.append(check, option.label);
+      return item;
+    }));
+    empty.textContent = options.length ? '没有匹配的选项' : '暂无选项';
+    empty.hidden = matches.length > 0;
+    list.scrollTop = 0;
+    syncSelection();
+    position();
+    if (query && matches.length) highlight(0);
+  }
+
+  function toggleOption(index) {
+    const option = matches[index];
+    if (!option) return;
+    if (selected.has(option.value)) selected.delete(option.value);
+    else selected.add(option.value);
+    highlight(index);
+    syncSelection();
+    onChange?.(container.getValues());
+  }
+  function outside(event) {
+    if (!container.contains(event.target)) close();
+  }
+  function close() {
+    if (activeSelect !== container) return;
+    activeSelect = null;
+    document.removeEventListener('pointerdown', outside, true);
+    window.removeEventListener('resize', position);
+    if (panel.contains(document.activeElement)) trigger.focus({ preventScroll: true });
+    container.classList.remove('open', 'open-upward');
+    trigger.setAttribute('aria-expanded', 'false');
+    search.setAttribute('aria-expanded', 'false');
+    highlight(-1);
+  }
+  function open() {
+    activeSelect?.close();
+    activeSelect = container;
+    search.value = '';
+    container.classList.add('open');
+    trigger.setAttribute('aria-expanded', 'true');
+    search.setAttribute('aria-expanded', 'true');
+    filterOptions();
+    search.focus({ preventScroll: true });
+    document.addEventListener('pointerdown', outside, true);
+    window.addEventListener('resize', position);
+  }
+
+  trigger.addEventListener('click', () => {
+    if (activeSelect === container) close();
+    else open();
+  });
+  search.addEventListener('input', filterOptions);
+  list.addEventListener('mousedown', event => event.preventDefault());
+  list.addEventListener('click', event => {
+    const item = event.target.closest('[role="option"]');
+    if (item) toggleOption(Array.from(list.children).indexOf(item));
+  });
+  container.addEventListener('keydown', event => {
+    if (event.isComposing || event.keyCode === 229) return;
+    if (event.target === trigger && event.key === 'ArrowDown') {
+      event.preventDefault();
+      open();
+      return;
+    }
+    if (activeSelect !== container) return;
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!matches.length) return;
+      const down = event.key === 'ArrowDown';
+      const start = activeIndex < 0 && !down ? 0 : activeIndex;
+      highlight((start + (down ? 1 : -1) + matches.length) % matches.length);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      toggleOption(activeIndex);
+    } else if (event.key === 'Escape' || event.key === 'Tab') {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      close();
+    }
+  });
+  container.addEventListener('focusout', event => {
+    if (!container.contains(event.relatedTarget)) close();
+  });
+
+  container.trigger = trigger;
+  container.close = close;
+  container.getValues = () => selectedOptions().map(option => option.value);
+  container.setValues = next => {
+    selected = new Set(next);
+    syncSelection();
+  };
+  container.setOptions = (next, nextValues = container.getValues()) => {
+    options = next;
+    selected = new Set(nextValues);
+    if (activeSelect === container) filterOptions();
+    else {
+      matches = [];
+      list.replaceChildren();
+      syncSelection();
+    }
+  };
+  syncSelection();
+  return container;
+}
+
 function bindEditableSelect(input, { options = [], label = '预设选项' } = {}) {
   const container = document.createElement('div');
   container.className = 'custom-select editable-select';
@@ -264,16 +455,8 @@ function bindEditableSelect(input, { options = [], label = '预设选项' } = {}
   };
 
   function highlight(index) {
-    list.children[activeIndex]?.classList.remove('active-option');
     activeIndex = index;
-    const item = list.children[index];
-    if (item) {
-      item.classList.add('active-option');
-      input.setAttribute('aria-activedescendant', item.id);
-      scrollToSelectOption(list, item);
-    } else {
-      input.removeAttribute('aria-activedescendant');
-    }
+    highlightSelectOption(input, list, index);
   }
 
   function position() {

@@ -118,6 +118,28 @@ const picker = bindEditableSelect(input, {
 
 `picker.setOptions([...])` 刷新候选并保留输入值，`picker.close()` 收起列表，`picker.destroy()` 解除绑定。离线 HTML 使用已有的 `dist/select.browser.js`，通过 `DesktopSettings.bindEditableSelect` 调用。
 
+### WinUI 3 风格的可搜索多选框
+
+在图库「选择控件」的「多项选择」中可以试用。展开后按名称搜索，英文忽略大小写。点击选项即可勾选或取消，面板会保持展开。也可用上下方向键移动高亮，按 Enter 切换选中状态，按 Esc 收起。再次展开时会显示全部选项并保留勾选。
+
+```js
+import { createMultiSelect } from 'desktop-settings-css/select';
+
+const formats = createMultiSelect({
+  placeholder: '选择文件格式',
+  options: [
+    { value: 'pdf', label: 'PDF' },
+    { value: 'md', label: 'Markdown' },
+    { value: 'txt', label: '纯文本' }
+  ],
+  values: ['pdf'],
+  onChange: values => console.log(values)
+});
+document.querySelector('#formats-picker').append(formats);
+```
+
+每个选项使用唯一的 `value`。`getValues()` 按选项顺序返回选中值数组，`setValues(values)` 设置选中项，`setOptions(options)` 刷新选项并保留仍存在的选中值。也可用 `setOptions(options, values)` 同时更新两者。只有用户勾选或取消时才触发 `onChange`。通过 `id` 和 `labelledBy` 关联页面标签，通过 `close()` 收起面板。离线 HTML 加载 `dist/select.browser.js` 后可调用 `DesktopSettings.createMultiSelect`。
+
 ## Pivot 标签页
 
 在图库的「标签页」中可试用「常规」「通知」「启动与退出」。标签按文字宽度排列，选中线与标题等宽。点击标题或在面板空白处左右滑动可切换页面。键盘聚焦标题时，左右方向键切换页面，Home 和 End 跳到首尾可用标签，Tab 进入当前页的控件。切换页面时保留表单值。
