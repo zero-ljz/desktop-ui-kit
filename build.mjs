@@ -16,15 +16,21 @@ const css = [
   theme(':where(.ds-settings[data-theme="dark"])', 'dark'),
   await read('./src/base.css'),
   await read('./src/layout.css'),
-  await read('./src/components.css')
+  await read('./src/components.css'),
+  await read('./src/dialog.css')
 ].join('\n\n');
 
 await mkdir(new URL('./dist/', import.meta.url), { recursive: true });
 await writeFile(new URL('./dist/settings.css', import.meta.url), css);
 console.log(`Built dist/settings.css (${Buffer.byteLength(css)} bytes)`);
 
-const select = await read('./src/select.js');
-await writeFile(new URL('./dist/select.mjs', import.meta.url), select + '\nexport { createSelect };\n');
-await writeFile(new URL('./dist/select.browser.js', import.meta.url),
-  `(() => {\n'use strict';\n${select}\nwindow.DesktopSettings = Object.assign(window.DesktopSettings || {}, { createSelect });\n})();\n`);
-console.log('Built dist/select.mjs and dist/select.browser.js');
+for (const [name, exports] of [
+  ['select', 'createSelect'],
+  ['dialog', 'showModal, showAlert, showConfirm, showPrompt']
+]) {
+  const source = await read(`./src/${name}.js`);
+  await writeFile(new URL(`./dist/${name}.mjs`, import.meta.url), `${source}\nexport { ${exports} };\n`);
+  await writeFile(new URL(`./dist/${name}.browser.js`, import.meta.url),
+    `(() => {\n'use strict';\n${source}\nwindow.DesktopSettings = Object.assign(window.DesktopSettings || {}, { ${exports} });\n})();\n`);
+  console.log(`Built dist/${name}.mjs and dist/${name}.browser.js`);
+}

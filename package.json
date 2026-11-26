@@ -7,9 +7,11 @@
   "exports": {
     "./settings.css": "./dist/settings.css",
     "./select": "./dist/select.mjs",
-    "./select.browser.js": "./dist/select.browser.js"
+    "./select.browser.js": "./dist/select.browser.js",
+    "./dialog": "./dist/dialog.mjs",
+    "./dialog.browser.js": "./dist/dialog.browser.js"
   },
-  "files": ["dist/settings.css", "dist/select.mjs", "dist/select.browser.js", "examples/"],
+  "files": ["dist/settings.css", "dist/select.mjs", "dist/select.browser.js", "dist/dialog.mjs", "dist/dialog.browser.js", "examples/"],
   "scripts": {
     "build": "node build.mjs",
     "prepack": "node build.mjs"

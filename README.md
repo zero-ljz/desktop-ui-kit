@@ -1,6 +1,6 @@
 # Desktop Settings CSS
 
-面向桌面 WebView 设置页的 CSS 库。提供侧栏、操作栏、分组卡片、设置行和表单控件。基础样式可以单独使用，自绘下拉框提供可按需引入的原生 JavaScript 模块。
+面向桌面 WebView 设置页的 CSS 库。提供侧栏、操作栏、分组卡片、设置行和表单控件。基础样式可以单独使用，自绘下拉框和消息框各有独立的原生 JavaScript 入口。
 
 ## 构建和预览
 
@@ -59,3 +59,19 @@ document.querySelector('#font-control').append(font);
 `getValue()` 读取选中值，`getSelectedOption()` 返回对应选项。`setValue(value)` 和 `setOptions(options, value)` 用于回显或刷新选项，只有用户确认选择时才触发 `onChange`。可通过异步 `onOpen` 在展开前刷新数据，通过 `close()` 在切页时收起菜单。
 
 直接打开本地 HTML 时，可先加载 `dist/settings.css` 和普通脚本 `dist/select.browser.js`，再调用 `DesktopSettings.createSelect(...)`。两种 JS 入口由同一份 `src/select.js` 生成。
+
+## 消息框
+
+加载 `desktop-settings-css/settings.css` 后，按需从 `desktop-settings-css/dialog` 导入消息框。组件使用原生 `<dialog>`，从当前焦点所在的 `.ds-settings` 继承主题。多个设置根节点共存时，可通过 `showModal({ root, type, title, message, okLabel, cancelLabel })` 指定挂载点和按钮文字。
+
+```js
+import { showAlert, showConfirm, showPrompt } from 'desktop-settings-css/dialog';
+
+await showAlert('更改已保存。');
+const confirmed = await showConfirm('恢复默认设置？');
+const name = await showPrompt('输入书架名称。', '我的书架', '重命名');
+```
+
+`showAlert` 关闭后返回 `true`。`showConfirm` 返回确认结果。`showPrompt` 确认后返回输入字符串（包括空字符串），取消或按 Esc 时返回 `null`。这些结果均通过 Promise 返回，调用方用 `await` 取得结果后执行业务操作。
+
+离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopSettings.showConfirm(...)` 等同名接口调用。在示例的「资料库 → 消息框」可试用三种对话框。

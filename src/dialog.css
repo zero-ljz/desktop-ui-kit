@@ -1,0 +1,54 @@
+:where(.ds-settings) .ds-dialog {
+  width: 448px;
+  max-width: calc(100% - 48px);
+  max-height: calc(100% - 32px);
+  overflow: auto;
+  margin: auto;
+  padding: 24px;
+  background: var(--ds-bg-elevated);
+  color: var(--ds-text-primary);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+  box-shadow: var(--ds-shadow-lg);
+  font: inherit;
+  overflow-wrap: anywhere;
+}
+:where(.ds-settings) .ds-dialog::backdrop { background: rgb(0 0 0 / 40%); }
+:where(.ds-settings) .ds-dialog-title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+:where(.ds-settings) .ds-dialog-message {
+  margin: 0 0 24px;
+  font-size: 14px;
+  line-height: 20px;
+  white-space: pre-wrap;
+}
+:where(.ds-settings) .ds-dialog > .input-text {
+  width: 100%;
+  margin: 12px 0 24px;
+}
+:where(.ds-settings) .ds-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 -24px -24px;
+  padding: 24px;
+  background: var(--ds-bg-surface);
+  border-top: 1px solid var(--ds-border);
+}
+:where(.ds-settings) .ds-dialog-actions .btn {
+  min-width: min(120px, 100%);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :where(.ds-settings) .ds-dialog[open] { animation: ds-dialog-in 0.2s ease-out; }
+  @keyframes ds-dialog-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+}

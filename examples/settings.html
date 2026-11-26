@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="../dist/settings.css">
   <link rel="stylesheet" href="./settings-demo.css">
   <script src="../dist/select.browser.js" defer></script>
+  <script src="../dist/dialog.browser.js" defer></script>
   <script src="./settings-demo.js" defer></script>
 </head>
 <body class="ds-settings">
@@ -121,6 +122,22 @@
               <span class="field-error" id="recent-error" hidden>请输入 1 至 30 的整数。</span>
             </div>
           </div>
+          </div>
+        </section>
+        <section class="section-wrapper" aria-labelledby="dialog-title">
+          <h2 class="section-title" id="dialog-title">消息框</h2>
+          <div class="section-card">
+            <div class="setting-row">
+              <div class="setting-info">
+                <span class="setting-label">预览消息框</span>
+                <span class="setting-desc" id="dialog-result" role="status"></span>
+              </div>
+              <div class="setting-control">
+                <button type="button" class="btn" id="preview-alert">提示</button>
+                <button type="button" class="btn" id="preview-confirm">确认</button>
+                <button type="button" class="btn" id="preview-prompt">输入</button>
+              </div>
+            </div>
           </div>
         </section>
         <section class="section-wrapper" aria-labelledby="defaults-title">

@@ -111,6 +111,18 @@ function stepRecent(direction) {
 }
 byId('decrease').addEventListener('click', () => stepRecent(-1));
 byId('increase').addEventListener('click', () => stepRecent(1));
+byId('preview-alert').addEventListener('click', async () => {
+  await DesktopSettings.showAlert('阅读偏好仅在本次演示中保存。', '保存说明');
+  byId('dialog-result').textContent = '已关闭提示。';
+});
+byId('preview-confirm').addEventListener('click', async () => {
+  const accepted = await DesktopSettings.showConfirm('结束本次预览？');
+  byId('dialog-result').textContent = accepted ? '已确认。' : '已取消。';
+});
+byId('preview-prompt').addEventListener('click', async () => {
+  const text = await DesktopSettings.showPrompt('输入一个书签名称。', '读到这里', '书签名称');
+  byId('dialog-result').textContent = text === null ? '已取消。' : `输入结果：“${text}”`;
+});
 byId('defaults').addEventListener('click', () => {
   restore(defaults);
   render(Object.keys(defaults).some(name => defaults[name] !== saved[name])
