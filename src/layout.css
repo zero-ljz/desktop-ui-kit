@@ -109,11 +109,12 @@
 }
 
 :where(.ds-settings) :where(.app-container) > .action-bar-floating {
+  --ds-action-bar-inset: 40px;
   grid-column: 2;
   grid-row: 1;
   place-self: end;
-  margin: 0 40px 36px;
-  width: min(520px, calc(100% - 80px));
+  margin: 0 var(--ds-action-bar-inset) 36px;
+  width: min(520px, calc(100% - 2 * var(--ds-action-bar-inset)));
   z-index: 20;
 }
 
@@ -163,8 +164,8 @@
 
 @media (max-width: 900px) {
   :where(.ds-settings) :where(.app-container) > .action-bar-floating {
-    margin: 0 28px 28px;
-    width: calc(100% - 56px);
+    --ds-action-bar-inset: 28px;
+    margin-bottom: 28px;
   }
 }
 
