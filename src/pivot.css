@@ -31,12 +31,20 @@
 }
 :where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after {
   content: '';
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]:has(> .pivot-indicator)::after {
+  content: none;
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after,
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"] > .pivot-indicator {
   position: absolute;
   inset-inline: 12px;
   bottom: 2px;
   height: 3px;
   border-radius: 1.5px;
   background: var(--ds-accent);
+  pointer-events: none;
+  transform-origin: left center;
 }
 :where(.ds-settings) .pivot > [role="tablist"] > [role="tab"]:enabled:active {
   color: var(--ds-text-secondary);
@@ -55,7 +63,8 @@
   margin: 12px 12px 0;
 }
 @media (forced-colors: active) {
-  :where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after {
+  :where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after,
+  :where(.ds-settings) .pivot > [role="tablist"] > [role="tab"] > .pivot-indicator {
     forced-color-adjust: none;
     background: Highlight;
   }

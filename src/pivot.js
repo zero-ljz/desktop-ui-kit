@@ -12,9 +12,40 @@ function bindPivot(root, { onChange } = {}) {
       tabs.some(tab => !tab.id || !panels.has(panelId(tab)))) {
     throw new Error('Each Pivot tab needs an id and aria-controls pointing to its own panel.');
   }
+  const rtl = () => getComputedStyle(headers).direction === 'rtl';
+  const motion = matchMedia('(prefers-reduced-motion: no-preference)');
+  const indicator = root.ownerDocument.createElement('span');
+  indicator.className = 'pivot-indicator';
+  indicator.setAttribute('aria-hidden', 'true');
   let current;
+  let indicatorAnimation;
+  let panelAnimation;
+  function cancelMotion() {
+    indicatorAnimation?.cancel();
+    panelAnimation?.cancel();
+  }
+  motion.addEventListener('change', () => {
+    if (!motion.matches) cancelMotion();
+  }, { signal });
+
+  function moveIndicator(tab, start) {
+    tab.append(indicator);
+    if (!start?.width) return;
+    const end = indicator.getBoundingClientRect();
+    if (!end.width) return;
+    const offset = (start.left - end.left) / end.width * 100;
+    const scale = start.width / end.width;
+    indicatorAnimation = indicator.animate([
+      { transform: `translateX(${offset}%) scaleX(${scale})` },
+      { transform: 'none' }
+    ], { duration: 240, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' });
+  }
+
   function select(tab, { focus = false, notify = false } = {}) {
     const changed = tab !== current;
+    // Sample the moving line before cancellation so a second switch starts where it is.
+    const start = changed && current && tab && motion.matches ? indicator.getBoundingClientRect() : null;
+    if (changed) cancelMotion();
     current = tab;
     for (const item of tabs) {
       const selected = item === tab;
@@ -22,7 +53,16 @@ function bindPivot(root, { onChange } = {}) {
       item.tabIndex = selected ? 0 : -1;
       panels.get(panelId(item)).hidden = !selected;
     }
-    if (!tab) return;
+    if (!tab) {
+      indicator.remove();
+      return;
+    }
+    if (changed) moveIndicator(tab, start);
+    if (start?.width) {
+      panelAnimation = panels.get(panelId(tab)).animate(
+        [{ opacity: 0.8 }, { opacity: 1 }], { duration: 140, easing: 'ease-out' }
+      );
+    }
     if (focus) tab.focus({ preventScroll: true });
     const edge = headers.getBoundingClientRect();
     const rect = tab.getBoundingClientRect();
@@ -35,7 +75,6 @@ function bindPivot(root, { onChange } = {}) {
     const index = options.indexOf(tab) + direction;
     return options[wrap ? (index + options.length) % options.length : index];
   }
-  const rtl = () => getComputedStyle(headers).direction === 'rtl';
   for (const tab of tabs) {
     const panel = panels.get(panelId(tab));
     panel.setAttribute('aria-labelledby', tab.id);
@@ -90,6 +129,11 @@ function bindPivot(root, { onChange } = {}) {
         select(tab, { focus: tab !== current && root.contains(active) });
       }
     },
-    destroy() { events.abort(); observer.disconnect(); }
+    destroy() {
+      events.abort();
+      observer.disconnect();
+      cancelMotion();
+      indicator.remove();
+    }
   };
 }
