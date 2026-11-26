@@ -1,0 +1,9 @@
+{
+  "name": "desktop-settings-css",
+  "version": "0.1.0",
+  "description": "Scoped, framework-independent styles for desktop settings forms.",
+  "private": true,
+  "style": "./dist/settings.css",
+  "exports": { "./settings.css": "./dist/settings.css" },
+  "scripts": { "build": "node build.mjs" }
+}

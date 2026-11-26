@@ -1,0 +1,497 @@
+:where(.ds-settings) .section-wrapper {
+  margin-bottom: 20px;
+}
+:where(.ds-settings) .section-title {
+  font-family: var(--ds-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--ds-text-primary);
+  padding-left: 4px;
+}
+:where(.ds-settings) .section-card {
+  background-color: var(--ds-bg-surface);
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-md);
+}
+:where(.ds-settings) .setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ds-border);
+}
+:where(.ds-settings) .setting-row:last-child {
+  border-bottom: none;
+}
+:where(.ds-settings) .setting-content {
+  padding: 12px 16px;
+}
+:where(.ds-settings) .setting-info {
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  padding-right: 20px;
+}
+:where(.ds-settings) .setting-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+:where(.ds-settings) .setting-desc {
+  font-size: 0.85rem;
+  color: var(--ds-text-secondary);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+:where(.ds-settings) .setting-control {
+  max-width: 100%;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* WinUI-style settings expander */
+:where(.ds-settings) .settings-expander {
+  width: 100%;
+  overflow-anchor: none;
+}
+:where(.ds-settings) .section-card > .settings-expander:not(:first-child) {
+  border-top: 1px solid var(--ds-border);
+}
+:where(.ds-settings) .section-card > .settings-expander:not(:first-child) .settings-expander-header {
+  border-radius: 0;
+}
+:where(.ds-settings) .settings-expander > summary::-webkit-details-marker {
+  display: none;
+}
+:where(.ds-settings) .settings-expander-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 64px;
+  padding: 14px 20px;
+  border-radius: calc(var(--ds-radius-md) - 1px);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background-color var(--ds-transition-fast);
+}
+:where(.ds-settings) .settings-expander-compact .settings-expander-header {
+  min-height: 48px;
+  padding-block: 10px;
+}
+:where(.ds-settings) .settings-expander-header:hover {
+  background-color: var(--ds-bg-hover);
+}
+:where(.ds-settings) .settings-expander-header:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: -2px;
+}
+:where(.ds-settings) .settings-expander-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+:where(.ds-settings) .settings-expander-title {
+  color: var(--ds-text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+:where(.ds-settings) .settings-expander-description {
+  color: var(--ds-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+:where(.ds-settings) .settings-expander-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+:where(.ds-settings) .settings-expander-chevron {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ds-text-secondary);
+  transition: transform var(--ds-transition-fast);
+}
+:where(.ds-settings) .settings-expander[open] .settings-expander-chevron {
+  transform: rotate(90deg);
+}
+:where(.ds-settings) .settings-expander[open] .settings-expander-header {
+  border-radius: calc(var(--ds-radius-md) - 1px) calc(var(--ds-radius-md) - 1px) 0 0;
+}
+:where(.ds-settings) .settings-expander-content {
+  border-top: 1px solid var(--ds-border);
+}
+:where(.ds-settings) .winui-checkbox-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px 16px 54px;
+  cursor: pointer;
+}
+:where(.ds-settings) .winui-checkbox {
+  appearance: none;
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  border: 1px solid var(--ds-text-secondary);
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast);
+}
+:where(.ds-settings) .winui-checkbox:hover:not(:checked):not(:disabled) {
+  border-color: var(--ds-text-primary);
+  background-color: var(--ds-bg-hover);
+}
+:where(.ds-settings) .winui-checkbox-option.disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+:where(.ds-settings) .winui-checkbox:disabled {
+  cursor: not-allowed;
+}
+:where(.ds-settings) .winui-checkbox:checked {
+  border-color: var(--ds-accent);
+  background-color: var(--ds-accent);
+}
+:where(.ds-settings) .winui-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--ds-accent-text);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+:where(.ds-settings) .winui-checkbox:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+:where(.ds-settings) .winui-checkbox-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+:where(.ds-settings) .winui-checkbox-title {
+  color: var(--ds-text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+:where(.ds-settings) .winui-checkbox-description {
+  color: var(--ds-text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* Toggle */
+:where(.ds-settings) .toggle-switch {
+  appearance: none;
+  margin: 0;
+  flex-shrink: 0;
+  position: relative;
+  width: 40px;
+  height: 20px;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid var(--ds-text-tertiary);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all var(--ds-transition-fast);
+}
+:where(.ds-settings) .toggle-switch:hover:not(:disabled) {
+  border-color: var(--ds-text-secondary);
+}
+:where(.ds-settings) .toggle-switch:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+:where(.ds-settings) .toggle-switch:disabled:hover {
+  border-color: var(--ds-text-tertiary);
+}
+:where(.ds-settings) .toggle-switch:checked {
+  background-color: var(--ds-accent);
+  border-color: var(--ds-accent);
+}
+:where(.ds-settings) .toggle-switch::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  background-color: var(--ds-text-secondary);
+  border-radius: 50%;
+  transition: transform var(--ds-transition-fast), background-color var(--ds-transition-fast);
+}
+:where(.ds-settings) .toggle-switch:hover:not(:checked):not(:disabled)::before {
+  background-color: var(--ds-text-primary);
+}
+:where(.ds-settings) .toggle-switch:checked::before {
+  background-color: var(--ds-accent-text);
+  transform: translateX(20px);
+}
+
+/* Button */
+:where(.ds-settings) .btn {
+  padding: 5px 16px;
+  border-radius: 4px; /* WinUI 3 radius */
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--ds-border);
+  border-bottom-color: var(--ds-btn-border-bottom);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition:
+    background-color 100ms ease,
+    border-color 100ms ease,
+    box-shadow 100ms ease,
+    color 100ms ease;
+  background: var(--ds-btn-bg);
+  color: var(--ds-text-primary);
+  outline: none;
+}
+:where(.ds-settings) .btn:focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+:where(.ds-settings) .btn:hover:not(:disabled) {
+  background-color: var(--ds-btn-bg-hover);
+}
+:where(.ds-settings) .btn:active:not(:disabled) {
+  background-color: var(--ds-btn-bg-active);
+  color: var(--ds-text-secondary);
+  border-bottom-color: var(--ds-border);
+  box-shadow: none;
+}
+:where(.ds-settings) .btn-primary {
+  background-color: var(--ds-accent);
+  border: 1px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  color: var(--ds-accent-text);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+:where(.ds-settings) .btn-primary:hover:not(:disabled) {
+  background-color: var(--ds-accent-hover);
+}
+:where(.ds-settings) .btn-primary:active:not(:disabled) {
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+:where(.ds-settings) .btn-danger {
+  background-color: var(--ds-danger);
+  color: white;
+  border-color: transparent;
+}
+:where(.ds-settings) .btn-danger:hover:not(:disabled) {
+  background-color: var(--ds-danger-hover);
+}
+:where(.ds-settings) .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Inputs */
+:where(.ds-settings) .input-text, :where(.ds-settings) .select-box {
+  background-color: var(--ds-bg-surface);
+  background-image: linear-gradient(var(--ds-text-tertiary), var(--ds-text-tertiary));
+  background-size: 100% 1px;
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  background-clip: border-box;
+  border: 1px solid var(--ds-border);
+  border-bottom-color: transparent;
+  color: var(--ds-text-primary);
+  padding: 6px 12px;
+  border-radius: var(--ds-radius-sm);
+  outline: none;
+  transition:
+    background-color var(--ds-transition-fast),
+    border-color var(--ds-transition-fast),
+    background-size var(--ds-transition-fast);
+}
+:where(.ds-settings) .input-text:hover, :where(.ds-settings) .select-box:hover {
+  background-color: var(--ds-bg-surface-hover);
+  border-color: var(--ds-border-hover);
+  border-bottom-color: transparent;
+}
+:where(.ds-settings) .input-text::placeholder {
+  color: var(--ds-text-tertiary);
+  font-size: 0.82rem;
+  opacity: 1;
+}
+:where(.ds-settings) .input-text:focus, :where(.ds-settings) .select-box:focus {
+  outline: none;
+  border-color: var(--ds-border);
+  border-bottom-color: transparent;
+  background-image: linear-gradient(var(--ds-accent), var(--ds-accent));
+  background-size: 100% 2px;
+}
+
+/* Slider */
+:where(.ds-settings) .slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+:where(.ds-settings) .slider-container.disabled {
+  opacity: 0.5;
+}
+:where(.ds-settings) .slider:disabled::-webkit-slider-thumb {
+  cursor: not-allowed;
+}
+:where(.ds-settings) .slider {
+  -webkit-appearance: none;
+  width: 120px;
+  height: 4px;
+  background: var(--ds-border);
+  border-radius: 2px;
+  outline: none;
+}
+:where(.ds-settings) .slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--ds-accent);
+  border: 4px solid var(--ds-bg-surface);
+  box-shadow: 0 0 0 1px var(--ds-border);
+  cursor: pointer;
+}
+:where(.ds-settings) .slider-value {
+  font-family: var(--ds-font-mono);
+  font-size: 0.85rem;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* Radio Group */
+:where(.ds-settings) .radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+:where(.ds-settings) .radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+:where(.ds-settings) .radio-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--ds-text-secondary);
+  background-color: transparent;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+:where(.ds-settings) .radio-input:hover {
+  background-color: var(--ds-bg-hover);
+}
+
+:where(.ds-settings) .radio-input:checked {
+  background-color: var(--ds-accent);
+  border-color: var(--ds-accent);
+}
+
+:where(.ds-settings) .radio-input:checked::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ffffff;
+}
+
+/* Number Input */
+:where(.ds-settings) .number-input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--ds-border);
+  border-radius: var(--ds-radius-sm);
+  background-color: var(--ds-bg-surface);
+  transition:
+    background-color var(--ds-transition-fast),
+    border-color var(--ds-transition-fast);
+}
+:where(.ds-settings) .number-input-group:hover {
+  background-color: var(--ds-bg-surface-hover);
+  border-color: var(--ds-border-hover);
+}
+:where(.ds-settings) .number-input-group:focus-within {
+  background-color: var(--ds-bg-surface-hover);
+  border-color: var(--ds-accent);
+}
+:where(.ds-settings) .number-btn {
+  background: transparent;
+  border: none;
+  color: var(--ds-text-secondary);
+  padding: 4px 8px;
+  cursor: pointer;
+}
+:where(.ds-settings) .number-btn:hover {
+  color: var(--ds-text-primary);
+  background-color: var(--ds-bg-hover);
+}
+:where(.ds-settings) .number-input {
+  width: 48px;
+  text-align: center;
+  border: none;
+  background: transparent;
+  color: var(--ds-text-primary);
+  font-family: var(--ds-font-mono);
+  outline: none;
+  -moz-appearance: textfield;
+}
+:where(.ds-settings) .number-input::-webkit-outer-spin-button,
+:where(.ds-settings) .number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+:where(.ds-settings) :is(.toggle-switch, .slider, .radio-input, .number-btn):focus-visible {
+  outline: 2px solid var(--ds-accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(.ds-settings) {
+    --ds-transition-fast: 0s;
+    --ds-transition-normal: 0s;
+  }
+}
+
+@media (forced-colors: active) {
+  :where(.ds-settings) :is(.toggle-switch, .winui-checkbox, .radio-input, .slider) {
+    appearance: auto;
+  }
+  :where(.ds-settings) :is(.toggle-switch, .winui-checkbox, .radio-input)::after,
+  :where(.ds-settings) .toggle-switch::before {
+    display: none;
+  }
+}

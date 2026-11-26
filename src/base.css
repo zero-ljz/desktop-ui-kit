@@ -1,0 +1,23 @@
+:where(.ds-settings) {
+  --ds-font-sans: system-ui, sans-serif;
+  --ds-font-display: var(--ds-font-sans);
+  --ds-font-mono: ui-monospace, monospace;
+  --ds-radius-sm: 4px;
+  --ds-radius-md: 8px;
+  --ds-radius-lg: 12px;
+  --ds-transition-fast: 150ms ease;
+  --ds-transition-normal: 250ms ease;
+  font-family: var(--ds-font-sans);
+  line-height: 1.5;
+  color: var(--ds-text-primary);
+}
+
+:where(.ds-settings, .ds-settings *, .ds-settings *::before, .ds-settings *::after) {
+  box-sizing: border-box;
+}
+
+:where(.ds-settings) :where(input, button, select, textarea) {
+  font: inherit;
+  color: inherit;
+  color-scheme: var(--ds-color-scheme);
+}

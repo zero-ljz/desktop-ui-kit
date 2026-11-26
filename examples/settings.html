@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>偏好设置</title>
+  <link rel="stylesheet" href="../dist/settings.css">
+  <style>
+    body { margin: 0; background: var(--ds-bg-primary); }
+    main { max-width: 46rem; margin: 0 auto; padding: clamp(16px, 4vw, 48px); }
+    h1 { font-size: 1.65rem; margin: 0 0 1.5rem; }
+  </style>
+</head>
+<body class="ds-settings">
+  <main>
+    <h1>偏好设置</h1>
+    <section class="section-wrapper" aria-labelledby="display">
+      <h2 class="section-title" id="display">外观</h2>
+      <div class="section-card">
+        <div class="setting-row">
+          <div class="setting-info">
+            <label class="setting-label" for="compact">紧凑布局</label>
+            <div class="setting-desc" id="compact-hint">缩小列表项目间距，在同一窗口显示更多内容。</div>
+          </div>
+          <div class="setting-control">
+            <input class="toggle-switch" type="checkbox" role="switch" id="compact" aria-describedby="compact-hint">
+          </div>
+        </div>
+        <div class="setting-row">
+          <label class="setting-info setting-label" for="start-page">启动时打开</label>
+          <div class="setting-control">
+            <select class="select-box" id="start-page"><option>最近使用</option><option>收藏夹</option></select>
+          </div>
+        </div>
+        <details class="settings-expander">
+          <summary class="settings-expander-header">
+            <span class="settings-expander-title">侧栏选项</span>
+            <span class="settings-expander-chevron" aria-hidden="true">›</span>
+          </summary>
+          <div class="settings-expander-content">
+            <label class="winui-checkbox-option">
+              <input type="checkbox" class="winui-checkbox" checked>
+              <span class="winui-checkbox-title">显示收藏夹</span>
+            </label>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
