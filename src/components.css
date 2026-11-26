@@ -62,7 +62,7 @@
 :where(.ds-settings) .section-card > .settings-expander:not(:first-child) {
   border-top: 1px solid var(--ds-border);
 }
-:where(.ds-settings) .section-card > .settings-expander:not(:first-child) .settings-expander-header {
+:where(.ds-settings) .section-card > .settings-expander:not(:first-child) > .settings-expander-header {
   border-radius: 0;
 }
 :where(.ds-settings) .settings-expander > summary::-webkit-details-marker {
@@ -81,7 +81,7 @@
   user-select: none;
   transition: background-color var(--ds-transition-fast);
 }
-:where(.ds-settings) .settings-expander-compact .settings-expander-header {
+:where(.ds-settings) .settings-expander-compact > .settings-expander-header {
   min-height: 48px;
   padding-block: 10px;
 }
@@ -152,7 +152,7 @@
   position: relative;
   transition: background-color var(--ds-transition-fast), border-color var(--ds-transition-fast);
 }
-:where(.ds-settings) .winui-checkbox:hover:not(:checked):not(:disabled) {
+:where(.ds-settings) .winui-checkbox:hover:not(:checked):not(:indeterminate):not(:disabled) {
   border-color: var(--ds-text-primary);
   background-color: var(--ds-bg-hover);
 }
@@ -301,21 +301,22 @@
   color: var(--ds-accent-text);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-:where(.ds-settings) .btn-primary:hover:not(:disabled) {
+:where(.ds-settings) .btn-primary:is(:hover, :active):not(:disabled) {
   background-color: var(--ds-accent-hover);
+  color: var(--ds-accent-hover-text, var(--ds-accent-text));
 }
 :where(.ds-settings) .btn-primary:active:not(:disabled) {
-  color: rgba(255, 255, 255, 0.7);
   border-bottom-color: transparent;
   box-shadow: none;
 }
 :where(.ds-settings) .btn-danger {
   background-color: var(--ds-danger);
-  color: white;
+  color: var(--ds-danger-text);
   border-color: transparent;
 }
-:where(.ds-settings) .btn-danger:hover:not(:disabled) {
+:where(.ds-settings) .btn-danger:is(:hover, :active):not(:disabled) {
   background-color: var(--ds-danger-hover);
+  color: var(--ds-danger-text);
 }
 :where(.ds-settings) .btn:disabled {
   opacity: 0.5;
@@ -324,6 +325,8 @@
 
 /* Inputs */
 :where(.ds-settings) .input-text, :where(.ds-settings) .select-box {
+  min-width: 0;
+  max-width: 100%;
   background-color: var(--ds-bg-surface);
   background-image: linear-gradient(var(--ds-text-tertiary), var(--ds-text-tertiary));
   background-size: 100% 1px;
@@ -445,7 +448,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: var(--ds-accent-text);
 }
 
 /* Number Input */

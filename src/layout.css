@@ -2,8 +2,8 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: var(--ds-sidebar-width) minmax(0, 1fr);
-  grid-template-rows: 1fr;
+  grid-template-columns: min(var(--ds-sidebar-width), 40%) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
   height: 100%;
 }
 
@@ -18,7 +18,8 @@
   grid-column: 1;
   grid-row: 1;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding: 4px 0;
   display: flex;
   flex-direction: column;
@@ -27,6 +28,7 @@
 }
 
 :where(.ds-settings) .sidebar-item {
+  flex-shrink: 0;
   height: 36px;
   padding: 8px 10px;
   margin: 2px 4px;
@@ -86,12 +88,18 @@
   height: 20px;
 }
 
+:where(.ds-settings) :where(.app-container) > .action-bar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+}
+
 :where(.ds-settings) .action-bar {
   max-width: 100%;
   background-color: var(--ds-bg-action-bar);
   border: 1px solid var(--ds-border-hover);
   border-radius: var(--ds-radius-lg);
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
@@ -115,8 +123,13 @@
 }
 :where(.ds-settings) .action-bar-actions {
   display: flex;
-  flex: 0 0 auto;
+  flex-wrap: wrap;
+  max-width: 100%;
   gap: 12px;
+}
+:where(.ds-settings) .action-bar-actions .btn {
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 :where(.ds-settings) .sidebar-item:focus-visible {
