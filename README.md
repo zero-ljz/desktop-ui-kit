@@ -4,9 +4,9 @@
 
 ## 构建和预览
 
-在仓库根目录运行 `npm run build`，然后用浏览器打开 `examples/settings.html`。构建脚本只用 Node.js 内置模块。它把 `src/palette.json` 中的浅色和深色值、排版规则和组件样式合成一个可离线分发的文件 `dist/settings.css`。
+在仓库根目录运行 `npm run build`，然后用浏览器打开 `examples/gallery.html`。构建脚本只用 Node.js 内置模块。它把 `src/palette.json` 中的浅色和深色值、排版规则和组件样式合成一个可离线分发的文件 `dist/settings.css`。
 
-示例是一个可直接双击打开的阅读应用设置页。在「阅读外观」切换主题、字体和字号可实时预览。「资料库」展示文本框、数字步进器、校验和恢复默认值。「提醒」展示普通和紧凑折叠组、半选复选框、全选和联动禁用。可跨页修改后一起保存或撤销。保存只在本次打开期间有效。
+示例是一个可离线打开的交互式控件图库，分为「按钮与操作」「文本与数值」「选择控件」「列表与折叠」「菜单与反馈」。使用侧栏或底部的「上一类」「下一类」浏览示例，顶部的「主题」菜单可切换浅色、深色或跟随系统。分类地址可直接打开，切换分类时会保留本次试用的控件状态。
 
 ## 在应用中使用
 
@@ -62,15 +62,15 @@ document.querySelector('#font-control').append(font);
 
 ### 可编辑下拉框
 
-在「资料库 → 书架名称」点击箭头可查看全部预设，输入“读”会筛出“正在读”“想读清单”和“已读收藏”。也可以直接填写自己的名称，保存和撤销都使用输入框中的实际文字。
+在「选择控件」的可编辑下拉框中，点击箭头可查看全部颜色预设，输入“蓝”可筛出“天蓝”和“深蓝”。也可以直接填写自定义颜色名称。
 
 ```js
 import { bindEditableSelect } from 'desktop-settings-css/select';
 
-const input = document.querySelector('#shelf');
+const input = document.querySelector('#color-input');
 const picker = bindEditableSelect(input, {
-  label: '书架名称预设',
-  options: ['我的书架', '正在读', '想读清单', '已读收藏']
+  label: '颜色预设',
+  options: ['天蓝', '深蓝', '草绿', '石墨灰']
 });
 ```
 
@@ -80,24 +80,22 @@ const picker = bindEditableSelect(input, {
 
 ## WinUI 3 风格菜单
 
-示例顶部的「视图」可切换设置页，「编辑」可保存、撤销或恢复默认值。在「阅读外观」右键单击排版预览，或点击预览标题旁的「•••」，可以调整字号和段落留白。键盘用户可在该按钮上按 Shift+F10 或菜单键打开上下文菜单。方向键移动焦点，Enter 或空格执行命令，Esc 关闭菜单并返回触发位置。
+图库顶部的「分类」菜单可跳转到各组示例。在「菜单与反馈」右键单击上下文菜单示例行，或点击「打开菜单」，可从菜单调出提示框或确认框。键盘用户可在该按钮上按 Shift+F10 或菜单键打开上下文菜单。方向键移动焦点，Enter 或空格执行命令，Esc 关闭菜单并返回触发位置。
 
 菜单栏和上下文菜单共用菜单项格式。传入 `items` 数组，或传入每次展开时返回数组的函数。用 `disabled` 控制命令可用性，用布尔值 `checked` 显示勾选状态，点击时由 `onSelect` 更新应用数据。
 
 ```js
 import { createMenuBar, bindContextMenu } from 'desktop-settings-css/menu';
 
-const save = document.querySelector('#save');
-const items = () => [
-  { label: '保存更改', disabled: save.disabled, onSelect: () => save.click() },
-  { type: 'separator' },
-  { label: '阅读外观', onSelect: () => { location.hash = 'appearance'; } }
+const items = [
+  { label: '按钮与操作', onSelect: () => { location.hash = 'buttons'; } },
+  { label: '菜单与反馈', onSelect: () => { location.hash = 'feedback'; } }
 ];
-const bar = createMenuBar({ menus: [{ label: '设置', items }] });
-document.querySelector('#settings-menu').replaceWith(bar);
+const bar = createMenuBar({ menus: [{ label: '分类', items }] });
+document.querySelector('#gallery-menu').replaceWith(bar);
 
-const context = bindContextMenu(document.querySelector('#type-preview'), {
-  label: '预览操作', trigger: document.querySelector('#preview-menu'), items
+const context = bindContextMenu(document.querySelector('#menu-sample'), {
+  label: '切换分类', trigger: document.querySelector('#open-menu'), items
 });
 ```
 
@@ -117,7 +115,7 @@ const name = await showPrompt('输入书架名称。', '我的书架', '重命�
 
 `showAlert` 关闭后返回 `true`。`showConfirm` 返回确认结果。`showPrompt` 确认后返回输入字符串（包括空字符串），取消或按 Esc 时返回 `null`。这些结果均通过 Promise 返回，调用方用 `await` 取得结果后执行业务操作。
 
-离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopSettings.showConfirm(...)` 等同名接口调用。在示例的「资料库 → 消息框」可试用三种对话框。
+离线 HTML 可加载 `dist/dialog.browser.js`，通过 `DesktopSettings.showConfirm(...)` 等同名接口调用。在图库的「菜单与反馈」中可试用三种消息框并查看返回结果。
 
 ## 工具提示
 
@@ -125,19 +123,19 @@ const name = await showPrompt('输入书架名称。', '我的书架', '重命�
 
 ## WinUI 3 风格的内联提示条（InfoBar）
 
-在示例的「资料库」中，清空书架名称，把最近阅读条目数改成 31 后保存。「书架资料」上方的错误提示条会显示剩余两项，点击「查看第一项」可跳到相应输入框。修改有效后计数随之更新，全部修正后自动收起。
+在图库的「菜单与反馈」中切换提示类型，可比较信息、成功、警告和错误四种提示条。关闭提示条后，点击「显示提示」可再次预览。
 
 ```js
 import { createInfoBar } from 'desktop-settings-css/info-bar';
 
 const bar = createInfoBar({
   severity: 'info',
-  title: '阅读书签',
-  message: '可以按书名或章节查找书签。',
-  action: { label: '搜索书签', onClick: () => document.querySelector('#bookmark-search').focus() },
+  title: '查找控件',
+  message: '可以按名称或 CSS 类名筛选。',
+  action: { label: '搜索控件', onClick: () => document.querySelector('#list-search').focus() },
   closable: true
 });
-document.querySelector('#library').append(bar);
+document.querySelector('#lists').append(bar);
 ```
 
 `severity` 可取 `info`（默认）、`success`、`warning` 或 `error`。标题、操作按钮和关闭按钮均可省略。用 `bar.setMessage(text)` 更新正文，用 `bar.hidden` 控制显隐。设置 `closable: true` 后，点击关闭按钮会隐藏提示条，并调用可选的 `onClose`，宿主可在这里恢复焦点。离线 HTML 加载 `dist/info-bar.browser.js` 后，通过 `DesktopSettings.createInfoBar(...)` 创建组件并挂载到 `.ds-settings` 内。
@@ -146,4 +144,4 @@ document.querySelector('#library').append(bar);
 
 字段校验失败时设置 `aria-invalid="true"`，显示带有 `field-error` 类的文字，并把它的 ID 加入输入控件的 `aria-describedby`。校验通过后隐藏错误文字，并从描述中移除它的 ID，保留日常填写提示。
 
-列表使用 `.manage-list`，每个 `.manage-row` 中的 `.manage-main` 可以包含 `.manage-title` 和 `.manage-subtitle`，行末可以放操作按钮。用 `.manage-empty` 显示无数据或无匹配时的说明。搜索、筛选及批量操作由页面组合已有控件并安排布局。示例的「资料库 → 阅读书签」展示了搜索、空状态和查看摘录。
+列表使用 `.manage-list`，每个 `.manage-row` 中的 `.manage-main` 可以包含 `.manage-title` 和 `.manage-subtitle`，行末可以放操作按钮。用 `.manage-empty` 显示无数据或无匹配时的说明。搜索、筛选及批量操作由页面组合已有控件并安排布局。图库的「列表与折叠」展示了按控件名称或类名搜索、无匹配结果的空状态，以及跳转到控件分类的行末操作。

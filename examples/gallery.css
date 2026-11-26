@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  background: var(--ds-bg-primary);
+  height: 100vh;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.window-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 12px;
+  background: var(--ds-bg-primary);
+  border-bottom: 1px solid var(--ds-border);
+}
+.library-name, .button-samples code, .settings-expander-content code, .manage-subtitle {
+  font-family: var(--ds-font-mono);
+  font-size: .78rem;
+  color: var(--ds-text-secondary);
+}
+.library-name { margin-inline: 12px; }
+.sidebar {
+  background: var(--ds-bg-secondary);
+  border-inline-end: 1px solid var(--ds-border);
+  padding: 24px 8px;
+}
+.sidebar-item { text-decoration: none; }
+.sidebar-icon { justify-content: center; position: relative; }
+.sidebar-icon::before, .sidebar-icon::after { box-sizing: border-box; }
+.icon-button::before, .icon-check::before, .icon-message::before {
+  content: '';
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+  width: 18px;
+  height: 12px;
+}
+.icon-button::after, .icon-list::before {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+}
+.icon-text { font: 600 20px/1 Georgia, serif; }
+.icon-check::before { width: 16px; height: 16px; }
+.icon-check::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 9px;
+  border: solid currentColor;
+  border-width: 0 1.5px 1.5px 0;
+  transform: translateY(-1px) rotate(45deg);
+}
+.icon-list::before { width: 16px; box-shadow: 0 -5px, 0 5px; }
+.icon-message::before { border-bottom-left-radius: 0; transform: translateY(-1px); }
+.icon-message::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  bottom: 2px;
+  border: 3px solid transparent;
+  border-left-color: currentColor;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 12px 32px;
+  font: 650 1.4rem/1.4 var(--ds-font-display);
+}
+.gallery-mark {
+  width: 28px;
+  height: 28px;
+  color: var(--ds-accent);
+  border-radius: 3px;
+  background: conic-gradient(transparent 25%, currentColor 0 75%, transparent 0) 0 0 / 100% 100%,
+    linear-gradient(var(--ds-accent-border), var(--ds-accent-border));
+  mask: linear-gradient(90deg, black 44%, transparent 44% 56%, black 56%),
+    linear-gradient(black 44%, transparent 44% 56%, black 56%);
+  mask-composite: intersect;
+}
+.nav-heading, .preview figcaption {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--ds-text-secondary);
+}
+.nav-heading { margin: 0 14px 8px; }
+#gallery { max-width: 52rem; margin: auto; padding: clamp(16px, 4vw, 48px); padding-bottom: 156px; }
+h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25; }
+.preview {
+  margin: 0 0 26px;
+  overflow: hidden;
+  background: var(--ds-bg-elevated);
+}
+.preview figcaption {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ds-border);
+}
+.button-samples {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 7rem), 1fr));
+  gap: 24px 12px;
+  padding: clamp(24px, 4vw, 48px) 16px;
+  background: radial-gradient(circle, var(--ds-border) 1px, transparent 1px) center / 12px 12px;
+}
+.button-samples > div { display: grid; justify-items: center; gap: 12px; }
+.button-samples code { background: var(--ds-bg-elevated); }
+.setting-row { column-gap: 12px; }
+.setting-control textarea { resize: vertical; }
+.child-option { padding-block: 9px; padding-inline-start: 52px; }
+#checkbox-group > :first-child { padding-inline-start: 20px; }
+#checkbox-group { padding-bottom: 10px; }
+.list-search {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 14px 20px;
+}
+.list-search .input-text { width: 100%; min-width: 0; }
+.manage-row a { text-decoration: none; }
+.settings-expander-content code { overflow-wrap: anywhere; }
+#info-preview:has([hidden]) { display: none; }
+@media (max-width: 680px) {
+  #gallery { padding-bottom: 188px; }
+}
+@media (max-width: 620px) {
+  .ds-settings { --ds-sidebar-width: 56px; }
+  .sidebar { padding: 16px 0; }
+  .brand { margin: 2px auto 22px; }
+  .brand-name, .nav-heading { display: none; }
+  .sidebar-item { justify-content: center; height: 44px; padding: 2px; }
+  .sidebar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+  }
+  .setting-info { padding-inline-end: 0; }
+  .child-option { padding-inline-start: 36px; }
+}

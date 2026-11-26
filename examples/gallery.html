@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>控件图库 · Desktop Settings CSS</title>
+  <link rel="stylesheet" href="../dist/settings.css">
+  <link rel="stylesheet" href="./gallery.css">
+  <script src="../dist/select.browser.js" defer></script>
+  <script src="../dist/dialog.browser.js" defer></script>
+  <script src="../dist/tooltip.browser.js" defer></script>
+  <script src="../dist/menu.browser.js" defer></script>
+  <script src="../dist/info-bar.browser.js" defer></script>
+  <script src="./gallery.js" defer></script>
+</head>
+<body class="ds-settings">
+  <header class="window-menu">
+    <div id="gallery-menu"></div>
+    <span class="library-name">Desktop Settings CSS</span>
+  </header>
+  <div class="app-container">
+    <nav class="sidebar" aria-label="控件分类">
+      <div class="brand"><span class="gallery-mark" aria-hidden="true"></span><span class="brand-name">控件图库</span></div>
+      <p class="nav-heading">控件分类</p>
+      <a class="sidebar-item" href="#buttons" aria-current="page">
+        <span class="sidebar-icon icon-button" aria-hidden="true"></span><span class="sidebar-label">按钮与操作</span>
+      </a>
+      <a class="sidebar-item" href="#inputs">
+        <span class="sidebar-icon icon-text" aria-hidden="true">T</span><span class="sidebar-label">文本与数值</span>
+      </a>
+      <a class="sidebar-item" href="#selection">
+        <span class="sidebar-icon icon-check" aria-hidden="true"></span><span class="sidebar-label">选择控件</span>
+      </a>
+      <a class="sidebar-item" href="#lists">
+        <span class="sidebar-icon icon-list" aria-hidden="true"></span><span class="sidebar-label">列表与折叠</span>
+      </a>
+      <a class="sidebar-item" href="#feedback">
+        <span class="sidebar-icon icon-message" aria-hidden="true"></span><span class="sidebar-label">菜单与反馈</span>
+      </a>
+    </nav>
+
+    <main class="content">
+      <div id="gallery">
+        <section id="buttons" aria-labelledby="buttons-title">
+          <h1 id="buttons-title" tabindex="-1">按钮与操作</h1>
+          <figure class="preview section-card">
+            <figcaption>按钮预览</figcaption>
+            <div class="button-samples">
+              <div><button type="button" class="btn">普通按钮</button><code>.btn</code></div>
+              <div><button type="button" class="btn btn-primary">主要按钮</button><code>.btn-primary</code></div>
+              <div><button type="button" class="btn btn-danger">危险按钮</button><code>.btn-danger</code></div>
+              <div><button type="button" class="btn" disabled>禁用按钮</button><code>[disabled]</code></div>
+            </div>
+          </figure>
+          <section class="section-wrapper" aria-labelledby="button-state-title">
+            <h2 class="section-title" id="button-state-title">交互状态</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="disable-buttons">禁用预览按钮</label>
+                  <div class="setting-desc">同时切换普通、主要和危险按钮的可用状态。</div>
+                </div>
+                <input class="toggle-switch" type="checkbox" role="switch" id="disable-buttons">
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">点击记录</span>
+                  <div class="setting-desc" id="button-result" role="status">点击上方按钮可查看触发结果。</div>
+                </div>
+                <button class="btn" type="button" id="clear-clicks" disabled>清空记录</button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="inputs" aria-labelledby="inputs-title" hidden>
+          <h1 id="inputs-title" tabindex="-1">文本与数值</h1>
+          <section class="section-wrapper" aria-labelledby="text-title">
+            <h2 class="section-title" id="text-title">文本输入</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="sample-text">单行文本框</label>
+                  <div class="setting-desc" id="text-hint">清空文字可预览必填校验。</div>
+                </div>
+                <div class="setting-control">
+                  <input class="input-text" id="sample-text" value="示例文本" required aria-describedby="text-hint">
+                  <span class="field-error" id="text-error" hidden>请输入文字。</span>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="sample-notes">多行文本框</label>
+                <div class="setting-control"><textarea class="input-text" id="sample-notes" rows="3" placeholder="输入多行文本"></textarea></div>
+              </div>
+            </div>
+          </section>
+          <section class="section-wrapper" aria-labelledby="number-title">
+            <h2 class="section-title" id="number-title">数值输入</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="quantity">数字步进器</label>
+                  <div class="setting-desc" id="quantity-hint">整数，范围 1 至 10。</div>
+                </div>
+                <div class="setting-control">
+                  <div class="number-input-group">
+                    <button class="number-btn" type="button" id="decrease" aria-label="减少数值">−</button>
+                    <input class="number-input" type="number" id="quantity" min="1" max="10" step="1" value="5" required aria-describedby="quantity-hint">
+                    <button class="number-btn" type="button" id="increase" aria-label="增加数值">+</button>
+                  </div>
+                  <span class="field-error" id="quantity-error" hidden>请输入 1 至 10 的整数。</span>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="level">滑块</label>
+                <div class="slider-container">
+                  <input class="slider" type="range" id="level" min="0" max="100" value="50">
+                  <output class="slider-value" for="level" id="level-value">50%</output>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="selection" aria-labelledby="selection-title" hidden>
+          <h1 id="selection-title" tabindex="-1">选择控件</h1>
+          <section class="section-wrapper" aria-labelledby="single-title">
+            <h2 class="section-title" id="single-title">单项选择</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <span class="setting-info setting-label" id="alignment-label">单选按钮组</span>
+                <div class="radio-group" role="radiogroup" aria-labelledby="alignment-label">
+                  <label class="radio-label"><input class="radio-input" type="radio" name="alignment" checked>左对齐</label>
+                  <label class="radio-label"><input class="radio-input" type="radio" name="alignment">居中</label>
+                  <label class="radio-label"><input class="radio-input" type="radio" name="alignment">右对齐</label>
+                </div>
+              </div>
+              <div class="setting-row">
+                <label class="setting-info setting-label" id="size-label" for="size-trigger">下拉选择框</label>
+                <div class="setting-control" id="size-picker"></div>
+              </div>
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="color-input">可编辑下拉框</label>
+                  <div class="setting-desc" id="color-hint">输入文字筛选颜色，或填写自定义值。</div>
+                </div>
+                <div class="setting-control"><input class="input-text" id="color-input" value="天蓝" aria-describedby="color-hint"></div>
+              </div>
+            </div>
+          </section>
+          <section class="section-wrapper" aria-labelledby="multiple-title">
+            <h2 class="section-title" id="multiple-title">复选框组</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="enable-options">启用复选框</label>
+                <input class="toggle-switch" id="enable-options" type="checkbox" role="switch" checked>
+              </div>
+              <div role="group" aria-labelledby="multiple-title" id="checkbox-group">
+                <label class="winui-checkbox-option">
+                  <input class="winui-checkbox" type="checkbox" id="select-all">
+                  <span class="winui-checkbox-info"><span class="winui-checkbox-title">全选</span><span class="winui-checkbox-description" id="selected-count"></span></span>
+                </label>
+                <label class="winui-checkbox-option child-option"><input class="winui-checkbox" type="checkbox" checked>文本</label>
+                <label class="winui-checkbox-option child-option"><input class="winui-checkbox" type="checkbox">图像</label>
+                <label class="winui-checkbox-option child-option"><input class="winui-checkbox" type="checkbox" checked>音频</label>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section id="lists" aria-labelledby="lists-title" hidden>
+          <h1 id="lists-title" tabindex="-1">列表与折叠</h1>
+          <section class="section-wrapper" aria-labelledby="list-title">
+            <h2 class="section-title" id="list-title">可筛选列表</h2>
+            <div class="section-card">
+              <div class="list-search" role="search" aria-label="筛选控件">
+                <input type="search" class="input-text" id="list-search" aria-label="搜索控件名称或类名" placeholder="搜索控件名称或类名">
+                <button type="button" class="btn" id="clear-search" disabled>清空搜索</button>
+              </div>
+              <ul class="manage-list" id="component-list" aria-labelledby="list-title">
+                <li class="manage-row">
+                  <div class="manage-main"><div class="manage-title">主要按钮</div><code class="manage-subtitle">.btn-primary</code></div>
+                  <a class="btn" href="#buttons" aria-label="查看主要按钮示例">查看示例</a>
+                </li>
+                <li class="manage-row">
+                  <div class="manage-main"><div class="manage-title">滑块</div><code class="manage-subtitle">.slider</code></div>
+                  <a class="btn" href="#inputs" aria-label="查看滑块示例">查看示例</a>
+                </li>
+                <li class="manage-row">
+                  <div class="manage-main"><div class="manage-title">复选框</div><code class="manage-subtitle">.winui-checkbox</code></div>
+                  <a class="btn" href="#selection" aria-label="查看复选框示例">查看示例</a>
+                </li>
+              </ul>
+              <div class="manage-empty" id="list-empty" role="status" hidden>没有匹配的控件。</div>
+            </div>
+          </section>
+          <section class="section-wrapper" aria-labelledby="expander-title">
+            <h2 class="section-title" id="expander-title">折叠组</h2>
+            <div class="section-card">
+              <details class="settings-expander" open>
+                <summary class="settings-expander-header">
+                  <span class="settings-expander-info"><span class="settings-expander-title">标准折叠组</span><span class="settings-expander-description">标题和描述占两行。</span></span>
+                  <span class="settings-expander-chevron" aria-hidden="true"></span>
+                </summary>
+                <div class="settings-expander-content setting-content"><code>.settings-expander</code></div>
+              </details>
+              <details class="settings-expander settings-expander-compact">
+                <summary class="settings-expander-header">
+                  <span class="settings-expander-title">紧凑折叠组</span><span class="settings-expander-chevron" aria-hidden="true"></span>
+                </summary>
+                <div class="settings-expander-content setting-content"><code>.settings-expander-compact</code></div>
+              </details>
+            </div>
+          </section>
+        </section>
+
+        <section id="feedback" aria-labelledby="feedback-title" hidden>
+          <h1 id="feedback-title" tabindex="-1">菜单与反馈</h1>
+          <section class="section-wrapper" aria-labelledby="menu-title">
+            <h2 class="section-title" id="menu-title">上下文菜单与工具提示</h2>
+            <div class="section-card">
+              <div class="setting-row" id="menu-sample">
+                <div class="setting-info">
+                  <span class="setting-label">上下文菜单</span>
+                  <div class="setting-desc">右键单击此行，或使用右侧按钮。悬停或聚焦按钮可查看工具提示。</div>
+                </div>
+                <button class="btn" id="open-menu" type="button">打开菜单</button>
+              </div>
+            </div>
+          </section>
+          <section class="section-wrapper" aria-labelledby="dialog-title">
+            <h2 class="section-title" id="dialog-title">消息框</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <span class="setting-label">对话框预览</span>
+                  <div class="setting-desc" id="dialog-result" role="status">关闭对话框后可查看返回结果。</div>
+                </div>
+                <div class="setting-control">
+                  <button class="btn" type="button" id="preview-alert">提示</button>
+                  <button class="btn" type="button" id="preview-confirm">确认</button>
+                  <button class="btn" type="button" id="preview-prompt">输入</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="section-wrapper" aria-labelledby="info-title">
+            <h2 class="section-title" id="info-title">内联提示条</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <label class="setting-info setting-label" for="severity">提示类型</label>
+                <div class="setting-control">
+                  <select class="select-box" id="severity">
+                    <option value="info">信息</option><option value="success">成功</option>
+                    <option value="warning">警告</option><option value="error">错误</option>
+                  </select>
+                  <button class="btn" type="button" id="show-info">显示提示</button>
+                </div>
+              </div>
+              <div class="setting-content" id="info-preview"></div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+    <footer class="action-bar action-bar-floating">
+      <div class="action-bar-status"><span class="action-bar-message" id="page-status"></span></div>
+      <div class="action-bar-actions">
+        <button class="btn" type="button" id="previous" disabled>上一类</button>
+        <button class="btn btn-primary" type="button" id="next">下一类</button>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
