@@ -32,6 +32,8 @@
 
 需要双栏窗口时，在 `.ds-settings` 中放置 `.app-container`，其直接子元素 `.sidebar` 和 `.content` 对应导航和内容。可通过 `--ds-sidebar-width` 调整侧栏宽度，窄面板中侧栏最多占 40%。用 `aria-current="page"` 标记当前导航项。同级的 `.action-bar` 占据底部一整行，用 `hidden` 控制显隐。保存、导航和弹层的行为由应用处理。
 
+当侧栏内容区宽度为 56px 或更窄时，带图标的当前导航项会将图标居中，并在视觉上隐藏文字。将 `.sidebar-icon` 和 `.sidebar-label` 依次放在导航项中，辅助技术仍可读取名称。应用可自行决定收起侧栏的窗口宽度。
+
 ## 自绘下拉框
 
 在 `.ds-settings` 内准备可见标签和挂载点，例如 `<label for="font-trigger">字体</label><div id="font-control"></div>`。使用构建工具时，导入组件并传入选项和当前值。

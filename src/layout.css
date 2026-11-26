@@ -15,6 +15,7 @@
 }
 
 :where(.ds-settings) .sidebar {
+  container: ds-sidebar / inline-size;
   grid-column: 1;
   grid-row: 1;
   position: relative;
@@ -86,6 +87,20 @@
 :where(.ds-settings) .sidebar-icon svg {
   width: 20px;
   height: 20px;
+}
+
+@container ds-sidebar (max-width: 56px) {
+  :where(.ds-settings) .sidebar-item:is(.active, [aria-current="page"]) {
+    justify-content: center;
+    align-items: center;
+  }
+  /* Keep the link name accessible when its icon is shown on its own. */
+  :where(.ds-settings) .sidebar-item:is(.active, [aria-current="page"]) .sidebar-icon ~ .sidebar-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+  }
 }
 
 :where(.ds-settings) :where(.app-container) > .action-bar {
