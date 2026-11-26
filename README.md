@@ -206,6 +206,17 @@ const context = bindContextMenu(document.querySelector('#menu-sample'), {
 
 把菜单栏和触发元素放在 `.ds-settings` 内以继承主题。`trigger` 可选，传入按钮即可用单击打开同一菜单。省略时，目标元素本身可通过键盘打开菜单。用 `bar.close()` 或 `context.close()` 主动收起，用 `context.destroy()` 解除绑定。离线 HTML 加载 `dist/menu.browser.js` 后可通过 `DesktopSettings` 调用这两个组件。
 
+## 进度条
+
+在 `.ds-settings` 中给原生 `<progress>` 加上 `.progress-bar` 即可使用。省略 `value` 时，进度条显示移动的色块，系统开启“减少动态效果”时色块静止。总量已知后，设置 `max` 和 `value` 即可显示完成比例。
+
+```html
+<label for="download">下载更新</label>
+<progress class="progress-bar" id="download" max="80" value="32"></progress>
+```
+
+图库「菜单与反馈 → 进度条」提供离线下载演示。点击「开始演示」可查看检查更新、显示下载进度和完成提示的全过程。
+
 ## 消息框
 
 加载 `desktop-settings-css/settings.css` 后，按需从 `desktop-settings-css/dialog` 导入消息框。组件使用原生 `<dialog>`，从当前焦点所在的 `.ds-settings` 继承主题。多个设置根节点共存时，可通过 `showModal({ root, type, title, message, okLabel, cancelLabel })` 指定挂载点和按钮文字。

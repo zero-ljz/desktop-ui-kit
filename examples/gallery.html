@@ -356,6 +356,10 @@
                   <a class="btn" href="#pivot" aria-label="查看标签页示例">查看示例</a>
                 </li>
                 <li class="manage-row">
+                  <div class="manage-main"><div class="manage-title">进度条</div><code class="manage-subtitle">.progress-bar</code></div>
+                  <a class="btn" href="#feedback" aria-label="查看进度条示例">查看示例</a>
+                </li>
+                <li class="manage-row">
                   <div class="manage-main"><div class="manage-title">复选框</div><code class="manage-subtitle">.winui-checkbox</code></div>
                   <a class="btn" href="#selection" aria-label="查看复选框示例">查看示例</a>
                 </li>
@@ -385,6 +389,20 @@
 
         <section class="ds-page" id="feedback" aria-labelledby="feedback-title" hidden>
           <h1 id="feedback-title" tabindex="-1">菜单与反馈</h1>
+          <section class="section-wrapper" aria-labelledby="progress-title">
+            <h2 class="section-title" id="progress-title">进度条</h2>
+            <div class="section-card">
+              <div class="setting-row">
+                <div class="setting-info">
+                  <label class="setting-label" for="download-progress">下载更新</label>
+                  <div class="setting-desc" id="download-status">离线模拟下载 80 MB 更新包。</div>
+                  <progress class="progress-bar" id="download-progress" max="80" value="0" aria-describedby="download-status"></progress>
+                </div>
+                <button class="btn" type="button" id="start-download">开始演示</button>
+              </div>
+              <div class="setting-content" id="download-result" hidden></div>
+            </div>
+          </section>
           <section class="section-wrapper" aria-labelledby="menu-title">
             <h2 class="section-title" id="menu-title">上下文菜单与工具提示</h2>
             <div class="section-card">

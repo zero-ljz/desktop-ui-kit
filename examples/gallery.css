@@ -118,6 +118,7 @@ h1 { margin: 0 0 24px; font-size: clamp(1.6rem, 3vw, 2.15rem); line-height: 1.25
 .button-samples > div { display: grid; justify-items: center; gap: 12px; }
 .button-samples code { background: var(--ds-bg-elevated); }
 .setting-row { column-gap: 12px; }
+#download-progress { margin-block-start: 8px; }
 .setting-control textarea { resize: vertical; }
 .setting-control:has(> .number-stepper) {
   align-items: flex-end;

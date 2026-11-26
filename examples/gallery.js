@@ -177,6 +177,30 @@ const previewMenu = DesktopSettings.bindContextMenu(byId('menu-sample'), {
 });
 DesktopSettings.setTooltip(byId('open-menu'), '使用 Shift+F10 也可展开菜单');
 
+const downloadProgress = byId('download-progress');
+const downloadStatus = byId('download-status');
+const downloadResult = byId('download-result');
+const startDownload = byId('start-download');
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+startDownload.addEventListener('click', async () => {
+  startDownload.disabled = true;
+  downloadResult.hidden = true;
+  downloadProgress.removeAttribute('value');
+  downloadStatus.textContent = '正在检查更新…';
+  await delay(1200);
+
+  const total = downloadProgress.max;
+  for (let downloaded = 0; downloaded <= total; downloaded += 4) {
+    downloadProgress.value = downloaded;
+    downloadStatus.textContent = `已下载 ${downloaded} / ${total} MB（${Math.round(downloaded / total * 100)}%）`;
+    if (downloaded < total) await delay(180);
+  }
+  downloadResult.replaceChildren(DesktopSettings.createInfoBar({ severity: 'success', message: '更新包下载完成。' }));
+  downloadResult.hidden = false;
+  startDownload.textContent = '重新演示';
+  startDownload.disabled = false;
+});
+
 const infoMessages = {
   info: '可以切换提示类型，比较颜色和图标。',
   success: '示例操作已完成。',
