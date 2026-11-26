@@ -344,7 +344,7 @@
 }
 
 /* Inputs */
-:where(.ds-settings) .input-text, :where(.ds-settings) .select-box {
+:where(.ds-settings) :is(.input-text, .select-box, .number-stepper) {
   min-width: 0;
   max-width: 100%;
   background-color: var(--ds-bg-surface);
@@ -371,7 +371,7 @@
 :where(.ds-settings) input.input-text:is([type="date"], [type="time"]) {
   padding-block: 4px;
 }
-:where(.ds-settings) .input-text:hover, :where(.ds-settings) .select-box:hover {
+:where(.ds-settings) :is(.input-text, .select-box, .number-stepper):hover {
   background-color: var(--ds-bg-surface-hover);
   border-color: var(--ds-border-hover);
   border-bottom-color: transparent;
@@ -381,7 +381,7 @@
   font-size: 0.82rem;
   opacity: 1;
 }
-:where(.ds-settings) :is(.input-text:focus, .select-box:focus, .tag-field:focus-within) {
+:where(.ds-settings) :is(.input-text:focus, .select-box:focus, .tag-field:focus-within, .number-stepper:focus-within) {
   outline: none;
   border-color: var(--ds-border);
   border-bottom-color: transparent;
@@ -389,7 +389,8 @@
   background-size: 100% 2px;
 }
 
-:where(.ds-settings) .input-text[aria-invalid="true"] {
+:where(.ds-settings) .input-text[aria-invalid="true"],
+:where(.ds-settings) .number-stepper:has(> input[aria-invalid="true"]) {
   background-image: linear-gradient(var(--ds-danger), var(--ds-danger));
   background-size: 100% 2px;
 }
@@ -626,6 +627,108 @@
   outline-offset: 2px;
 }
 
+/* WinUI NumberBox, inline spin buttons */
+:where(.ds-settings) .number-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  inline-size: max-content;
+  min-height: 32px;
+  padding: 3px;
+  border-radius: var(--ds-radius-sm);
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+:where(.ds-settings) .number-stepper:focus-within {
+  background-color: var(--ds-bg-elevated);
+}
+:where(.ds-settings) .number-stepper:has(> .number-clear):has(> input:enabled) {
+  cursor: text;
+}
+:where(.ds-settings) .number-stepper > input {
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: 0 8px;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+:where(.ds-settings) .number-stepper:has(.number-spin) > input {
+  appearance: textfield;
+  box-sizing: content-box;
+  inline-size: calc(var(--ds-number-length, 1) * 1ch + 1px);
+}
+@supports (field-sizing: content) {
+  :where(.ds-settings) .number-stepper:has(.number-spin) > input {
+    field-sizing: content;
+    inline-size: auto;
+    min-inline-size: 1ch;
+  }
+}
+:where(.ds-settings) .number-stepper:has(.number-spin) > input::-webkit-inner-spin-button,
+:where(.ds-settings) .number-stepper:has(.number-spin) > input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+:where(.ds-settings) :is(.number-spin, .number-clear) {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 32px;
+  align-self: stretch;
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ds-radius-sm);
+  background: transparent;
+  color: var(--ds-text-secondary);
+  touch-action: manipulation;
+  cursor: default;
+  user-select: none;
+}
+:where(.ds-settings) .number-stepper:not(:focus-within) > .number-clear,
+:where(.ds-settings) .number-clear:disabled,
+:where(.ds-settings) .number-stepper > input:is(:disabled, [readonly]) ~ .number-clear {
+  visibility: hidden;
+}
+:where(.ds-settings) .number-clear::before,
+:where(.ds-settings) .number-clear::after {
+  content: '';
+  grid-area: 1 / 1;
+  width: 11px;
+  height: 1px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+:where(.ds-settings) .number-clear::after {
+  transform: rotate(-45deg);
+}
+:where(.ds-settings) .number-spin::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border: solid currentColor;
+  border-width: 1px 1px 0 0;
+  transform: translateY(2px) rotate(-45deg);
+}
+:where(.ds-settings) .number-spin-down::before {
+  transform: translateY(-2px) rotate(135deg);
+}
+:where(.ds-settings) :is(.number-spin, .number-clear):enabled:hover {
+  background: var(--ds-bg-hover);
+}
+:where(.ds-settings) :is(.number-spin, .number-clear):enabled:active {
+  background: var(--ds-bg-active);
+  color: var(--ds-text-secondary);
+}
+:where(.ds-settings) .number-spin:disabled {
+  opacity: .36;
+}
+:where(.ds-settings) .number-stepper:has(> input:disabled) {
+  opacity: .55;
+}
+
 /* Slider */
 :where(.ds-settings) .slider-container {
   display: flex;
@@ -661,6 +764,80 @@
   font-size: 0.85rem;
   min-width: 40px;
   text-align: right;
+}
+
+/* Segmented control */
+:where(.ds-settings) .segmented-control {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  max-width: 100%;
+  gap: 1px;
+  border-radius: var(--ds-radius-sm);
+  background: var(--ds-control-alt-fill);
+  box-shadow: inset 0 0 0 1px var(--ds-border);
+}
+:where(.ds-settings) .segmented-control > label {
+  position: relative;
+  display: grid;
+}
+:where(.ds-settings) .segmented-control input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  z-index: 1;
+  cursor: pointer;
+}
+:where(.ds-settings) .segmented-control input + span {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  min-height: 32px;
+  padding: 5px 11px 6px;
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-sm);
+  color: var(--ds-text-primary);
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+:where(.ds-settings) .segmented-control input + span::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 2px 0;
+  border-radius: inherit;
+}
+:where(.ds-settings) .segmented-control label:first-child span::before { inset-inline-start: 2px; }
+:where(.ds-settings) .segmented-control label:last-child span::before { inset-inline-end: 2px; }
+:where(.ds-settings) .segmented-control input:enabled:not(:checked):hover + span::before {
+  background: var(--ds-bg-hover);
+}
+:where(.ds-settings) .segmented-control input:enabled:not(:checked):active + span::before {
+  transform: scale(.96);
+  background: var(--ds-bg-active);
+}
+:where(.ds-settings) .segmented-control input:checked + span {
+  border-color: var(--ds-border);
+  border-bottom-color: var(--ds-btn-border-bottom);
+  background: var(--ds-bg-surface);
+}
+:where(.ds-settings) .segmented-control input:focus-visible + span {
+  outline: 2px solid var(--ds-text-primary);
+  outline-offset: 1px;
+  z-index: 1;
+  pointer-events: none;
+}
+:where(.ds-settings) .segmented-control input:disabled {
+  cursor: not-allowed;
+}
+:where(.ds-settings) .segmented-control input:disabled + span {
+  opacity: .55;
 }
 
 /* Radio Group */
@@ -736,9 +913,27 @@
     background-color: CanvasText;
   }
   :where(.ds-settings) :is(.input-text, .select-box):focus-visible,
-  :where(.ds-settings) .tag-field:focus-within {
+  :where(.ds-settings) :is(.tag-field, .number-stepper):focus-within {
     outline: 2px solid Highlight;
     outline-offset: 2px;
+  }
+  :where(.ds-settings) .segmented-control {
+    outline: 1px solid ButtonText;
+    outline-offset: -1px;
+  }
+  :where(.ds-settings) .segmented-control input:checked + span {
+    forced-color-adjust: none;
+    background: Highlight;
+    color: HighlightText;
+    border-color: Highlight;
+  }
+  :where(.ds-settings) .segmented-control input:focus-visible + span {
+    outline-color: CanvasText;
+  }
+  :where(.ds-settings) .number-clear::before,
+  :where(.ds-settings) .number-clear::after {
+    forced-color-adjust: none;
+    background: ButtonText;
   }
   :where(.ds-settings) :is(.toggle-switch, .winui-checkbox, .radio-input, .slider) {
     appearance: auto;

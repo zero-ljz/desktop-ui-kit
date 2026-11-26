@@ -2,7 +2,13 @@
 
 const byId = id => document.getElementById(id);
 const links = [...document.querySelectorAll('.sidebar-item')];
-const themeNames = { system: '跟随系统', light: '浅色', dark: '深色' };
+const themeOptions = [...byId('theme-options').querySelectorAll('input')];
+function applyTheme(option) {
+  option.checked = true;
+  document.body.dataset.theme = option.value;
+}
+byId('theme-options').addEventListener('change', event => applyTheme(event.target));
+applyTheme(themeOptions.find(option => option.checked));
 const menuBar = DesktopSettings.createMenuBar({
   label: '图库菜单',
   menus: [
@@ -11,10 +17,10 @@ const menuBar = DesktopSettings.createMenuBar({
       checked: link.hasAttribute('aria-current'),
       onSelect: () => link.click()
     })) },
-    { label: '主题', items: () => Object.entries(themeNames).map(([value, label]) => ({
-      label,
-      checked: value === (document.body.dataset.theme || 'system'),
-      onSelect: () => { document.body.dataset.theme = value; }
+    { label: '主题', items: () => themeOptions.map(option => ({
+      label: option.labels[0].textContent,
+      checked: option.checked,
+      onSelect: () => applyTheme(option)
     })) }
   ]
 });
@@ -70,6 +76,9 @@ function updateLevel() {
 }
 level.addEventListener('input', updateLevel);
 updateLevel();
+const timeout = byId('timeout');
+DesktopSettings.bindNumberStepper(timeout);
+timeout.addEventListener('input', () => showFieldError(timeout, 'timeout-hint', 'timeout-error'));
 
 DesktopSettings.bindPasswordInput(byId('proxy-password'), byId('toggle-password'));
 DesktopSettings.bindShortcutInput(byId('shortcut'), byId('record-shortcut'), byId('clear-shortcut'));
@@ -127,6 +136,8 @@ byId('checkbox-group').addEventListener('change', event => {
 });
 byId('enable-options').addEventListener('change', updateCheckboxes);
 updateCheckboxes();
+
+DesktopSettings.bindPivot(byId('settings-pivot'));
 
 const search = byId('list-search');
 const rows = [...byId('component-list').children];

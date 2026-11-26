@@ -6,7 +6,7 @@
 
 在仓库根目录运行 `npm run build`，然后用浏览器打开 `examples/gallery.html`。构建脚本只用 Node.js 内置模块。它把 `src/palette.json` 中的浅色和深色值、排版规则和组件样式合成一个可离线分发的文件 `dist/settings.css`。
 
-示例是一个可离线打开的交互式控件图库，分为「按钮与操作」「文本与数值」「选择控件」「列表与折叠」「菜单与反馈」。使用侧栏或底部的「上一类」「下一类」浏览示例，顶部的「主题」菜单可切换浅色、深色或跟随系统。分类地址可直接打开，切换分类时会保留本次试用的控件状态。
+示例是一个可离线打开的交互式控件图库，分为「按钮与操作」「文本与数值」「选择控件」「标签页」「列表与折叠」「菜单与反馈」。使用侧栏或底部的「上一类」「下一类」浏览示例，顶部的「主题」菜单可切换浅色、深色或跟随系统。分类地址可直接打开，切换分类时会保留本次试用的控件状态。
 
 ## 在应用中使用
 
@@ -40,7 +40,31 @@
 
 图库的「文本与数值」提供密码、快捷键、标签、日期和时间输入，「选择控件」提供文件、目录和颜色选择器。日期和时间直接使用带 `.input-text` 的原生 `date`、`time` 输入框，通过 `min` 和 `max` 限定范围。
 
-其他输入控件从 `desktop-settings-css/inputs` 导入。离线 HTML 加载 `dist/inputs.browser.js` 后，可通过 `DesktopSettings` 调用同名方法。
+图库的「文本与数值 → 请求超时」演示带内联按钮的数值步进框，「选择控件 → 图库主题」演示通过底色和边框标记当前选项的分段选择器。
+
+将原生数字框放在 `.number-stepper` 中。用户可以直接输入、点击微调箭头或使用上下方向键。`min`、`max` 和 `step` 控制范围及步长，可用 `valueAsNumber` 读取数值。单位写在字段标签或说明中。
+
+```html
+<label for="timeout">请求超时（秒）</label>
+<span class="number-stepper">
+  <input type="number" id="timeout" name="timeout" min="0.5" max="60" step="0.5"
+         value="5">
+</span>
+```
+
+从 `desktop-settings-css/inputs` 导入并调用 `bindNumberStepper(document.querySelector('#timeout'))` 后，宽度随内容调整。两个箭头前始终为清除键预留 32 px，输入框聚焦且有内容时显示清除键。点击清除键可继续在原处输入，按住箭头可连续步进。离线页面使用 `DesktopSettings.bindNumberStepper(...)`。直接通过脚本设置 `input.value` 后可调用返回对象的 `refresh()` 更新宽度和按钮状态。`destroy()` 恢复原生数字框。
+
+在 `.segmented-control` 中用同名的原生单选框组成一组，每项用 `<label>` 包住输入框和文字。Tab 进入控件，方向键切换选项。宿主可监听 `change`，或通过表单读取选中的 `value`。
+
+```html
+<div class="segmented-control" role="radiogroup" aria-label="主题">
+  <label><input type="radio" name="theme" value="system" checked><span>跟随系统</span></label>
+  <label><input type="radio" name="theme" value="light"><span>浅色</span></label>
+  <label><input type="radio" name="theme" value="dark"><span>深色</span></label>
+</div>
+```
+
+需要脚本绑定的输入控件从 `desktop-settings-css/inputs` 导入。离线 HTML 加载 `dist/inputs.browser.js` 后，可通过 `DesktopSettings` 调用同名方法。
 
 | 方法 | 用法 |
 | --- | --- |
@@ -93,6 +117,33 @@ const picker = bindEditableSelect(input, {
 将组件绑定到已有标签的单行文本框，`name`、`required`、`maxlength` 和表单提交均由原生输入框处理。`options` 是字符串数组。输入时按包含关系筛选，英文忽略大小写。上下方向键浏览候选，Enter 选中高亮项，Esc 或 Tab 收起并保留已输入的文字。选择不同的预设立即触发 `input`。离开文本框时，值有变化会触发 `change`。
 
 `picker.setOptions([...])` 刷新候选并保留输入值，`picker.close()` 收起列表，`picker.destroy()` 解除绑定。离线 HTML 使用已有的 `dist/select.browser.js`，通过 `DesktopSettings.bindEditableSelect` 调用。
+
+## Pivot 标签页
+
+在图库的「标签页」中可试用「常规」「通知」「启动与退出」。标签按文字宽度排列，选中线与标题等宽。点击标题或在面板空白处左右滑动可切换页面。键盘聚焦标题时，左右方向键切换页面，Home 和 End 跳到首尾可用标签，Tab 进入当前页的控件。切换页面时保留表单值。
+
+```html
+<div class="pivot" id="preferences">
+  <div role="tablist" aria-label="偏好设置">
+    <button type="button" role="tab" id="general-tab" aria-controls="general" aria-selected="true">常规</button>
+    <button type="button" role="tab" id="alerts-tab" aria-controls="alerts" tabindex="-1">通知</button>
+  </div>
+  <div role="tabpanel" id="general" aria-labelledby="general-tab">
+    <label>配置名称 <input class="input-text" value="个人配置"></label>
+  </div>
+  <div role="tabpanel" id="alerts" aria-labelledby="alerts-tab" hidden>
+    <label><input type="checkbox" class="toggle-switch" role="switch"> 显示通知</label>
+  </div>
+</div>
+```
+
+```js
+import { bindPivot } from 'desktop-settings-css/pivot';
+const pivot = bindPivot(document.querySelector('#preferences'));
+pivot.setValue('alerts');
+```
+
+在 `.ds-settings` 内放置组件。每个标签和面板各有唯一 ID，`aria-controls` 指向对应面板。纯文字面板可加 `tabindex="0"` 以便键盘聚焦。`getValue()` 返回当前面板 ID，`onChange(id)` 响应用户切换，`destroy()` 解除绑定。离线 HTML 加载 `dist/pivot.browser.js` 后可调用 `DesktopSettings.bindPivot(...)`。
 
 ## WinUI 3 风格菜单
 

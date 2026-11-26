@@ -1,0 +1,62 @@
+/* WinUI Pivot header and PivotItem content */
+:where(.ds-settings) .pivot {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+:where(.ds-settings) .pivot > [role="tablist"] {
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"] {
+  position: relative;
+  flex: none;
+  min-height: 48px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: var(--ds-text-secondary);
+  font-family: var(--ds-font-display);
+  font-size: 1.5rem;
+  font-weight: 350;
+  letter-spacing: -.025em;
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"],
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"]:enabled:hover {
+  color: var(--ds-text-primary);
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after {
+  content: '';
+  position: absolute;
+  inset-inline: 12px;
+  bottom: 2px;
+  height: 3px;
+  border-radius: 1.5px;
+  background: var(--ds-accent);
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"]:enabled:active {
+  color: var(--ds-text-secondary);
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"]:disabled {
+  opacity: .45;
+  cursor: default;
+}
+:where(.ds-settings) .pivot > [role="tablist"] > [role="tab"]:focus-visible,
+:where(.ds-settings) .pivot > [role="tabpanel"]:focus-visible {
+  outline: 2px solid var(--ds-text-primary);
+  outline-offset: -2px;
+  border-radius: var(--ds-radius-sm);
+}
+:where(.ds-settings) .pivot > [role="tabpanel"] {
+  margin: 12px 12px 0;
+}
+@media (forced-colors: active) {
+  :where(.ds-settings) .pivot > [role="tablist"] > [aria-selected="true"]::after {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+}

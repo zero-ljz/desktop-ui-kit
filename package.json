@@ -10,6 +10,8 @@
     "./inputs.browser.js": "./dist/inputs.browser.js",
     "./select": "./dist/select.mjs",
     "./select.browser.js": "./dist/select.browser.js",
+    "./pivot": "./dist/pivot.mjs",
+    "./pivot.browser.js": "./dist/pivot.browser.js",
     "./dialog": "./dist/dialog.mjs",
     "./dialog.browser.js": "./dist/dialog.browser.js",
     "./tooltip": "./dist/tooltip.mjs",

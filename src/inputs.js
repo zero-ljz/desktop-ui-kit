@@ -1,8 +1,110 @@
 function commitInput(input, value) {
-  if (input.value === value) return;
+  if (input.value === value && !input.validity.badInput) return;
   input.value = value;
   input.dispatchEvent(new Event('input', { bubbles: true }));
   input.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
+function bindNumberStepper(input) {
+  const field = input.parentElement;
+  const events = new AbortController();
+  const { signal } = events;
+  let repeatTimer;
+
+  function nextValue(direction) {
+    if (input.disabled || input.readOnly || input.step.toLowerCase() === 'any') return input.value;
+    // Use the browser's decimal stepping and range rules without editing the live field.
+    const probe = input.cloneNode(false);
+    probe.value = input.value;
+    if (direction > 0) probe.stepUp();
+    else probe.stepDown();
+    return probe.value;
+  }
+
+  function stopRepeat() {
+    clearTimeout(repeatTimer);
+  }
+  function actionButton(className, label) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.tabIndex = -1;
+    button.className = className;
+    button.setAttribute('aria-label', label);
+    if (input.id) button.setAttribute('aria-controls', input.id);
+    return button;
+  }
+  function spinButton(direction, label) {
+    const button = actionButton(direction > 0 ? 'number-spin' : 'number-spin number-spin-down', label);
+    let repeated = false;
+    function repeat() {
+      if (signal.aborted || button.matches(':disabled')) return;
+      repeated = true;
+      commitInput(input, nextValue(direction));
+      if (!signal.aborted && !button.matches(':disabled')) repeatTimer = setTimeout(repeat, 80);
+    }
+    button.addEventListener('pointerdown', event => {
+      if (!event.isPrimary || event.button !== 0) return;
+      event.preventDefault();
+      button.setPointerCapture(event.pointerId);
+      input.focus({ preventScroll: true });
+      stopRepeat();
+      repeated = false;
+      repeatTimer = setTimeout(repeat, 400);
+    }, { signal });
+    button.addEventListener('pointerleave', stopRepeat, { signal });
+    button.addEventListener('click', event => {
+      if (!repeated || event.detail === 0) {
+        input.focus({ preventScroll: true });
+        commitInput(input, nextValue(direction));
+      }
+      repeated = false;
+    }, { signal });
+    return button;
+  }
+  const clear = actionButton('number-clear', '清除数值');
+  clear.addEventListener('pointerdown', event => event.preventDefault(), { signal });
+  clear.addEventListener('click', () => {
+    if (input.matches(':disabled') || input.readOnly) return;
+    input.focus({ preventScroll: true });
+    commitInput(input, '');
+  }, { signal });
+  const up = spinButton(1, '增加数值');
+  const down = spinButton(-1, '减少数值');
+  field.append(clear, up, down);
+  field.addEventListener('click', event => {
+    if (event.target === field) input.focus({ preventScroll: true });
+  }, { signal });
+
+  function refresh() {
+    // Browsers without field-sizing use the character count for the input width.
+    field.style.setProperty('--ds-number-length', Math.max(1, (input.value || input.placeholder).length));
+    clear.disabled = !(input.value || input.validity.badInput);
+    up.disabled = input.value === nextValue(1);
+    down.disabled = input.value === nextValue(-1);
+  }
+  input.addEventListener('input', refresh, { signal });
+  input.addEventListener('change', refresh, { signal });
+  field.addEventListener('pointerenter', refresh, { signal });
+  field.addEventListener('focusin', refresh, { signal });
+  input.form?.addEventListener('reset', () => queueMicrotask(refresh), { signal });
+  window.addEventListener('pointerup', stopRepeat, { signal, capture: true });
+  window.addEventListener('pointercancel', stopRepeat, { signal, capture: true });
+  window.addEventListener('blur', stopRepeat, { signal });
+  const observer = new MutationObserver(refresh);
+  observer.observe(input, { attributeFilter: ['min', 'max', 'step', 'value', 'placeholder', 'disabled', 'readonly'] });
+  refresh();
+  return {
+    refresh,
+    destroy() {
+      stopRepeat();
+      events.abort();
+      observer.disconnect();
+      field.style.removeProperty('--ds-number-length');
+      clear.remove();
+      up.remove();
+      down.remove();
+    }
+  };
 }
 
 function bindPathPicker(input, button, { kind = 'file', choose, onError } = {}) {

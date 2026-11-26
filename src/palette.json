@@ -3,6 +3,7 @@
   "bg-action-bar": {"light": "rgba(255, 255, 255, 0.88)", "dark": "rgba(36, 36, 36, 0.85)"},
   "bg-secondary": {"light": "#e5e5e5", "dark": "#242424"},
   "bg-surface": {"light": "rgba(255, 255, 255, 0.64)", "dark": "rgba(255, 255, 255, 0.05)"},
+  "control-alt-fill": {"light": "rgba(0, 0, 0, 0.024)", "dark": "rgba(0, 0, 0, 0.10)"},
   "bg-surface-hover": {"light": "rgba(255, 255, 255, 0.76)", "dark": "rgba(255, 255, 255, 0.075)"},
   "bg-elevated": {"light": "#ffffff", "dark": "#2c2c2c"},
   "bg-hover": {"light": "rgba(0, 0, 0, 0.04)", "dark": "rgba(255, 255, 255, 0.08)"},

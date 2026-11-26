@@ -19,6 +19,7 @@ const css = [
   await read('./src/components.css'),
   await read('./src/dialog.css'),
   await read('./src/list.css'),
+  await read('./src/pivot.css'),
   await read('./src/tooltip.css'),
   await read('./src/menu.css'),
   await read('./src/info-bar.css')
@@ -29,8 +30,9 @@ await writeFile(new URL('./dist/settings.css', import.meta.url), css);
 console.log(`Built dist/settings.css (${Buffer.byteLength(css)} bytes)`);
 
 for (const [name, exports] of [
-  ['inputs', 'bindPathPicker, bindShortcutInput, bindPasswordInput, bindColorInput, createTagInput'],
+  ['inputs', 'bindNumberStepper, bindPathPicker, bindShortcutInput, bindPasswordInput, bindColorInput, createTagInput'],
   ['select', 'createSelect, bindEditableSelect'],
+  ['pivot', 'bindPivot'],
   ['dialog', 'showModal, showAlert, showConfirm, showPrompt'],
   ['tooltip', 'setTooltip, clearTooltip'],
   ['menu', 'createMenuBar, bindContextMenu'],
