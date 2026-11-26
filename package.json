@@ -4,8 +4,12 @@
   "description": "Scoped, framework-independent styles for desktop settings forms.",
   "private": true,
   "style": "./dist/settings.css",
-  "exports": { "./settings.css": "./dist/settings.css" },
-  "files": ["dist/settings.css", "examples/"],
+  "exports": {
+    "./settings.css": "./dist/settings.css",
+    "./select": "./dist/select.mjs",
+    "./select.browser.js": "./dist/select.browser.js"
+  },
+  "files": ["dist/settings.css", "dist/select.mjs", "dist/select.browser.js", "examples/"],
   "scripts": {
     "build": "node build.mjs",
     "prepack": "node build.mjs"

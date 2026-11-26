@@ -6,6 +6,7 @@
   <title>纸间 · 偏好设置</title>
   <link rel="stylesheet" href="../dist/settings.css">
   <link rel="stylesheet" href="./settings-demo.css">
+  <script src="../dist/select.browser.js" defer></script>
   <script src="./settings-demo.js" defer></script>
 </head>
 <body class="ds-settings">
@@ -56,21 +57,8 @@
               <label class="setting-label" id="font-label" for="font-trigger">正文字体</label>
             </div>
             <div class="setting-control">
-              <div class="custom-select" id="font-picker">
-                <input type="hidden" name="font" id="font" value="serif">
-                <button type="button" class="select-trigger" id="font-trigger" role="combobox"
-                        aria-labelledby="font-label" aria-haspopup="listbox" aria-controls="font-options" aria-expanded="false">
-                  <span class="select-label">衬线字体</span>
-                  <span class="select-arrow" aria-hidden="true">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-                  </span>
-                </button>
-                <div class="select-dropdown" id="font-options" role="listbox" aria-labelledby="font-label">
-                  <button type="button" class="select-option selected" role="option" tabindex="-1" aria-selected="true" data-value="serif">衬线字体</button>
-                  <button type="button" class="select-option" role="option" tabindex="-1" aria-selected="false" data-value="sans">系统字体</button>
-                  <button type="button" class="select-option" role="option" tabindex="-1" aria-selected="false" data-value="mono">等宽字体</button>
-                </div>
-              </div>
+              <input type="hidden" name="font" id="font" value="serif">
+              <span id="font-picker"></span>
             </div>
           </div>
           <div class="setting-row">
@@ -171,7 +159,7 @@
                   <span class="settings-expander-title">提醒类型</span>
                   <span class="settings-expander-description" id="selected-count">已选择 2 项，共 3 项</span>
                 </span>
-                <span class="settings-expander-actions"><span class="settings-expander-chevron" aria-hidden="true">›</span></span>
+                <span class="settings-expander-actions"><span class="settings-expander-chevron" aria-hidden="true"></span></span>
               </summary>
               <div class="settings-expander-content">
                 <label class="winui-checkbox-option">
@@ -204,7 +192,7 @@
             <details class="settings-expander settings-expander-compact">
               <summary class="settings-expander-header">
                 <span class="settings-expander-title">提示音</span>
-                <span class="settings-expander-chevron" aria-hidden="true">›</span>
+                <span class="settings-expander-chevron" aria-hidden="true"></span>
               </summary>
               <div class="settings-expander-content">
           <div class="setting-row">
