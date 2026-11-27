@@ -92,10 +92,13 @@
 :where(.ds-settings) .app-container:is(.sidebar-narrow, .sidebar-compact) {
   --ds-sidebar-track-width: var(--ds-sidebar-compact-width);
 }
-:where(.ds-settings) .app-container.sidebar-narrow > .sidebar {
+/* Keep the percentage basis for width stable while crossing the overlay breakpoint. */
+:where(.ds-settings) .app-container > .sidebar:has(.sidebar-toggle) {
   grid-column: 1 / -1;
   justify-self: start;
-  width: min(var(--ds-sidebar-compact-width), 40%);
+  width: min(var(--ds-sidebar-track-width, var(--ds-sidebar-width)), 40%);
+}
+:where(.ds-settings) .app-container.sidebar-narrow > .sidebar {
   z-index: 25;
 }
 :where(.ds-settings) .sidebar-overlay-dismiss {
